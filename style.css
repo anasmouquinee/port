@@ -99,15 +99,56 @@ nav a.active {
 }
 
 section {
+    position: relative;
     min-height: 100vh;
     padding: 5rem 9% 5rem;
 }
 
 section h2 {
-    font-size: 3rem;
-    font-weight: 600;
+    position: relative;
+    font-size: 3.5rem;
+    font-weight: 700;
     color: #b74b4b;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+section h2::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    width: 180px;
+    height: 3px;
+    background: #b74b4b;
+    transform: translateX(-50%);
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: #b74b4b;
+    border-radius: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(183, 75, 75, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(183, 75, 75, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(183, 75, 75, 0);
+    }
 }
 
 section p {
