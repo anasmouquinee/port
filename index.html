@@ -1,369 +1,355 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Portfolio Website</title>
+    <title>Anas Mouquine | Full Stack Engineer</title>
+    
+    <!-- React & Tailwind -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons & Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Animations & Utilities */
+        :root {
+            --accent: #b74b4b;
+        }
+        body {
+            background-color: #0a0a0a;
+            font-family: 'Inter', sans-serif;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #b74b4b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(183, 75, 75, 0.3);
+        }
+
+        /* Navigation Active State */
+        .nav-link.active { color: var(--accent); }
+        .nav-link::after {
+            content: ''; display: block; width: 0; height: 2px; background: var(--accent); transition: width .3s;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        crimson: '#b74b4b',
+                        dark: '#0a0a0a',
+                        card: '#111111'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
-    <script src="script.js"></script>
-    <header>
-        <a href="#" class="logo">Anas</a>
+    <div id="root"></div>
 
-        <nav>
-            <a href="#home" class="active">Home</a>
-            <a href="#services">Services</a>
-            <a href="#skills">Skills</a>
-            <a href="#education">Education</a>
-            <a href="#experience">Experience</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
-    <section id="home" class="home">
-        <div class="home-img">
-            <img src="main.jpg" alt="">
-        </div>
-        <div class="home-content">
-            <h1>Hi, It's <span>Anas</span></h1>
-            <h3 class="typing-text">I'm a <span></span></h3>
-            <p>Hi 👋! I'm Anas Mouqine I'm a full stack java/react, web designer , engineering student ,I focus more on backend development,also in scripting  I live in Casablanca Morocco.</p>
-            <div class="social-icons">
-                <a href="https://www.linkedin.com/in/anas-mouqine-329207304/"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="https://github.com/anasmouquinee"><i class="fa-brands fa-github"></i></a>
-                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.instagram.com/anasmouquine__/?hl=fr"><i class="fa-brands fa-instagram"></i></a>
-            </div>
-            <a href="#" class="btn">Hire me</a>
-        </div>
-    </section>
-</body>
-</html>
-<section id="services">
-    <h2>Services</h2>
-    <p class="title">Web Project Management</p>
-    <p class="shine-text">Showcase site, corporate, event, e-commerce, intranet, mobile application.</p>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
 
-    <p class="title">Web Integration</p>
-    <p class="shine-text">(X)HTML / CSS integrations that respect web standards.</p>
+        // --- DATA ---
+        const projects = [
+            {
+                id: 1,
+                title: "Kaelar's Novel Archive",
+                category: "Full Stack",
+                img: "project/proj1.jpg",
+                tech: ["Node.js", "HTML5", "Database Optimization"],
+                desc: "A high-performance literary platform with secure authentication and optimized query handling."
+            },
+            {
+                id: 2,
+                title: "Omniscient Reader Hub",
+                category: "Web Design & Dev",
+                img: "project/proj2.jpg",
+                tech: ["CSS3", "Interactive UI", "Fandom"],
+                desc: "Immersive fan site featuring dynamic character galleries and art showcases."
+            },
+            {
+                id: 3,
+                title: "Lord of the Mysteries UI",
+                category: "Frontend",
+                img: "project/proj3.jpg",
+                tech: ["React", "Animation", "UI/UX"],
+                desc: "A mystical interface design for character cards and lore exploration."
+            },
+            {
+                id: 4,
+                title: "Book Review Prototype",
+                category: "UI/UX Design",
+                img: "project/proj4.jpg",
+                tech: ["Figma", "Prototyping", "Design Systems"],
+                desc: "High-fidelity prototype compatible with React implementation."
+            }
+        ];
 
-    <p class="title">Specific Developments</p>
-    <p class="shine-text">Tools adapted to your core business, personalized applications & solutions.</p>
+        const skills = [
+            { name: "React.js", level: 90, icon: "fa-brands fa-react" },
+            { name: "Java", level: 87, icon: "fa-brands fa-java" },
+            { name: "HTML/CSS", level: 95, icon: "fa-brands fa-html5" },
+            { name: "Node.js", level: 75, icon: "fa-brands fa-node-js" },
+            { name: "UI/UX (Figma)", level: 85, icon: "fa-brands fa-figma" },
+        ];
 
-    <p class="title">Natural Referencing</p>
-    <p class="shine-text">Semantic display of information, clean pages for optimal referencing.</p>
+        const certs = [
+            { name: "Advanced React", issuer: "Meta", img: "cert2.png" },
+            { name: "UI/UX Design", issuer: "Microsoft", img: "cert1.jpg" },
+            { name: "JS Programming", issuer: "Meta", img: "cert.png" }
+        ];
 
-    <p class="title">Graphic Design & Webdesign</p>
-    <p class="shine-text">Logos, web templates, advertising brochures, business cards, newsletters...</p>
+        // --- COMPONENTS ---
 
-    <p class="title">Page Dynamics</p>
-    <p class="shine-text">Non-intrusive content animations to enhance your project.</p>
-
-    <p class="title">Administration Interface</p>
-    <p class="shine-text">Specific tools for the proper functioning of your company.</p>
-
-    <p class="title">Responsive Design</p>
-    <p class="shine-text">Compatible with all devices, tablet & mobile application.</p>
-</section>
-
-<section id="skills">
-    <h2>Skills</h2>
-    <div class="skill-bars">
-        <p class="title1">Dev side</p>
-        <div class="bar">
-            <div class="info">
-                <span>HTML</span>
-                <span class="percent">95%</span>
-            </div>
-            <div class="progress-line html"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>CSS</span>
-                <span class="percent">85%</span>
-            </div>
-            <div class="progress-line css"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>JavaScript</span>
-                <span class="percent">75%</span>
-            </div>
-            <div class="progress-line javascript"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>React</span>
-                <span class="percent">90%</span>
-            </div>
-            <div class="progress-line react"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>Java</span>
-                <span class="percent">87%</span>
-            </div>
-            <div class="progress-line java"><span></span></div>
-        </div>
-        <p class="title1">graphic side</p>
-        <div class="bar">
-            <div class="info">
-                <span>Photoshop</span>
-                <span class="percent">80%</span>
-            </div>
-            <div class="progress-line photoshop"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>Illustrator</span>
-                <span class="percent">60%</span>
-            </div>
-            <div class="progress-line illustrator"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>InDesign</span>
-                <span class="percent">85%</span>
-            </div>
-            <div class="progress-line indesign"><span></span></div>
-        </div>
-        
-        <div class="bar">
-            <div class="info">
-                <span>After Effects</span>
-                <span class="percent">90%</span>
-            </div>
-            <div class="progress-line aftereffects"><span></span></div>
-        </div>
-
-    </div>
-</section>
-
-<section id="education">
-    <h2>Education</h2>
-    <div class="certificate-grid">
-        <div class="certificate-box">
-            <img src="cert.png" alt="Certificate 1">
-            <div class="zoom-overlay">
-                <i class="fas fa-search-plus"></i>
-            </div>
-            <a href="https://coursera.org/verify/VJC3EUC85T53" class="cert-link">
-                <i class="fas fa-external-link-alt"></i>
-                View Certificate
-            </a>
-        </div>
-        <div class="certificate-box">
-            <img src="cert1.jpg" alt="Certificate 2">
-            <div class="zoom-overlay">
-                <i class="fas fa-search-plus"></i>
-            </div>
-            <a href="https://coursera.org/verify/PSEWVE6G37XO" class="cert-link">
-                <i class="fas fa-external-link-alt"></i>
-                View Certificate
-            </a>
-        </div>        
-        <div class="certificate-box">
-            <img src="cert2.png" alt="Certificate 3">
-            <div class="zoom-overlay">
-                <i class="fas fa-search-plus"></i>
-            </div>
-            <a href="https://coursera.org/verify/EOQZZ5AJA4PN" class="cert-link">
-                <i class="fas fa-external-link-alt"></i>
-                View Certificate
-            </a>
-        </div>
-    </div>
-</section>
-
-<section id="experience">
-    <h2>Experience</h2>
-    <div class="experience-card">
-    <div class="card-inner">
-        <div class="card-front">
-            <div class="slideshow-container">
-                <div class="slide fade">
-                    <img src="project/proj1.jpg" alt="Project 1">
-                </div>
-                <div class="slide fade">
-                    <img src="project/proj1-2.jpg" alt="Project 1">
-                </div>
-                <div class="slide fade">
-                    <img src="project/proj1-3.jpg" alt="Project 1">
-                </div>
-            </div>
-            <h3>Novel Website</h3>
-        </div>
-        <div class="card-back">
-                    <h3>Project Details</h3>
-                    <p class="project-role">Novel Website </p>
-                    <p class="project-date">2023 - 2024</p>
-                    <ul class="project-details">
-                        <li>Developed full-stack languages</li>
-                        <li>Implemented user authentication</li>
-                        <li>Optimized database queries</li>
-                    </ul>
-                    <div class="project-tech">
-                        <span>Html</span>
-                        <span>Node.js</span>
-                        <span>CSS</span>
-                        <a href="https://kaelars.com/#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
-                            View Project
-                        </a>
+        const Navbar = () => (
+            <nav className="fixed top-0 w-full z-50 bg-dark/80 backdrop-blur-md border-b border-white/5">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                    <a href="#" className="text-2xl font-bold font-mono tracking-tighter hover:text-crimson transition-colors">
+                        &lt;Anas /&gt;
+                    </a>
+                    <div className="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+                        <a href="#about" className="nav-link hover:text-white transition-colors">About</a>
+                        <a href="#skills" className="nav-link hover:text-white transition-colors">Stack</a>
+                        <a href="#projects" className="nav-link hover:text-white transition-colors">Work</a>
+                        <a href="#contact" className="nav-link hover:text-white transition-colors">Contact</a>
                     </div>
+                    <a href="#contact" className="px-5 py-2 text-sm font-bold bg-crimson text-white rounded-full hover:bg-red-700 transition-all shadow-[0_0_15px_rgba(183,75,75,0.5)]">
+                        Hire Me
+                    </a>
                 </div>
-            </div>
-        </div>
-        <div class="experience-card">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="slideshow-container">
-                        <div class="slide fade">
-                            <img src="project/proj2.jpg" alt="Project 1">
+            </nav>
+        );
+
+        const Hero = () => (
+            <section id="about" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
+                {/* Background Glow */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-crimson/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div className="space-y-6 z-10">
+                        <div className="inline-block px-3 py-1 rounded-full border border-crimson/30 bg-crimson/10 text-crimson text-xs font-mono tracking-widest uppercase mb-2">
+                            Available for work
                         </div>
-                        <div class="slide fade">
-                            <img src="project/proj2-2.jpg" alt="Project 1">
+                        <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+                            Designing Logic.<br />
+                            <span className="text-gradient">Weaving Code.</span>
+                        </h1>
+                        <p className="text-gray-400 text-lg max-w-lg leading-relaxed">
+                            Hi, I'm <strong className="text-white">Anas Mouquine</strong>. An engineering student and Full Stack Developer from Casablanca. I bridge the gap between complex backend logic and immersive frontend design.
+                        </p>
+                        
+                        {/* Code Snippet Box */}
+                        <div className="glass-card p-6 rounded-xl font-mono text-sm text-gray-300 mt-4 border-l-4 border-crimson">
+                            <p><span className="text-purple-400">const</span> <span className="text-yellow-400">developer</span> = {"{"}</p>
+                            <p className="pl-4">name: <span className="text-green-400">'Anas'</span>,</p>
+                            <p className="pl-4">role: <span className="text-green-400">'Full Stack Engineer'</span>,</p>
+                            <p className="pl-4">location: <span className="text-green-400">'Casablanca, MA'</span>,</p>
+                            <p className="pl-4">passion: [<span className="text-green-400">'Java'</span>, <span className="text-green-400">'React'</span>, <span className="text-green-400">'Design'</span>]</p>
+                            <p>{"}"};</p>
                         </div>
-                        <div class="slide fade">
-                            <img src="project/proj2-3.jpg" alt="Project 1">
+
+                        <div className="flex gap-4 pt-4">
+                            <a href="https://github.com/anasmouquinee" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                                <i className="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/anas-mouqine-329207304/" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#0077b5] hover:text-white transition-all">
+                                <i className="fab fa-linkedin-in text-xl"></i>
+                            </a>
+                             <a href="https://www.instagram.com/anasmouquine__/" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#E1306C] hover:text-white transition-all">
+                                <i className="fab fa-instagram text-xl"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3>Novel Website</h3>
-                </div>
-                <div class="card-back">
-                            <h3>Project Details</h3>
-                            <p class="project-role">Novel Website </p>
-                            <p class="project-date">2023 - 2024</p>
-                            <ul class="project-details">
-                                <li>Developed full-stack languages</li>
-                                <li>Implemented user authentication</li>
-                                <li>Optimized database queries</li>
-                            </ul>
-                            <div class="project-tech">
-                                <span>Html</span>
-                                <span>Node.js</span>
-                                <span>CSS</span>
-                                <a href="https://kaelars.com/orv/orv.html#home" class="project-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    View Project
-                                </a>
+
+                    <div className="relative z-10 flex justify-center">
+                        <div className="relative w-[300px] md:w-[400px] aspect-square">
+                            <div className="absolute inset-0 rounded-full border-2 border-crimson/20 animate-[spin_10s_linear_infinite]"></div>
+                            <div className="absolute inset-4 rounded-full border border-white/10"></div>
+                            <img 
+                                src="main.jpg" 
+                                alt="Anas Mouquine" 
+                                className="absolute inset-6 w-[calc(100%-48px)] h-[calc(100%-48px)] object-cover rounded-full shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
+                            />
+                            {/* Floating badges */}
+                            <div className="absolute -top-4 -right-4 bg-card border border-white/10 p-3 rounded-xl shadow-xl flex items-center gap-3 animate-bounce">
+                                <i className="fab fa-react text-blue-400 text-2xl"></i>
+                                <div>
+                                    <div className="text-xs text-gray-400">Stack</div>
+                                    <div className="font-bold text-sm">React.js</div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Skills = () => (
+            <section id="skills" className="py-20 bg-black/20">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="mb-12">
+                        <h2 className="text-3xl font-bold mb-2">Technical Arsenal</h2>
+                        <div className="h-1 w-20 bg-crimson"></div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+                        {skills.map((skill, index) => (
+                            <div key={index} className="glass-card p-6 rounded-2xl flex flex-col items-center text-center group">
+                                <i className={`${skill.icon} text-4xl text-gray-500 group-hover:text-crimson transition-colors mb-4`}></i>
+                                <h3 className="font-bold text-lg mb-2">{skill.name}</h3>
+                                <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                                    <div 
+                                        className="bg-crimson h-full" 
+                                        style={{width: `${skill.level}%`}}
+                                    ></div>
+                                </div>
+                                <span className="text-xs text-gray-500 mt-2 font-mono">{skill.level}%</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Certifications Strip */}
+                    <div className="mt-16">
+                        <h3 className="text-xl font-bold mb-6 text-gray-400 font-mono">// CERTIFIED BY</h3>
+                        <div className="flex flex-wrap gap-6">
+                            {certs.map((cert, idx) => (
+                                <div key={idx} className="flex items-center gap-4 glass-card px-6 py-3 rounded-lg pr-8">
+                                    <div className="w-10 h-10 rounded overflow-hidden bg-gray-800">
+                                        <img src={cert.img} className="w-full h-full object-cover opacity-80" alt="Cert" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-sm text-white">{cert.name}</div>
+                                        <div className="text-xs text-gray-500">{cert.issuer}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const ProjectCard = ({ project }) => (
+            <div className="group glass-card rounded-2xl overflow-hidden relative">
+                <div className="h-64 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 z-10 group-hover:opacity-40 transition-opacity"></div>
+                    <img 
+                        src={project.img} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute top-4 right-4 z-20 bg-black/50 backdrop-blur text-xs font-mono px-3 py-1 rounded border border-white/10">
+                        {project.category}
                     </div>
                 </div>
                 
-                <div class="experience-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="slideshow-container">
-                                <div class="slide fade">
-                                    <img src="project/proj3.jpg" alt="Project 1">
-                                </div>
-                                <div class="slide fade">
-                                    <img src="project/proj3-2.jpg" alt="Project 1">
-                                </div>
-                                <div class="slide fade">
-                                    <img src="project/proj3-3.jpg" alt="Project 1">
-                                </div>
-                            </div>
-                            <h3>Novel Website</h3>
-                        </div>
-                        <div class="card-back">
-                                    <h3>Project Details</h3>
-                                    <p class="project-role">Novel Website </p>
-                                    <p class="project-date">2023 - 2024</p>
-                                    <ul class="project-details">
-                                        <li>Developed full-stack languages</li>
-                                        <li>Implemented user authentication</li>
-                                        <li>Optimized database queries</li>
-                                    </ul>
-                                    <div class="project-tech">
-                                        <span>Html</span>
-                                        <span>Node.js</span>
-                                        <span>CSS</span>
-                                        <a href="https://kaelars.com/lotm/lotm.html#home" class="project-link">
-                                            <i class="fas fa-external-link-alt"></i>
-                                            View Project
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="experience-card">
-                            <div class="card-inner">
-                                <div class="card-front">
-                                    <div class="slideshow-container">
-                                        <div class="slide fade">
-                                            <img src="project/proj4.jpg" alt="Project 1">
-                                        </div>
-                                        <div class="slide fade">
-                                            <img src="project/proj4-2.jpg" alt="Project 1">
-                                        </div>
-                                        <div class="slide fade">
-                                            <img src="project/proj4-3.jpg" alt="Project 1">
-                                        </div>
-                                    </div>
-                                    <h3>Figma Prototype </h3>
-                                </div>
-                                <div class="card-back">
-                                            <h3>Project Details</h3>
-                                            <p class="project-role">Figma Prototype </p>
-                                            <p class="project-date">2023 - 2024</p>
-                                            <ul class="project-details">
-                                                <li>Developed full-stack languages</li>
-                                                <li>Compatible with both html and react</li>
-                                                <li>Full convertable site</li>
-                                            </ul>
-                                            <div class="project-tech">
-                                                <span>Figma</span>
-                                                <span>Node.js</span>
-                                                <span>React</span>
-                                                <a href="https://www.figma.com/design/rq7dUQimTDzOLknKyG8SbK/novel-prototype?node-id=0-1&node-type=canvas&t=W1HBVBkL4er5gukk-0" class="project-link">
-                                                    <i class="fas fa-external-link-alt"></i>
-                                                    View Project
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                                     
-    </div>
-</section>
+                <div className="p-6 relative z-20 bg-card border-t border-white/5">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-crimson transition-colors">{project.title}</h3>
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                        {project.tech.map((t, i) => (
+                            <span key={i} className="text-[10px] uppercase tracking-wider px-2 py-1 bg-white/5 text-gray-300 rounded">
+                                {t}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
 
-<section id="contact">
-    <h2>Contact</h2>
-    <div class="contact-wrapper">
-        <div class="contact-icons">
-            <a href="https://www.linkedin.com/in/anas-mouqine-329207304/" class="contact-icon">
-                <i class="fab fa-linkedin"></i>
-                <span>LinkedIn</span>
-            </a>
-            
-            <a href="https://github.com/anasmouquinee" class="contact-icon">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
-            </a>
-            
-            <a href="https://www.instagram.com/anasmouquine__/" class="contact-icon">
-                <i class="fab fa-instagram"></i>
-                <span>Instagram</span>
-            </a>
-            
-            <a href="mailto:anasmouqine@gmail.com" class="contact-icon">
-                <i class="fas fa-envelope"></i>
-                <span>Email</span>
-            </a>
-        </div>
-    </div>
-</section>
+        const Projects = () => (
+            <section id="projects" className="py-24">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <h2 className="text-4xl font-bold mb-2">Selected Works</h2>
+                            <p className="text-gray-400">A collection of web applications and designs.</p>
+                        </div>
+                        <a href="https://github.com/anasmouquinee" className="text-crimson font-mono text-sm hover:underline mt-4 md:mt-0">
+                            View Github Repository ->
+                        </a>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {projects.map(p => <ProjectCard key={p.id} project={p} />)}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Contact = () => (
+            <section id="contact" className="py-24 relative border-t border-white/5">
+                <div className="max-w-4xl mx-auto px-6 text-center">
+                    <h2 className="text-4xl font-bold mb-6">Ready to Collaborate?</h2>
+                    <p className="text-gray-400 mb-10 max-w-xl mx-auto">
+                        I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+                    </p>
+                    
+                    <a href="mailto:anasmouqine@gmail.com" className="inline-block px-8 py-4 bg-crimson text-white font-bold rounded-lg hover:bg-red-700 transition-all transform hover:-translate-y-1 shadow-[0_10px_30px_rgba(183,75,75,0.4)]">
+                        Say Hello <i className="fas fa-paper-plane ml-2"></i>
+                    </a>
+
+                    <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                        <div>&copy; 2024 Anas Mouquine. All rights reserved.</div>
+                        <div className="flex gap-6 mt-4 md:mt-0 font-mono">
+                            <a href="#" className="hover:text-white">Linkedin</a>
+                            <a href="#" className="hover:text-white">Github</a>
+                            <a href="#" className="hover:text-white">Instagram</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const App = () => (
+            <div className="antialiased selection:bg-crimson selection:text-white">
+                <Navbar />
+                <Hero />
+                <Skills />
+                <Projects />
+                <Contact />
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
