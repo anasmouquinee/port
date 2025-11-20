@@ -1,355 +1,467 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anas Mouquine | Full Stack Engineer</title>
-    
+    <title>Anas Mouquine | Creative Developer</title>
+
     <!-- React & Tailwind -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Icons & Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* Custom Animations & Utilities */
-        :root {
-            --accent: #b74b4b;
-        }
-        body {
-            background-color: #0a0a0a;
-            font-family: 'Inter', sans-serif;
-            color: #e5e5e5;
-            overflow-x: hidden;
-        }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 
-        /* Gradient Text */
-        .text-gradient {
-            background: linear-gradient(to right, #fff, #b74b4b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Glassmorphism Card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(183, 75, 75, 0.3);
-        }
-
-        /* Navigation Active State */
-        .nav-link.active { color: var(--accent); }
-        .nav-link::after {
-            content: ''; display: block; width: 0; height: 2px; background: var(--accent); transition: width .3s;
-        }
-        .nav-link:hover::after { width: 100%; }
-
-        /* Smooth Scroll */
-        html { scroll-behavior: smooth; }
-    </style>
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        crimson: '#b74b4b',
-                        dark: '#0a0a0a',
-                        card: '#111111'
+                        dark: '#030014',
+                        primary: '#a855f7',
+                        secondary: '#3b82f6',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
 </head>
+
 <body>
+    <div class="noise-overlay"></div>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion || window.FramerMotion;
 
-        // --- DATA ---
         const projects = [
             {
                 id: 1,
                 title: "Kaelar's Novel Archive",
-                category: "Full Stack",
-                img: "project/proj1.jpg",
-                tech: ["Node.js", "HTML5", "Database Optimization"],
-                desc: "A high-performance literary platform with secure authentication and optimized query handling."
+                category: "Web Novel Library",
+                img: "kaelar_top.png",
+                gallery: ["kaelar_top.png", "kaelar_mid.png", "kaelar_bot.png"],
+                tech: ["JavaScript", "HTML5", "CSS3"],
+                desc: "A comprehensive library for web novels. Features a clean, readable interface and a vast collection of stories, designed for an optimal reading experience.",
+                features: ["Responsive Layout", "Dark Mode", "Search Functionality"],
+                link: "https://kaelarsnovel.netlify.app/"
             },
             {
                 id: 2,
-                title: "Omniscient Reader Hub",
-                category: "Web Design & Dev",
-                img: "project/proj2.jpg",
-                tech: ["CSS3", "Interactive UI", "Fandom"],
-                desc: "Immersive fan site featuring dynamic character galleries and art showcases."
+                title: "Solo Leveling Experience",
+                category: "Immersive Fan Page",
+                img: "solo_top.png",
+                gallery: ["solo_top.png", "solo_mid.png", "solo_bot.png"],
+                tech: ["HTML5", "CSS3", "Thematic UI"],
+                desc: "A dedicated immersive page for the popular novel 'Solo Leveling', featuring character art and thematic design that captures the essence of the series.",
+                features: ["Character Showcase", "Thematic Styling", "Responsive Design"],
+                link: "https://kaelarsnovel.netlify.app/solo/solo.html"
             },
             {
                 id: 3,
-                title: "Lord of the Mysteries UI",
-                category: "Frontend",
-                img: "project/proj3.jpg",
-                tech: ["React", "Animation", "UI/UX"],
-                desc: "A mystical interface design for character cards and lore exploration."
+                title: "Omniscient Reader Hub",
+                category: "Interactive Fan Site",
+                img: "orv_top.png",
+                gallery: ["orv_top.png", "orv_mid.png", "orv_bot.png"],
+                tech: ["HTML5", "CSS3", "Fan Art Integration"],
+                desc: "An interactive fan page for 'Omniscient Reader's Viewpoint', capturing the apocalyptic atmosphere of the series with a focus on storytelling visuals.",
+                features: ["Visual Storytelling", "Atmospheric Design", "Mobile Responsive"],
+                link: "https://kaelarsnovel.netlify.app/orv/orv.html"
             },
             {
                 id: 4,
-                title: "Book Review Prototype",
-                category: "UI/UX Design",
-                img: "project/proj4.jpg",
-                tech: ["Figma", "Prototyping", "Design Systems"],
-                desc: "High-fidelity prototype compatible with React implementation."
+                title: "Lord of the Mysteries",
+                category: "Atmospheric Landing Page",
+                img: "lotm_top.png",
+                gallery: ["lotm_top.png", "lotm_mid.png", "lotm_bot.png"],
+                tech: ["HTML5", "CSS3", "Lore-Accurate Design"],
+                desc: "A mysterious and atmospheric landing page for 'Lord of the Mysteries', utilizing dark aesthetics and lore-accurate design elements to immerse the visitor.",
+                features: ["Dark Aesthetic", "Lore Integration", "Smooth Layout"],
+                link: "https://kaelarsnovel.netlify.app/lotm/lotm.html"
             }
         ];
 
-        const skills = [
-            { name: "React.js", level: 90, icon: "fa-brands fa-react" },
-            { name: "Java", level: 87, icon: "fa-brands fa-java" },
-            { name: "HTML/CSS", level: 95, icon: "fa-brands fa-html5" },
-            { name: "Node.js", level: 75, icon: "fa-brands fa-node-js" },
-            { name: "UI/UX (Figma)", level: 85, icon: "fa-brands fa-figma" },
-        ];
-
         const certs = [
-            { name: "Advanced React", issuer: "Meta", img: "cert2.png" },
-            { name: "UI/UX Design", issuer: "Microsoft", img: "cert1.jpg" },
-            { name: "JS Programming", issuer: "Meta", img: "cert.png" }
+            { name: "Advanced React", issuer: "Meta", date: "2024", icon: "fab fa-react", color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/20", link: "https://www.coursera.org/account/accomplishments/verify/EOQZZ5AJA4PN" },
+            { name: "Software Engineering", issuer: "HKUST", date: "2024", icon: "fas fa-laptop-code", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20", link: "https://www.coursera.org/account/accomplishments/verify/PYISBTHNMK4R" },
+            { name: "UI/UX Design Fundamentals", issuer: "Microsoft", date: "2024", icon: "fab fa-microsoft", color: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/20", link: "https://www.coursera.org/account/accomplishments/verify/PSEWVE6G37XO" },
+            { name: "Interactivity with JavaScript", issuer: "Univ. of Michigan", date: "2024", icon: "fab fa-js", color: "text-yellow-300", bg: "bg-yellow-300/10", border: "border-yellow-300/20", link: "https://www.coursera.org/account/accomplishments/verify/HX5EFZ91RJYY" },
+            { name: "Programming with JavaScript", issuer: "Meta", date: "2024", icon: "fab fa-js-square", color: "text-yellow-400", bg: "bg-yellow-400/10", border: "border-yellow-400/20", link: "https://www.coursera.org/account/accomplishments/verify/VJC3EUC85T53" },
+            { name: "Python for Web Data", issuer: "Univ. of Michigan", date: "2024", icon: "fab fa-python", color: "text-blue-300", bg: "bg-blue-300/10", border: "border-blue-300/20", link: "https://www.coursera.org/account/accomplishments/verify/3HIOWYMU2G7V" },
+            { name: "Object-Oriented C++", issuer: "EPFL", date: "2024", icon: "fas fa-code", color: "text-red-400", bg: "bg-red-400/10", border: "border-red-400/20", link: "https://www.coursera.org/account/accomplishments/verify/402FN9N1EN8K" },
+            { name: "Successful Negotiation", issuer: "Univ. of Michigan", date: "2024", icon: "fas fa-handshake", color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20", link: "https://www.coursera.org/account/accomplishments/verify/ZEC0HV4KGGCC" }
         ];
 
         // --- COMPONENTS ---
 
-        const Navbar = () => (
-            <nav className="fixed top-0 w-full z-50 bg-dark/80 backdrop-blur-md border-b border-white/5">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                    <a href="#" className="text-2xl font-bold font-mono tracking-tighter hover:text-crimson transition-colors">
-                        &lt;Anas /&gt;
-                    </a>
-                    <div className="hidden md:flex gap-8 text-sm font-medium text-gray-400">
-                        <a href="#about" className="nav-link hover:text-white transition-colors">About</a>
-                        <a href="#skills" className="nav-link hover:text-white transition-colors">Stack</a>
-                        <a href="#projects" className="nav-link hover:text-white transition-colors">Work</a>
-                        <a href="#contact" className="nav-link hover:text-white transition-colors">Contact</a>
-                    </div>
-                    <a href="#contact" className="px-5 py-2 text-sm font-bold bg-crimson text-white rounded-full hover:bg-red-700 transition-all shadow-[0_0_15px_rgba(183,75,75,0.5)]">
-                        Hire Me
-                    </a>
-                </div>
-            </nav>
+        const BentoItem = ({ children, className, delay = 0, onClick }) => (
+            <motion.div
+                layoutId={onClick ? `card-${className}` : undefined}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: delay, type: "spring", stiffness: 100 }}
+                className={`bento-card ${className} ${onClick ? 'cursor-pointer' : ''}`}
+                onClick={onClick}
+            >
+                {children}
+            </motion.div>
         );
 
-        const Hero = () => (
-            <section id="about" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
-                {/* Background Glow */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-crimson/10 rounded-full blur-[120px] pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        const SocialLink = ({ icon, href, label, color }) => (
+            <a href={href} target="_blank" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group w-full">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${color} bg-white/5 group-hover:scale-110 transition-transform`}>
+                    <i className={icon}></i>
+                </div>
+                <span className="font-medium text-gray-300 group-hover:text-white">{label}</span>
+            </a>
+        );
 
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6 z-10">
-                        <div className="inline-block px-3 py-1 rounded-full border border-crimson/30 bg-crimson/10 text-crimson text-xs font-mono tracking-widest uppercase mb-2">
-                            Available for work
-                        </div>
-                        <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
-                            Designing Logic.<br />
-                            <span className="text-gradient">Weaving Code.</span>
-                        </h1>
-                        <p className="text-gray-400 text-lg max-w-lg leading-relaxed">
-                            Hi, I'm <strong className="text-white">Anas Mouquine</strong>. An engineering student and Full Stack Developer from Casablanca. I bridge the gap between complex backend logic and immersive frontend design.
-                        </p>
-                        
-                        {/* Code Snippet Box */}
-                        <div className="glass-card p-6 rounded-xl font-mono text-sm text-gray-300 mt-4 border-l-4 border-crimson">
-                            <p><span className="text-purple-400">const</span> <span className="text-yellow-400">developer</span> = {"{"}</p>
-                            <p className="pl-4">name: <span className="text-green-400">'Anas'</span>,</p>
-                            <p className="pl-4">role: <span className="text-green-400">'Full Stack Engineer'</span>,</p>
-                            <p className="pl-4">location: <span className="text-green-400">'Casablanca, MA'</span>,</p>
-                            <p className="pl-4">passion: [<span className="text-green-400">'Java'</span>, <span className="text-green-400">'React'</span>, <span className="text-green-400">'Design'</span>]</p>
-                            <p>{"}"};</p>
-                        </div>
+        const ProjectDetail = ({ project, onClose }) => {
+            const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-                        <div className="flex gap-4 pt-4">
-                            <a href="https://github.com/anasmouquinee" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                                <i className="fab fa-github text-xl"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/anas-mouqine-329207304/" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#0077b5] hover:text-white transition-all">
-                                <i className="fab fa-linkedin-in text-xl"></i>
-                            </a>
-                             <a href="https://www.instagram.com/anasmouquine__/" target="_blank" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#E1306C] hover:text-white transition-all">
-                                <i className="fab fa-instagram text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
+            return (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-dark/90 backdrop-blur-xl overflow-y-auto"
+                >
+                    <div className="max-w-6xl w-full bg-dark border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative min-h-[80vh] flex flex-col md:flex-row">
+                        <button
+                            onClick={onClose}
+                            className="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors"
+                        >
+                            <i className="fas fa-times"></i>
+                        </button>
 
-                    <div className="relative z-10 flex justify-center">
-                        <div className="relative w-[300px] md:w-[400px] aspect-square">
-                            <div className="absolute inset-0 rounded-full border-2 border-crimson/20 animate-[spin_10s_linear_infinite]"></div>
-                            <div className="absolute inset-4 rounded-full border border-white/10"></div>
-                            <img 
-                                src="main.jpg" 
-                                alt="Anas Mouquine" 
-                                className="absolute inset-6 w-[calc(100%-48px)] h-[calc(100%-48px)] object-cover rounded-full shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
-                            />
-                            {/* Floating badges */}
-                            <div className="absolute -top-4 -right-4 bg-card border border-white/10 p-3 rounded-xl shadow-xl flex items-center gap-3 animate-bounce">
-                                <i className="fab fa-react text-blue-400 text-2xl"></i>
-                                <div>
-                                    <div className="text-xs text-gray-400">Stack</div>
-                                    <div className="font-bold text-sm">React.js</div>
-                                </div>
+                        {/* Gallery Side (Carousel) */}
+                        <div className="w-full md:w-1/2 bg-black/20 relative overflow-hidden h-64 md:h-auto min-h-[300px] md:min-h-full border-r border-white/5 group">
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={currentImageIndex}
+                                    src={project.gallery[currentImageIndex]}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="absolute inset-0 w-full h-full object-cover object-top"
+                                    alt={`${project.title} screenshot ${currentImageIndex + 1}`}
+                                />
+                            </AnimatePresence>
+
+                            {/* Carousel Controls */}
+                            <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCurrentImageIndex((prev) => (prev === 0 ? project.gallery.length - 1 : prev - 1));
+                                    }}
+                                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-primary transition-colors flex items-center justify-center"
+                                >
+                                    <i className="fas fa-chevron-left"></i>
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCurrentImageIndex((prev) => (prev + 1) % project.gallery.length);
+                                    }}
+                                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-primary transition-colors flex items-center justify-center"
+                                >
+                                    <i className="fas fa-chevron-right"></i>
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        );
 
-        const Skills = () => (
-            <section id="skills" className="py-20 bg-black/20">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="mb-12">
-                        <h2 className="text-3xl font-bold mb-2">Technical Arsenal</h2>
-                        <div className="h-1 w-20 bg-crimson"></div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                        {skills.map((skill, index) => (
-                            <div key={index} className="glass-card p-6 rounded-2xl flex flex-col items-center text-center group">
-                                <i className={`${skill.icon} text-4xl text-gray-500 group-hover:text-crimson transition-colors mb-4`}></i>
-                                <h3 className="font-bold text-lg mb-2">{skill.name}</h3>
-                                <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-                                    <div 
-                                        className="bg-crimson h-full" 
-                                        style={{width: `${skill.level}%`}}
+                            {/* Dots */}
+                            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                                {project.gallery.map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-2 h-2 rounded-full transition-all ${i === currentImageIndex ? 'bg-primary w-4' : 'bg-white/50'}`}
                                     ></div>
-                                </div>
-                                <span className="text-xs text-gray-500 mt-2 font-mono">{skill.level}%</span>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </div>
 
-                    {/* Certifications Strip */}
-                    <div className="mt-16">
-                        <h3 className="text-xl font-bold mb-6 text-gray-400 font-mono">// CERTIFIED BY</h3>
-                        <div className="flex flex-wrap gap-6">
-                            {certs.map((cert, idx) => (
-                                <div key={idx} className="flex items-center gap-4 glass-card px-6 py-3 rounded-lg pr-8">
-                                    <div className="w-10 h-10 rounded overflow-hidden bg-gray-800">
-                                        <img src={cert.img} className="w-full h-full object-cover opacity-80" alt="Cert" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-sm text-white">{cert.name}</div>
-                                        <div className="text-xs text-gray-500">{cert.issuer}</div>
-                                    </div>
+                        {/* Content Side */}
+                        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-[50vh] md:h-auto overflow-y-auto custom-scrollbar">
+                            <div className="mb-6">
+                                <span className="text-primary font-mono text-sm tracking-wider uppercase">{project.category}</span>
+                                <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-4 leading-tight">{project.title}</h2>
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {project.tech.map((t, i) => (
+                                        <span key={i} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                                            {t}
+                                        </span>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
+
+                            <div className="prose prose-invert max-w-none mb-8">
+                                <p className="text-gray-300 text-lg leading-relaxed mb-6">{project.desc}</p>
+                                <h3 className="text-xl font-bold text-white mb-3">Key Features</h3>
+                                <ul className="space-y-2">
+                                    {project.features.map((f, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-gray-400">
+                                            <i className="fas fa-check text-primary mt-1.5"></i>
+                                            <span>{f}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="mt-auto pt-8 border-t border-white/10 flex gap-4">
+                                <a href={project.link} className="flex-1 bg-primary text-white font-bold py-4 rounded-xl text-center hover:bg-primary/90 transition-colors">
+                                    Live Demo
+                                </a>
+                                <a href="https://github.com/anasmouquinee/mynovel-site" target="_blank" className="flex-1 bg-white/5 text-white font-bold py-4 rounded-xl text-center hover:bg-white/10 transition-colors">
+                                    View Code
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        );
+                </motion.div>
+            );
+        };
 
-        const ProjectCard = ({ project }) => (
-            <div className="group glass-card rounded-2xl overflow-hidden relative">
-                <div className="h-64 overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-60 z-10 group-hover:opacity-40 transition-opacity"></div>
-                    <img 
-                        src={project.img} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute top-4 right-4 z-20 bg-black/50 backdrop-blur text-xs font-mono px-3 py-1 rounded border border-white/10">
-                        {project.category}
+        const App = () => {
+            const [activeProject, setActiveProject] = useState(null);
+            const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+
+            // Auto-rotate projects in the carousel
+            useEffect(() => {
+                if (activeProject) return; // Stop rotation if a project is open
+                const interval = setInterval(() => {
+                    setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
+                }, 4000);
+                return () => clearInterval(interval);
+            }, [activeProject]);
+
+            const currentProject = projects[currentProjectIndex];
+
+            return (
+                <div className="min-h-screen p-4 md:p-8 flex items-center justify-center">
+                    <AnimatePresence>
+                        {activeProject && (
+                            <ProjectDetail
+                                project={activeProject}
+                                onClose={() => setActiveProject(null)}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    <div className="bento-grid w-full">
+
+                        {/* 1. Profile / Hero Card */}
+                        <BentoItem className="col-span-2 row-span-2 min-h-[400px] relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                            <div className="relative z-10 flex flex-col h-full justify-between">
+                                <div>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium mb-6">
+                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                        Available for work
+                                    </div>
+                                    <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">
+                                        Anas<br />
+                                        <span className="text-gradient">Mouquine.</span>
+                                    </h1>
+                                    <p className="text-gray-400 text-lg max-w-md">
+                                        Full Stack Engineer & Creative Developer based in Casablanca.
+                                    </p>
+                                </div>
+                                <div className="flex gap-4 mt-8">
+                                    <a href="#contact" className="px-6 py-3 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform">
+                                        Let's Talk
+                                    </a>
+                                </div>
+                            </div>
+                            <img
+                                src="main.jpg"
+                                className="absolute bottom-0 right-0 w-64 h-64 object-cover rounded-tl-[100px] opacity-50 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0 mask-image-gradient"
+                                style={{ maskImage: 'linear-gradient(to top, black 50%, transparent 100%)' }}
+                            />
+                        </BentoItem>
+
+                        {/* 2. Map */}
+                        <BentoItem className="col-span-1 min-h-[200px] relative !p-0 overflow-hidden" delay={0.1}>
+                            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-black"></div>
+                            <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-7.6114,33.5731,11,0/600x600?access_token=YOUR_TOKEN')] bg-cover bg-center opacity-50 hover:opacity-70 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                            <div className="absolute bottom-4 left-4">
+                                <h3 className="text-xl font-bold">Casablanca</h3>
+                                <p className="text-gray-400 text-sm">Morocco (GMT+1)</p>
+                            </div>
+                        </BentoItem>
+
+                        {/* 3. Stack */}
+                        <BentoItem className="col-span-1 flex flex-col justify-center" delay={0.2}>
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">My Stack</h3>
+                            <div className="flex flex-wrap gap-3">
+                                {['React', 'Node.js', 'Java', 'Tailwind', 'Figma', 'MongoDB'].map((tech, i) => (
+                                    <span key={i} className="px-3 py-1.5 bg-white/5 rounded-lg text-sm font-mono hover:bg-primary/20 hover:text-primary transition-colors cursor-default">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                        </BentoItem>
+
+                        {/* 4. Socials */}
+                        <BentoItem className="col-span-1 flex flex-col justify-between" delay={0.3}>
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Connect</h3>
+                            <div className="space-y-1">
+                                <SocialLink icon="fab fa-github" label="Github" href="https://github.com/anasmouquinee" color="text-white" />
+                                <SocialLink icon="fab fa-linkedin" label="LinkedIn" href="https://www.linkedin.com/in/anas-mouqine-329207304/" color="text-blue-400" />
+                                <SocialLink icon="fab fa-instagram" label="Instagram" href="https://www.instagram.com/anasmouquine__/" color="text-pink-500" />
+                            </div>
+                        </BentoItem>
+
+                        {/* 4.5. Services (New to fill gap) */}
+                        <BentoItem className="col-span-1 flex flex-col justify-center" delay={0.35}>
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Services</h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
+                                    <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                        <i className="fas fa-code"></i>
+                                    </div>
+                                    <span className="font-medium">Web Development</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
+                                    <div className="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400">
+                                        <i className="fas fa-paint-brush"></i>
+                                    </div>
+                                    <span className="font-medium">UI/UX Design</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                        <i className="fas fa-rocket"></i>
+                                    </div>
+                                    <span className="font-medium">Freelancing</span>
+                                </div>
+                            </div>
+                        </BentoItem>
+
+                        {/* 5. PROJECT CAROUSEL (Rolling Projects) */}
+                        <BentoItem
+                            className="col-span-1 md:col-span-2 relative overflow-hidden group cursor-pointer"
+                            delay={0.4}
+                            onClick={() => setActiveProject(currentProject)}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-transparent z-10"></div>
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={currentProject.img}
+                                    src={currentProject.img}
+                                    initial={{ opacity: 0, scale: 1.1 }}
+                                    animate={{ opacity: 0.6, scale: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.7 }}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                            </AnimatePresence>
+
+                            <div className="relative z-20 h-full flex flex-col justify-center p-6 md:p-10">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    <span className="text-primary text-xs font-mono uppercase tracking-widest">Featured Project</span>
+                                </div>
+
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={currentProject.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        <h3 className="text-3xl md:text-4xl font-bold mb-4">{currentProject.title}</h3>
+                                        <p className="text-gray-300 max-w-md mb-6 line-clamp-2">{currentProject.desc}</p>
+                                        <div className="flex gap-2">
+                                            {currentProject.tech.slice(0, 3).map((t, i) => (
+                                                <span key={i} className="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/10">{t}</span>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+
+                                <div className="absolute bottom-6 right-6 flex gap-1">
+                                    {projects.map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className={`h-1 rounded-full transition-all duration-300 ${i === currentProjectIndex ? 'w-8 bg-primary' : 'w-2 bg-white/20'}`}
+                                        ></div>
+                                    ))}
+                                </div>
+                            </div>
+                        </BentoItem>
+
+                        {/* 6. Certifications (New) */}
+                        <BentoItem className="col-span-1 bg-gradient-to-br from-blue-900/20 to-purple-900/20" delay={0.5}>
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Certifications</h3>
+                            <div className="space-y-3">
+                                {certs.map((cert, i) => (
+                                    <a href={cert.link} target="_blank" key={i} className={`flex items-center gap-3 p-3 rounded-xl border transition-colors ${cert.bg} ${cert.border} hover:scale-105 transition-transform cursor-pointer`}>
+                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${cert.color} bg-white/10`}>
+                                            <i className={cert.icon}></i>
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-bold text-white">{cert.name}</div>
+                                            <div className="text-xs text-gray-400">{cert.issuer} • {cert.date}</div>
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                        </BentoItem>
+
+                        {/* 7. Stats */}
+                        <BentoItem className="col-span-1" delay={0.6}>
+                            <div className="flex flex-col h-full justify-center items-center text-center">
+                                <h3 className="text-5xl font-bold text-white mb-1">3+</h3>
+                                <p className="text-primary text-sm font-medium">Years Experience</p>
+                            </div>
+                        </BentoItem>
+
+                        {/* 8. Quote */}
+                        <BentoItem className="col-span-1 md:col-span-2 flex items-center justify-center text-center" delay={0.7}>
+                            <div>
+                                <i className="fas fa-quote-left text-3xl text-white/10 mb-4"></i>
+                                <p className="text-xl md:text-2xl font-display font-medium leading-relaxed">
+                                    "Code is poetry written for machines, but designed for humans."
+                                </p>
+                            </div>
+                        </BentoItem>
+
+                        {/* 9. Contact CTA */}
+                        <BentoItem className="col-span-1 md:col-span-2 bg-white text-black !border-none" delay={0.8}>
+                            <div className="flex flex-col md:flex-row items-center justify-between h-full gap-4">
+                                <div>
+                                    <h3 className="text-2xl font-bold mb-1">Have a project?</h3>
+                                    <p className="text-gray-600">Let's build something amazing together.</p>
+                                </div>
+                                <a href="mailto:anasmouqine@gmail.com" className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                                    <i className="fas fa-arrow-right -rotate-45"></i>
+                                </a>
+                            </div>
+                        </BentoItem>
+
                     </div>
                 </div>
-                
-                <div className="p-6 relative z-20 bg-card border-t border-white/5">
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-crimson transition-colors">{project.title}</h3>
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.desc}</p>
-                    <div className="flex flex-wrap gap-2">
-                        {project.tech.map((t, i) => (
-                            <span key={i} className="text-[10px] uppercase tracking-wider px-2 py-1 bg-white/5 text-gray-300 rounded">
-                                {t}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-
-        const Projects = () => (
-            <section id="projects" className="py-24">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                        <div>
-                            <h2 className="text-4xl font-bold mb-2">Selected Works</h2>
-                            <p className="text-gray-400">A collection of web applications and designs.</p>
-                        </div>
-                        <a href="https://github.com/anasmouquinee" className="text-crimson font-mono text-sm hover:underline mt-4 md:mt-0">
-                            View Github Repository ->
-                        </a>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {projects.map(p => <ProjectCard key={p.id} project={p} />)}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const Contact = () => (
-            <section id="contact" className="py-24 relative border-t border-white/5">
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-4xl font-bold mb-6">Ready to Collaborate?</h2>
-                    <p className="text-gray-400 mb-10 max-w-xl mx-auto">
-                        I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
-                    </p>
-                    
-                    <a href="mailto:anasmouqine@gmail.com" className="inline-block px-8 py-4 bg-crimson text-white font-bold rounded-lg hover:bg-red-700 transition-all transform hover:-translate-y-1 shadow-[0_10px_30px_rgba(183,75,75,0.4)]">
-                        Say Hello <i className="fas fa-paper-plane ml-2"></i>
-                    </a>
-
-                    <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                        <div>&copy; 2024 Anas Mouquine. All rights reserved.</div>
-                        <div className="flex gap-6 mt-4 md:mt-0 font-mono">
-                            <a href="#" className="hover:text-white">Linkedin</a>
-                            <a href="#" className="hover:text-white">Github</a>
-                            <a href="#" className="hover:text-white">Instagram</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        );
-
-        const App = () => (
-            <div className="antialiased selection:bg-crimson selection:text-white">
-                <Navbar />
-                <Hero />
-                <Skills />
-                <Projects />
-                <Contact />
-            </div>
-        );
+            );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
+
 </html>
