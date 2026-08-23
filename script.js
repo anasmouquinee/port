@@ -527,12 +527,32 @@ function highlightCode(code, lang) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
-  // comments
-  esc = esc.replace(/(#.*|\/\/.*)/g, '<span class="code-comment">$1</span>');
-  // keywords
-  esc = esc.replace(/\b(class|def|return|async|await|import|export|from|const|let|var|function|with|as|Future|final|StateNotifier)\b/g, '<span class="code-keyword">$1</span>');
-  // strings
-  esc = esc.replace(/(['"][^'"]*['"])/g, '<span class="code-string">$1</span>');
+  const tokens = [];
+
+  // Match comments first
+  esc = esc.replace(/(#.*|\/\/.*)/g, (match) => {
+    const placeholder = `___TOK_COM_${tokens.length}___`;
+    tokens.push(`<span class="code-comment">${match}</span>`);
+    return placeholder;
+  });
+
+  // Match strings
+  esc = esc.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, (match) => {
+    const placeholder = `___TOK_STR_${tokens.length}___`;
+    tokens.push(`<span class="code-string">${match}</span>`);
+    return placeholder;
+  });
+
+  // Match keywords
+  esc = esc.replace(/\b(class|def|return|async|await|import|export|from|const|let|var|function|with|as|Future|final|StateNotifier|void|public|private|new|try|catch|if|else)\b/g, '<span class="code-keyword">$1</span>');
+
+  // Match function calls
+  esc = esc.replace(/\b([a-zA-Z0-9_]+)(?=\s*\()/g, '<span class="code-func">$1</span>');
+
+  // Restore tokens
+  tokens.forEach((token, idx) => {
+    esc = esc.replace(`___TOK_COM_${idx}___`, token).replace(`___TOK_STR_${idx}___`, token);
+  });
 
   return esc;
 }
