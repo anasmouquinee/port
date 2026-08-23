@@ -835,6 +835,9 @@ function renderProjects() {
   const grid = document.getElementById('projects-grid');
   if (!grid) return;
 
+  const tabAll = document.getElementById('tab-all');
+  if (tabAll) tabAll.textContent = `All (${state.projects.length})`;
+
   const filtered = state.currentFilter === 'all'
     ? state.projects
     : state.projects.filter(p => p.filter === state.currentFilter);
