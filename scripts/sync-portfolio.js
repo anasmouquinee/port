@@ -1,5 +1,11 @@
 /**
- * Automated Portfolio Project Sync Script
+ * Automated Portfolio Project Sync Script with Gemini AI Intelligence
+ * 
+ * Capabilities:
+ *  - Scans local & remote GitHub repositories for 'add to port.txt' or 'portfolio.json'
+ *  - If GEMINI_API_KEY is present, automatically analyzes repo README and code files
+ *    to generate high-impact descriptions, architectural highlights, tech tags, and terminal code snippets!
+ *  - Merges results into data/projects.json
  * 
  * Usage:
  *   node scripts/sync-portfolio.js              (Scans both local parent folders and GitHub)
@@ -9,6 +15,25 @@
 
 const fs = require('fs');
 const path = require('path');
+
+// Auto-load .env if present (without external dependencies)
+const envPath = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envPath)) {
+  try {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    envContent.split(/\r?\n/).forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx !== -1) {
+          const k = trimmed.slice(0, eqIdx).trim();
+          const v = trimmed.slice(eqIdx + 1).trim();
+          if (!process.env[k]) process.env[k] = v;
+        }
+      }
+    });
+  } catch (e) {}
+}
 
 const GITHUB_USERNAME = 'anasmouquinee';
 const PROJECTS_FILE = path.join(__dirname, '..', 'data', 'projects.json');
@@ -20,7 +45,7 @@ const TARGET_TRIGGER_FILENAMES = [
   'portfolio.json'
 ];
 
-function getHeaders() {
+function getGitHubHeaders() {
   const headers = {
     'User-Agent': 'Portfolio-Sync-Engine',
     'Accept': 'application/vnd.github.v3+json'
@@ -29,6 +54,90 @@ function getHeaders() {
     headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
   }
   return headers;
+}
+
+/**
+ * Calls Google Gemini AI to analyze repo context (README, file list, etc.)
+ * and generate structured portfolio metadata.
+ */
+async function analyzeWithGemini(repoName, readmeContent, fileList = [], existingData = {}) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+
+  console.log(`🧠 [Gemini AI] Analyzing repository context for: [${repoName}]...`);
+
+  const prompt = `
+You are an expert technical portfolio curator for Anas Mouquine (Full Stack Engineer & AI Architect).
+Analyze the following repository details and generate structured JSON metadata for his developer portfolio.
+
+Repository Name: ${repoName}
+Key Files in Repo: ${fileList.slice(0, 30).join(', ')}
+README Preview:
+"""
+${readmeContent.slice(0, 3500)}
+"""
+
+Existing manual values (respect these if already filled):
+${JSON.stringify(existingData, null, 2)}
+
+Respond with a raw, valid JSON object ONLY (no markdown code blocks, no intro, no wrap) matching this schema:
+{
+  "title": "Clean, Professional Project Title",
+  "category": "One of: AI & Autonomous Systems | Mobile & Industrial IoT | Full-Stack & Web | Big Data & Architecture | DevOps & Automation | Systems & Concurrency",
+  "filter": "One of: ai | mobile | web | cloud",
+  "desc": "A concise, impactful 2-sentence executive summary explaining what this solves and the technical achievement.",
+  "tech": ["List", "of", "4-6", "core", "technologies"],
+  "features": [
+    "High-impact architectural feature 1",
+    "High-impact architectural feature 2",
+    "High-impact architectural feature 3",
+    "High-impact architectural feature 4"
+  ],
+  "hasCodeSnippet": true,
+  "codeLanguage": "python / dart / javascript / typescript / java / cpp / csharp",
+  "codeSnippet": "An elegant, self-contained 8-12 line clean code snippet representing the core architectural logic (without unnecessary boilerplate)."
+}
+`;
+
+  try {
+    // Try Gemini 2.5 Flash / 1.5 Flash endpoint
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: "application/json" }
+      })
+    });
+
+    if (!res.ok) {
+      // Fallback to gemini-1.5-flash
+      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const fbRes = await fetch(fallbackUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+      if (fbRes.ok) {
+        const data = await fbRes.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        const cleaned = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '').trim();
+        return JSON.parse(cleaned);
+      }
+      return null;
+    }
+
+    const data = await res.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const cleaned = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '').trim();
+    return JSON.parse(cleaned);
+  } catch (err) {
+    console.warn(`⚠️ Gemini analysis failed for ${repoName}:`, err.message);
+    return null;
+  }
 }
 
 function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') {
@@ -115,7 +224,7 @@ function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') 
   return data;
 }
 
-function scanLocalDirectory(rootDir) {
+async function scanLocalDirectory(rootDir) {
   console.log(`🔍 Scanning local directories in: ${rootDir}...`);
   const foundProjects = [];
 
@@ -158,17 +267,44 @@ function scanLocalDirectory(rootDir) {
         parsed = parsePortTxt(content, entry.name, `https://github.com/${GITHUB_USERNAME}/${entry.name}`);
       }
 
-      if (!parsed.screenshots || parsed.screenshots.length === 0) {
-        const images = [];
-        try {
-          const files = fs.readdirSync(repoPath);
-          for (const f of files) {
-            if (/\.(png|jpe?g|webp|gif)$/i.test(f) && !f.toLowerCase().includes('icon') && !f.toLowerCase().includes('logo')) {
-              images.push(f);
-            }
+      // Check if repo has images
+      const fileList = [];
+      const images = [];
+      try {
+        const files = fs.readdirSync(repoPath);
+        for (const f of files) {
+          fileList.push(f);
+          if (/\.(png|jpe?g|webp|gif)$/i.test(f) && !f.toLowerCase().includes('icon') && !f.toLowerCase().includes('logo')) {
+            images.push(f);
           }
-        } catch (e) {}
+        }
+      } catch (e) {}
+
+      if (!parsed.screenshots || parsed.screenshots.length === 0) {
         parsed.screenshots = images;
+      }
+
+      // If description or code is missing and Gemini API key is set, enhance with AI!
+      if (process.env.GEMINI_API_KEY && (!parsed.desc || parsed.features.length === 0 || !parsed.codeSnippet)) {
+        let readme = '';
+        const readmePath = path.join(repoPath, 'README.md');
+        if (fs.existsSync(readmePath)) {
+          readme = fs.readFileSync(readmePath, 'utf8');
+        }
+        const aiData = await analyzeWithGemini(entry.name, readme, fileList, parsed);
+        if (aiData) {
+          parsed.title = parsed.title || aiData.title;
+          parsed.desc = parsed.desc || aiData.desc;
+          parsed.category = parsed.category === 'Full-Stack & Web' ? (aiData.category || parsed.category) : parsed.category;
+          parsed.filter = parsed.filter === 'web' ? (aiData.filter || parsed.filter) : parsed.filter;
+          if (!parsed.tech.length) parsed.tech = aiData.tech || [];
+          if (!parsed.features.length) parsed.features = aiData.features || [];
+          if (!parsed.codeSnippet && aiData.codeSnippet) {
+            parsed.codeSnippet = aiData.codeSnippet;
+            parsed.codeLanguage = aiData.codeLanguage || parsed.codeLanguage;
+            parsed.hasCodeSnippet = true;
+          }
+        }
       }
 
       parsed.id = parsed.id || entry.name.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
@@ -185,7 +321,7 @@ async function scanGitHubRepos() {
 
   try {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`, {
-      headers: getHeaders()
+      headers: getGitHubHeaders()
     });
 
     if (!res.ok) {
@@ -200,7 +336,7 @@ async function scanGitHubRepos() {
 
       try {
         const contentsRes = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/contents`, {
-          headers: getHeaders()
+          headers: getGitHubHeaders()
         });
 
         if (!contentsRes.ok) continue;
@@ -227,6 +363,33 @@ async function scanGitHubRepos() {
               .filter(f => /\.(png|jpe?g|webp|gif)$/i.test(f.name) && !f.name.toLowerCase().includes('icon') && !f.name.toLowerCase().includes('logo'))
               .map(f => f.download_url);
             parsed.screenshots = screenshots;
+          }
+
+          // If description or features are missing, enhance via Gemini AI!
+          if (process.env.GEMINI_API_KEY && (!parsed.desc || parsed.features.length === 0 || !parsed.codeSnippet)) {
+            let readme = '';
+            const readmeFile = files.find(f => f.name.toLowerCase() === 'readme.md');
+            if (readmeFile) {
+              try {
+                const rRes = await fetch(readmeFile.download_url);
+                if (rRes.ok) readme = await rRes.text();
+              } catch (e) {}
+            }
+            const fileList = files.map(f => f.name);
+            const aiData = await analyzeWithGemini(repo.name, readme, fileList, parsed);
+            if (aiData) {
+              parsed.title = parsed.title || aiData.title;
+              parsed.desc = parsed.desc || aiData.desc;
+              parsed.category = parsed.category === 'Full-Stack & Web' ? (aiData.category || parsed.category) : parsed.category;
+              parsed.filter = parsed.filter === 'web' ? (aiData.filter || parsed.filter) : parsed.filter;
+              if (!parsed.tech.length) parsed.tech = aiData.tech || [];
+              if (!parsed.features.length) parsed.features = aiData.features || [];
+              if (!parsed.codeSnippet && aiData.codeSnippet) {
+                parsed.codeSnippet = aiData.codeSnippet;
+                parsed.codeLanguage = aiData.codeLanguage || parsed.codeLanguage;
+                parsed.hasCodeSnippet = true;
+              }
+            }
           }
 
           parsed.id = parsed.id || repo.name.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
@@ -296,8 +459,14 @@ function mergeProjects(existingProjects, newProjects) {
 
 async function run() {
   console.log('====================================================');
-  console.log('🚀 Portfolio Cloud & Local Ingestion Engine');
+  console.log('🚀 Portfolio Cloud & Local Ingestion Engine (AI-Powered)');
   console.log('====================================================');
+
+  if (process.env.GEMINI_API_KEY) {
+    console.log('✨ Gemini AI Intelligence: ENABLED');
+  } else {
+    console.log('ℹ️ Gemini AI Intelligence: DISABLED (Set GEMINI_API_KEY to enable auto-summaries)');
+  }
 
   const args = process.argv.slice(2);
   const onlyLocal = args.includes('--local');
@@ -317,7 +486,7 @@ async function run() {
   // 1. Scan Local Sibling Repositories if running on local dev machine
   if (!onlyGithub) {
     const parentDir = path.resolve(__dirname, '..', '..');
-    const localFound = scanLocalDirectory(parentDir);
+    const localFound = await scanLocalDirectory(parentDir);
     collected.push(...localFound);
   }
 

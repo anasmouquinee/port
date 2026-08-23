@@ -30,9 +30,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run GitHub Projects Ingestion Engine
+      - name: Run GitHub Projects Ingestion Engine (AI-Powered)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           node scripts/sync-portfolio.js --github
 
@@ -52,5 +53,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/projects.json
-          git commit -m "chore(auto-sync): update portfolio projects from GitHub [skip ci]"
+          git commit -m "chore(auto-sync): update portfolio projects with AI [skip ci]"
           git push origin main
