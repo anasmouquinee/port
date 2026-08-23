@@ -15,151 +15,184 @@
 // Embedded projects dataset
 const EMBEDDED_PROJECTS = [
   {
-    id: "ai-multi-agent",
-    title: "AI Multi-Agent Orchestrator",
-    category: "AI & Autonomous Systems",
-    filter: "ai",
-    featured: true,
-    hasCodeSnippet: true,
-    codeLanguage: "python",
-    codeSnippet: "class AgentOrchestrator:\n    def __init__(self, rag_engine, tools):\n        self.rag = rag_engine\n        self.tools = tools\n        self.agents = [ResearchAgent(), CodeAgent(), QAAgent()]\n    \n    async def execute_task(self, prompt: str) -> ExecutionResult:\n        # 1. Retrieve domain context via Vector RAG\n        context = await self.rag.retrieve_top_k(prompt, k=5)\n        # 2. Plan and delegate to specialized subagents\n        plan = await self.agents[0].create_plan(prompt, context)\n        return await self.dispatch_parallel(plan)",
-    img: null,
-    gallery: [],
-    tech: ["Python", "LangChain", "RAG", "FastAPI", "Multi-Agent"],
-    desc: "Autonomous multi-agent orchestration framework featuring Retrieval-Augmented Generation (RAG), intelligent subagent delegation, dynamic tool execution, and automated QA pipelines.",
-    features: [
+    "id": "ai-multi-agent",
+    "title": "AI Multi-Agent Orchestrator",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
+    "featured": true,
+    "hasCodeSnippet": true,
+    "codeLanguage": "python",
+    "codeSnippet": "class AgentOrchestrator:\n    def __init__(self, rag_engine, tools):\n        self.rag = rag_engine\n        self.tools = tools\n        self.agents = [ResearchAgent(), CodeAgent(), QAAgent()]\n    \n    async def execute_task(self, prompt: str) -> ExecutionResult:\n        # 1. Retrieve domain context via Vector RAG\n        context = await self.rag.retrieve_top_k(prompt, k=5)\n        # 2. Plan and delegate to specialized subagents\n        plan = await self.agents[0].create_plan(prompt, context)\n        return await self.dispatch_parallel(plan)",
+    "img": "solo_top.png",
+    "gallery": [],
+    "tech": [
+      "Python",
+      "LangChain",
+      "RAG",
+      "FastAPI",
+      "Multi-Agent"
+    ],
+    "desc": "Autonomous multi-agent orchestration framework featuring Retrieval-Augmented Generation (RAG), intelligent subagent delegation, dynamic tool execution, and automated QA pipelines.",
+    "features": [
       "Autonomous Multi-Agent Task Delegation",
       "Vector RAG Knowledge Ingestion & Retrieval",
       "Automated QA & Evaluation Benchmark Pipeline",
       "Modular Tool Execution Engine"
     ],
-    github: "https://github.com/anasmouquinee/AI_MULTI_AGENT_PROJECT",
-    link: "https://github.com/anasmouquinee/AI_MULTI_AGENT_PROJECT"
+    "github": "https://github.com/anasmouquinee/AI_MULTI_AGENT_PROJECT",
+    "link": "https://github.com/anasmouquinee/AI_MULTI_AGENT_PROJECT"
   },
   {
-    id: "kaelar-novel",
-    title: "Kaelar's Novel Archive",
-    category: "Interactive Web & UI",
-    filter: "web",
-    featured: true,
-    hasCodeSnippet: false,
-    img: "kaelar_top.png",
-    gallery: [
+    "id": "kaelar-novel",
+    "title": "Kaelar's Novel Archive",
+    "category": "Interactive Web & UI",
+    "filter": "web",
+    "featured": true,
+    "hasCodeSnippet": false,
+    "img": "kaelar_top.png",
+    "gallery": [
       "kaelar_top.png",
       "kaelar_mid.png",
       "kaelar_bot.png",
       "kaelar_main.png"
     ],
-    tech: ["JavaScript", "HTML5", "CSS3", "Thematic UI", "Netlify"],
-    desc: "An expansive web novel reading library with dedicated immersive universes for Solo Leveling, Omniscient Reader, and Lord of the Mysteries.",
-    features: [
+    "tech": [
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "Thematic UI",
+      "Netlify"
+    ],
+    "desc": "An expansive web novel reading library with dedicated immersive universes for Solo Leveling, Omniscient Reader, and Lord of the Mysteries.",
+    "features": [
       "Custom Thematic Universe Design",
       "Distraction-free Reader Mode Layout",
       "Responsive Interactive Art Galleries",
       "Ultra-fast Static Delivery"
     ],
-    github: "https://github.com/anasmouquinee/mynovel-site",
-    link: "https://kaelarsnovel.netlify.app/"
+    "github": "https://github.com/anasmouquinee/mynovel-site",
+    "link": "https://kaelarsnovel.netlify.app/"
   },
   {
-    id: "solo-leveling",
-    title: "Solo Leveling Experience",
-    category: "Immersive Universe Page",
-    filter: "web",
-    featured: true,
-    hasCodeSnippet: false,
-    img: "solo_top.png",
-    gallery: [
+    "id": "solo-leveling",
+    "title": "Solo Leveling Experience",
+    "category": "Immersive Universe Page",
+    "filter": "web",
+    "featured": true,
+    "hasCodeSnippet": false,
+    "img": "solo_top.png",
+    "gallery": [
       "solo_top.png",
       "solo_mid.png",
       "solo_bot.png",
       "solo_leveling.png"
     ],
-    tech: ["HTML5", "CSS3", "Thematic UI", "JavaScript"],
-    desc: "A dedicated, immersive dark-themed experience for the Solo Leveling series featuring custom character cards, hunters ranking, and dynamic visual storytelling.",
-    features: [
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "Thematic UI",
+      "JavaScript"
+    ],
+    "desc": "A dedicated, immersive dark-themed experience for the Solo Leveling series featuring custom character cards, hunters ranking, and dynamic visual storytelling.",
+    "features": [
       "Hunter Rank & Character Showcases",
       "Shadow Monarch Aura Visual Effects",
       "Responsive Interactive Chapter Reader",
       "Custom Typography & Soundscapes"
     ],
-    github: "https://github.com/anasmouquinee/mynovel-site",
-    link: "https://kaelarsnovel.netlify.app/solo/solo.html"
+    "github": "https://github.com/anasmouquinee/mynovel-site",
+    "link": "https://kaelarsnovel.netlify.app/solo/solo.html"
   },
   {
-    id: "orv-hub",
-    title: "Omniscient Reader Hub",
-    category: "Interactive Story Universe",
-    filter: "web",
-    featured: true,
-    hasCodeSnippet: false,
-    img: "orv_top.png",
-    gallery: [
+    "id": "orv-hub",
+    "title": "Omniscient Reader Hub",
+    "category": "Interactive Story Universe",
+    "filter": "web",
+    "featured": true,
+    "hasCodeSnippet": false,
+    "img": "orv_top.png",
+    "gallery": [
       "orv_top.png",
       "orv_mid.png",
       "orv_bot.png",
       "orv.png"
     ],
-    tech: ["HTML5", "CSS3", "JavaScript", "Fan Art Integration"],
-    desc: "Interactive apocalypse-themed hub for Omniscient Reader's Viewpoint with constellation alerts, scenario timeline viewers, and atmospheric artwork integration.",
-    features: [
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Fan Art Integration"
+    ],
+    "desc": "Interactive apocalypse-themed hub for Omniscient Reader's Viewpoint with constellation alerts, scenario timeline viewers, and atmospheric artwork integration.",
+    "features": [
       "Constellation Scenario Timeline",
       "Doomsday Atmospheric Visuals",
       "Interactive Character Dossiers",
       "Mobile Optimized Layout"
     ],
-    github: "https://github.com/anasmouquinee/mynovel-site",
-    link: "https://kaelarsnovel.netlify.app/orv/orv.html"
+    "github": "https://github.com/anasmouquinee/mynovel-site",
+    "link": "https://kaelarsnovel.netlify.app/orv/orv.html"
   },
   {
-    id: "lotm-page",
-    title: "Lord of the Mysteries",
-    category: "Victorian Dark Fantasy UI",
-    filter: "web",
-    featured: true,
-    hasCodeSnippet: false,
-    img: "lotm_top.png",
-    gallery: [
+    "id": "lotm-page",
+    "title": "Lord of the Mysteries",
+    "category": "Victorian Dark Fantasy UI",
+    "filter": "web",
+    "featured": true,
+    "hasCodeSnippet": false,
+    "img": "lotm_top.png",
+    "gallery": [
       "lotm_top.png",
       "lotm_mid.png",
       "lotm_bot.png",
       "lotm.png"
     ],
-    tech: ["HTML5", "CSS3", "Lore-Accurate UI", "Tarot Cards"],
-    desc: "A mysterious, Victorian steampunk-inspired landing page for Lord of the Mysteries, featuring Tarot Club interactive cards, potion pathways, and occult aesthetics.",
-    features: [
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "Lore-Accurate UI",
+      "Tarot Cards"
+    ],
+    "desc": "A mysterious, Victorian steampunk-inspired landing page for Lord of the Mysteries, featuring Tarot Club interactive cards, potion pathways, and occult aesthetics.",
+    "features": [
       "Tarot Club Pathways Visualizer",
       "Victorian Steampunk Aesthetics",
       "Lore-Accurate Potion System",
       "Smooth Parallax Scroll Design"
     ],
-    github: "https://github.com/anasmouquinee/mynovel-site",
-    link: "https://kaelarsnovel.netlify.app/lotm/lotm.html"
+    "github": "https://github.com/anasmouquinee/mynovel-site",
+    "link": "https://kaelarsnovel.netlify.app/lotm/lotm.html"
   },
   {
-    id: "ebook-website",
-    title: "Kaelar's E-Books & UI Prototype",
-    category: "UI/UX Design & Frontend",
-    filter: "web",
-    featured: true,
-    hasCodeSnippet: false,
-    img: "book_website_screenshot_1763671051794.png",
-    gallery: [
+    "id": "ebook-website",
+    "title": "Kaelar's E-Books & UI Prototype",
+    "category": "UI/UX Design & Frontend",
+    "filter": "web",
+    "featured": true,
+    "hasCodeSnippet": false,
+    "img": "book_website_screenshot_1763671051794.png",
+    "gallery": [
       "book_website_screenshot_1763671051794.png",
       "project/proj4.jpg",
       "project/proj4-2.jpg",
       "project/proj4-3.jpg"
     ],
-    tech: ["Figma", "UI/UX", "JavaScript", "HTML5", "CSS3"],
-    desc: "Modern digital bookstore and reading challenge application with high-fidelity Figma design systems, curated reading shelves, and responsive UI components.",
-    features: [
+    "tech": [
+      "Figma",
+      "UI/UX",
+      "JavaScript",
+      "HTML5",
+      "CSS3"
+    ],
+    "desc": "Modern digital bookstore and reading challenge application with high-fidelity Figma design systems, curated reading shelves, and responsive UI components.",
+    "features": [
       "Comprehensive Figma Design System",
       "Reading Goal & Analytics Tracker",
       "Dark & Light Mode Reading UI",
       "Clean Modular Component Structure"
     ],
-    github: "https://github.com/anasmouquinee/book-website",
-    link: "https://github.com/anasmouquinee/book-website"
+    "github": "https://github.com/anasmouquinee/book-website",
+    "link": "https://github.com/anasmouquinee/book-website"
   },
   {
     "id": "sews-connect",
@@ -170,9 +203,16 @@ const EMBEDDED_PROJECTS = [
     "hasCodeSnippet": true,
     "codeLanguage": "dart",
     "codeSnippet": "class WorkstationScannerNotifier extends StateNotifier<ScannerState> {\n  final AgoraRtcEngine _rtcEngine;\n  final HiveBox<TaskModel> _taskCache;\n\n  Future<void> claimTaskByQr(String qrCode) async {\n    // First-scan-wins smart assignment\n    final task = await _taskRepository.claimTask(qrCode);\n    await _taskCache.put(task.id, task);\n    state = ScannerState.taskAssigned(task);\n    await _fcmService.notifyDepartment(task.departmentId);\n  }\n}",
-    "img": null,
+    "img": "orv_top.png",
     "gallery": [],
-    "tech": ["Flutter 3.19+", "Riverpod", "WebRTC", "Agora RTC", "Hive", "Firebase"],
+    "tech": [
+      "Flutter 3.19+",
+      "Riverpod",
+      "WebRTC",
+      "Agora RTC",
+      "Hive",
+      "Firebase"
+    ],
     "desc": "Enterprise communication and operations application tailored for SEWS manufacturing. Features WebRTC audio/video calls, QR workstation scanner, first-scan-wins task claiming, and offline local caching.",
     "features": [
       "WebRTC Audio & Video Calling Engine",
@@ -192,9 +232,15 @@ const EMBEDDED_PROJECTS = [
     "hasCodeSnippet": true,
     "codeLanguage": "python",
     "codeSnippet": "@cli.command()\n@click.option(\"--repo-path\", required=True, help=\"Path to local Git repository\")\n@click.option(\"--dry-run\", is_flag=True, help=\"Preview post without publishing\")\ndef publish(repo_path: str, dry_run: bool):\n    sanitizer = LogSanitizer()\n    payload = extract_port_trigger(repo_path)\n    if dry_run:\n        click.echo(f\"[DRY-RUN] Verified Release: {payload.title}\")\n        return\n    LinkedInClient().share_update(payload)",
-    "img": null,
+    "img": "kaelar_top.png",
     "gallery": [],
-    "tech": ["Python", "GitHub Actions", "LinkedIn API", "CI/CD", "Pytest"],
+    "tech": [
+      "Python",
+      "GitHub Actions",
+      "LinkedIn API",
+      "CI/CD",
+      "Pytest"
+    ],
     "desc": "Automated developer release broadcasting CLI and CI/CD action. Generates release announcements from trigger files, runs dry-run validations, and securely publishes project updates directly to LinkedIn.",
     "features": [
       "GitHub Actions Automated Trigger Pipeline",
@@ -214,9 +260,15 @@ const EMBEDDED_PROJECTS = [
     "hasCodeSnippet": true,
     "codeLanguage": "python",
     "codeSnippet": "with DAG(dag_id=\"media_medallion_pipeline\", schedule=\"@daily\", catchup=False) as dag:\n    # Bronze: Raw Ingestion via Distributed Scraper\n    scrape_raw = PythonOperator(task_id=\"scrape_news_bronze\", python_callable=scrape)\n    # Silver: Cleansed & Normalized Delta Parquet\n    clean_silver = SparkSubmitOperator(task_id=\"transform_silver\", conn_id=\"spark\")\n    # Gold: Aggregated Analytics Warehouse\n    load_gold = PostgresOperator(task_id=\"aggregate_gold_warehouse\", sql=\"load.sql\")\n    scrape_raw >> clean_silver >> load_gold",
-    "img": null,
+    "img": "lotm_top.png",
     "gallery": [],
-    "tech": ["Python", "Docker", "Apache Airflow", "Medallion Lakehouse", "Kafka"],
+    "tech": [
+      "Python",
+      "Docker",
+      "Apache Airflow",
+      "Medallion Lakehouse",
+      "Kafka"
+    ],
     "desc": "Distributed Big Data platform for ingesting, transforming, and visualizing media news articles using a Medallion Lakehouse architecture (Bronze, Silver, Gold layers) with Airflow scheduling.",
     "features": [
       "Distributed Automated Web Scraping Pipeline",
@@ -236,9 +288,15 @@ const EMBEDDED_PROJECTS = [
     "hasCodeSnippet": true,
     "codeLanguage": "javascript",
     "codeSnippet": "export const getRecommendations = async (userPreferences, watchlist) => {\n  const genres = watchlist.map(m => m.genre_ids).flat();\n  const response = await api.get('/discover/movie', {\n    params: {\n      with_genres: [...new Set(genres)].join(','),\n      sort_by: 'popularity.desc',\n      vote_count_gte: 100\n    }\n  });\n  return response.data.results;\n};",
-    "img": null,
+    "img": "book_website_screenshot_1763671051794.png",
     "gallery": [],
-    "tech": ["React", "Node.js", "Express", "REST API", "Vercel"],
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "REST API",
+      "Vercel"
+    ],
     "desc": "Full-stack movie discovery and recommendation platform featuring dynamic TMDB search, custom watchlists, curated genres, and a companion mobile client.",
     "features": [
       "Live Deployed Production Architecture",
@@ -248,6 +306,36 @@ const EMBEDDED_PROJECTS = [
     ],
     "github": "https://github.com/anasmouquinee/film-rec",
     "link": "https://film-rec.vercel.app"
+  },
+  {
+    "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
+    "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
+    "featured": false,
+    "hasCodeSnippet": true,
+    "codeLanguage": "python",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG('news_stream_etl', start_date=datetime(2023, 1, 1), schedule_interval='@daily') as dag:\n    scrape_task = BashOperator(task_id='scrape_news', bash_command='python scrapers/main.py')\n    ingest_task = BashOperator(task_id='ingest_to_lake', bash_command='python ingestion/minio_writer.py')\n    process_task = BashOperator(task_id='process_raw', bash_command='python pipelines/processor.py')\n    \n    scrape_task >> ingest_task >> process_task",
+    "img": null,
+    "gallery": [],
+    "tech": [
+      "Python",
+      "Apache Airflow",
+      "Kafka",
+      "MinIO",
+      "Docker",
+      "Kubernetes"
+    ],
+    "desc": "This project delivers a comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data at scale. It leverages a modern lakehouse architecture to provide robust ETL/ELT capabilities, enabling advanced analytics and real-time insights from diverse media streams.",
+    "features": [
+      "Distributed data ingestion and real-time event streaming via Kafka",
+      "Enterprise Lakehouse architecture using MinIO for raw data and PostgreSQL for structured data",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow",
+      "Comprehensive monitoring (Prometheus, Grafana) and visualization (Apache Superset) for media intelligence",
+      "Containerized deployment with Docker and scalable orchestration via Kubernetes"
+    ],
+    "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
+    "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   }
 ];
 
@@ -458,9 +546,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initToast();
 
   try {
-    const projRes = await fetch('data/projects.json');
+    const projRes = await fetch('data/projects.json?t=' + Date.now(), { cache: 'no-store' });
     if (projRes.ok) state.projects = await projRes.json();
-    const certRes = await fetch('data/certificates.json');
+    const certRes = await fetch('data/certificates.json?t=' + Date.now(), { cache: 'no-store' });
     if (certRes.ok) state.certificates = await certRes.json();
   } catch (e) {
     // using embedded data

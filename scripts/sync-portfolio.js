@@ -504,6 +504,25 @@ async function run() {
     console.log(`✅ Saved ${merged.length} total projects to ${PROJECTS_FILE}`);
     console.log(`   + Added: ${addedCount} new projects`);
     console.log(`   * Updated: ${updatedCount} existing projects`);
+
+    // Also sync directly into script.js for zero-lag instant rendering & local file:// compatibility
+    const SCRIPT_FILE = path.join(__dirname, '..', 'script.js');
+    if (fs.existsSync(SCRIPT_FILE)) {
+      try {
+        let scriptContent = fs.readFileSync(SCRIPT_FILE, 'utf8');
+        const startMarker = 'const EMBEDDED_PROJECTS = ';
+        const endMarker = ';\n\nconst EMBEDDED_CERTS = ';
+        const startIdx = scriptContent.indexOf(startMarker);
+        const endIdx = scriptContent.indexOf(endMarker);
+        if (startIdx !== -1 && endIdx !== -1) {
+          const updatedScript = scriptContent.slice(0, startIdx + startMarker.length) + JSON.stringify(merged, null, 2) + scriptContent.slice(endIdx);
+          fs.writeFileSync(SCRIPT_FILE, updatedScript);
+          console.log(`✅ Synced ${merged.length} projects directly into script.js`);
+        }
+      } catch (err) {
+        console.warn(`⚠️ Could not update script.js embedded array:`, err.message);
+      }
+    }
   } else {
     console.log(`ℹ️ No new trigger files found. Total active projects in portfolio: ${existing.length}`);
   }

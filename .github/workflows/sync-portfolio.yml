@@ -1,9 +1,9 @@
 name: Auto-Sync Portfolio Projects
 
 on:
-  # 1. Run automatically every 6 hours
+  # 1. Run automatically every 2 hours
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */2 * * *'
 
   # 2. Allow manual 1-click execution from GitHub Actions tab
   workflow_dispatch:
@@ -41,7 +41,7 @@ jobs:
         id: git_check
         run: |
           git status --porcelain
-          if [ -n "$(git status --porcelain data/projects.json)" ]; then
+          if [ -n "$(git status --porcelain data/projects.json script.js)" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -52,6 +52,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/projects.json
-          git commit -m "chore(auto-sync): update portfolio projects with AI [skip ci]"
+          git add data/projects.json script.js
+          git commit -m "chore(auto-sync): update portfolio projects and scripts with AI [skip ci]"
           git push origin main
