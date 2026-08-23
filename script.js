@@ -851,12 +851,29 @@ window.changeFeaturedSlide = function(idx) {
 };
 
 // --- 6. Render Projects Grid ---
+function updateFilterTabCounts() {
+  const counts = { all: state.projects.length, ai: 0, mobile: 0, web: 0, cloud: 0 };
+  state.projects.forEach(p => {
+    if (counts[p.filter] !== undefined) counts[p.filter]++;
+  });
+
+  const elAll = document.getElementById('tab-all');
+  if (elAll) elAll.textContent = `All (${counts.all})`;
+  const elAi = document.getElementById('tab-ai');
+  if (elAi) elAi.textContent = `AI & Agents (${counts.ai})`;
+  const elMobile = document.getElementById('tab-mobile');
+  if (elMobile) elMobile.textContent = `Mobile & IoT (${counts.mobile})`;
+  const elWeb = document.getElementById('tab-web');
+  if (elWeb) elWeb.textContent = `Full-Stack & Web (${counts.web})`;
+  const elCloud = document.getElementById('tab-cloud');
+  if (elCloud) elCloud.textContent = `Cloud & Systems (${counts.cloud})`;
+}
+
 function renderProjects() {
   const grid = document.getElementById('projects-grid');
   if (!grid) return;
 
-  const tabAll = document.getElementById('tab-all');
-  if (tabAll) tabAll.textContent = `All (${state.projects.length})`;
+  updateFilterTabCounts();
 
   const filtered = state.currentFilter === 'all'
     ? state.projects
