@@ -1,0 +1,56 @@
+name: Auto-Sync Portfolio Projects
+
+on:
+  # 1. Run automatically every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
+
+  # 2. Allow manual 1-click execution from GitHub Actions tab
+  workflow_dispatch:
+
+  # 3. Allow other repositories to trigger an instant sync via webhook / repository_dispatch
+  repository_dispatch:
+    types: [project_updated, port_sync]
+
+permissions:
+  contents: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Portfolio Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run GitHub Projects Ingestion Engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/sync-portfolio.js --github
+
+      - name: Check for Data Changes
+        id: git_check
+        run: |
+          git status --porcelain
+          if [ -n "$(git status --porcelain data/projects.json)" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Push Updated Projects
+        if: steps.git_check.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/projects.json
+          git commit -m "chore(auto-sync): update portfolio projects from GitHub [skip ci]"
+          git push origin main

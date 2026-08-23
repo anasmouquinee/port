@@ -4,7 +4,7 @@
  * Usage:
  *   node scripts/sync-portfolio.js              (Scans both local parent folders and GitHub)
  *   node scripts/sync-portfolio.js --local      (Scans only local sibling repos)
- *   node scripts/sync-portfolio.js --github     (Scans only remote GitHub repos)
+ *   node scripts/sync-portfolio.js --github     (Scans only remote GitHub repos via API)
  */
 
 const fs = require('fs');
@@ -20,6 +20,17 @@ const TARGET_TRIGGER_FILENAMES = [
   'portfolio.json'
 ];
 
+function getHeaders() {
+  const headers = {
+    'User-Agent': 'Portfolio-Sync-Engine',
+    'Accept': 'application/vnd.github.v3+json'
+  };
+  if (process.env.GITHUB_TOKEN) {
+    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+  }
+  return headers;
+}
+
 function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') {
   const lines = content.split(/\r?\n/);
   const data = {
@@ -27,6 +38,9 @@ function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') 
     category: 'Full-Stack & Web',
     filter: 'web',
     featured: false,
+    hasCodeSnippet: false,
+    codeLanguage: 'javascript',
+    codeSnippet: '',
     tech: [],
     desc: '',
     features: [],
@@ -35,8 +49,31 @@ function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') 
     github: repoUrl
   };
 
+  let inSnippetBlock = false;
+  let snippetBuffer = [];
+
   for (let rawLine of lines) {
     const line = rawLine.trim();
+
+    if (line.startsWith('```')) {
+      if (inSnippetBlock) {
+        data.codeSnippet = snippetBuffer.join('\n');
+        data.hasCodeSnippet = true;
+        inSnippetBlock = false;
+      } else {
+        inSnippetBlock = true;
+        snippetBuffer = [];
+        const lang = line.replace('```', '').trim();
+        if (lang) data.codeLanguage = lang.toLowerCase();
+      }
+      continue;
+    }
+
+    if (inSnippetBlock) {
+      snippetBuffer.push(rawLine);
+      continue;
+    }
+
     if (!line || line.startsWith('#')) continue;
 
     const colonIdx = line.indexOf(':');
@@ -70,6 +107,8 @@ function parsePortTxt(content, defaultTitle = 'Untitled Project', repoUrl = '') 
       data.features.push(value);
     } else if (key === 'screenshot' || key === 'image' || key === 'img') {
       data.screenshots.push(value);
+    } else if (key === 'codelanguage' || key === 'language') {
+      data.codeLanguage = value.toLowerCase();
     }
   }
 
@@ -96,7 +135,6 @@ function scanLocalDirectory(rootDir) {
         triggerFile = p;
         break;
       }
-      // Check docs/ or .github/
       const pDocs = path.join(repoPath, 'docs', trig);
       if (fs.existsSync(pDocs)) {
         triggerFile = pDocs;
@@ -120,7 +158,6 @@ function scanLocalDirectory(rootDir) {
         parsed = parsePortTxt(content, entry.name, `https://github.com/${GITHUB_USERNAME}/${entry.name}`);
       }
 
-      // Auto-detect screenshots if none specified
       if (!parsed.screenshots || parsed.screenshots.length === 0) {
         const images = [];
         try {
@@ -148,7 +185,7 @@ async function scanGitHubRepos() {
 
   try {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`, {
-      headers: { 'User-Agent': 'Portfolio-Sync-Engine' }
+      headers: getHeaders()
     });
 
     if (!res.ok) {
@@ -163,7 +200,7 @@ async function scanGitHubRepos() {
 
       try {
         const contentsRes = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/contents`, {
-          headers: { 'User-Agent': 'Portfolio-Sync-Engine' }
+          headers: getHeaders()
         });
 
         if (!contentsRes.ok) continue;
@@ -185,7 +222,6 @@ async function scanGitHubRepos() {
             parsed = parsePortTxt(content, repo.name, repo.html_url);
           }
 
-          // Auto-detect screenshots from repo files
           if (!parsed.screenshots || parsed.screenshots.length === 0) {
             const screenshots = files
               .filter(f => /\.(png|jpe?g|webp|gif)$/i.test(f.name) && !f.name.toLowerCase().includes('icon') && !f.name.toLowerCase().includes('logo'))
@@ -220,8 +256,9 @@ function mergeProjects(existingProjects, newProjects) {
   let updatedCount = 0;
 
   for (const p of newProjects) {
-    const defaultImg = p.screenshots && p.screenshots.length > 0 ? p.screenshots[0] : (p.img || 'project/proj1.jpg');
-    const gallery = p.screenshots && p.screenshots.length > 0 ? p.screenshots : (p.gallery || [defaultImg]);
+    const hasCode = p.hasCodeSnippet || (!p.screenshots?.length && !p.img);
+    const defaultImg = p.screenshots && p.screenshots.length > 0 ? p.screenshots[0] : (p.img || null);
+    const gallery = p.screenshots && p.screenshots.length > 0 ? p.screenshots : (p.gallery || []);
 
     const formatted = {
       id: p.id,
@@ -229,6 +266,9 @@ function mergeProjects(existingProjects, newProjects) {
       category: p.category || 'Full-Stack & Web',
       filter: p.filter || 'web',
       featured: typeof p.featured === 'boolean' ? p.featured : false,
+      hasCodeSnippet: hasCode,
+      codeLanguage: p.codeLanguage || 'javascript',
+      codeSnippet: p.codeSnippet || '',
       img: defaultImg,
       gallery: gallery,
       tech: Array.isArray(p.tech) ? p.tech : (p.tech ? [p.tech] : []),
@@ -256,7 +296,7 @@ function mergeProjects(existingProjects, newProjects) {
 
 async function run() {
   console.log('====================================================');
-  console.log('🚀 Portfolio Ingestion & Sync Engine');
+  console.log('🚀 Portfolio Cloud & Local Ingestion Engine');
   console.log('====================================================');
 
   const args = process.argv.slice(2);
@@ -274,14 +314,14 @@ async function run() {
 
   const collected = [];
 
-  // 1. Scan Local Sibling Repositories (e.g. c:/Users/anasm/Documents/GitHub/*)
+  // 1. Scan Local Sibling Repositories if running on local dev machine
   if (!onlyGithub) {
     const parentDir = path.resolve(__dirname, '..', '..');
     const localFound = scanLocalDirectory(parentDir);
     collected.push(...localFound);
   }
 
-  // 2. Scan Remote GitHub Repos
+  // 2. Scan Remote GitHub Repositories (Runs in GitHub Actions cloud or local CLI)
   if (!onlyLocal) {
     const githubFound = await scanGitHubRepos();
     collected.push(...githubFound);

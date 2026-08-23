@@ -19,6 +19,13 @@ Feature: Multi-Agent Autonomous Delegation Workflow
 Feature: Dockerized Scalable Microservices Architecture
 Feature: Interactive Dashboard with Dark Mode UI
 
-# Screenshots / Images (Optional - Leave blank to auto-detect *.png / *.jpg files in repo)
+# Option A: Screenshots (Leave blank to auto-detect *.png / *.jpg files in repo)
 # Screenshot: assets/screenshot1.png
 # Screenshot: assets/screenshot2.png
+
+# Option B: Interactive Code Snippet Preview (Optional for Backend / CLI / AI repos)
+# ```python
+# class MyAgentOrchestrator:
+#     async def run(self):
+#         return "Hello from automated ingestion!"
+# ```
