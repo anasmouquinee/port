@@ -10,7 +10,13 @@
     "codeSnippet": "class AgentOrchestrator:\n    def __init__(self, rag_engine, tools):\n        self.rag = rag_engine\n        self.tools = tools\n        self.agents = [ResearchAgent(), CodeAgent(), QAAgent()]\n    \n    async def execute_task(self, prompt: str) -> ExecutionResult:\n        # 1. Retrieve domain context via Vector RAG\n        context = await self.rag.retrieve_top_k(prompt, k=5)\n        # 2. Plan and delegate to specialized subagents\n        plan = await self.agents[0].create_plan(prompt, context)\n        return await self.dispatch_parallel(plan)",
     "img": "solo_top.png",
     "gallery": [],
-    "tech": ["Python", "LangChain", "RAG", "FastAPI", "Multi-Agent"],
+    "tech": [
+      "Python",
+      "LangChain",
+      "RAG",
+      "FastAPI",
+      "Multi-Agent"
+    ],
     "desc": "Autonomous multi-agent orchestration framework featuring Retrieval-Augmented Generation (RAG), intelligent subagent delegation, dynamic tool execution, and automated QA pipelines.",
     "features": [
       "Autonomous Multi-Agent Task Delegation",
@@ -35,7 +41,13 @@
       "kaelar_bot.png",
       "kaelar_main.png"
     ],
-    "tech": ["JavaScript", "HTML5", "CSS3", "Thematic UI", "Netlify"],
+    "tech": [
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "Thematic UI",
+      "Netlify"
+    ],
     "desc": "An expansive web novel reading library with dedicated immersive universes for Solo Leveling, Omniscient Reader, and Lord of the Mysteries.",
     "features": [
       "Custom Thematic Universe Design",
@@ -60,7 +72,12 @@
       "solo_bot.png",
       "solo_leveling.png"
     ],
-    "tech": ["HTML5", "CSS3", "Thematic UI", "JavaScript"],
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "Thematic UI",
+      "JavaScript"
+    ],
     "desc": "A dedicated, immersive dark-themed experience for the Solo Leveling series featuring custom character cards, hunters ranking, and dynamic visual storytelling.",
     "features": [
       "Hunter Rank & Character Showcases",
@@ -85,7 +102,12 @@
       "orv_bot.png",
       "orv.png"
     ],
-    "tech": ["HTML5", "CSS3", "JavaScript", "Fan Art Integration"],
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Fan Art Integration"
+    ],
     "desc": "Interactive apocalypse-themed hub for Omniscient Reader's Viewpoint with constellation alerts, scenario timeline viewers, and atmospheric artwork integration.",
     "features": [
       "Constellation Scenario Timeline",
@@ -110,7 +132,12 @@
       "lotm_bot.png",
       "lotm.png"
     ],
-    "tech": ["HTML5", "CSS3", "Lore-Accurate UI", "Tarot Cards"],
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "Lore-Accurate UI",
+      "Tarot Cards"
+    ],
     "desc": "A mysterious, Victorian steampunk-inspired landing page for Lord of the Mysteries, featuring Tarot Club interactive cards, potion pathways, and occult aesthetics.",
     "features": [
       "Tarot Club Pathways Visualizer",
@@ -135,7 +162,13 @@
       "project/proj4-2.jpg",
       "project/proj4-3.jpg"
     ],
-    "tech": ["Figma", "UI/UX", "JavaScript", "HTML5", "CSS3"],
+    "tech": [
+      "Figma",
+      "UI/UX",
+      "JavaScript",
+      "HTML5",
+      "CSS3"
+    ],
     "desc": "Modern digital bookstore and reading challenge application with high-fidelity Figma design systems, curated reading shelves, and responsive UI components.",
     "features": [
       "Comprehensive Figma Design System",
@@ -157,7 +190,14 @@
     "codeSnippet": "class WorkstationScannerNotifier extends StateNotifier<ScannerState> {\n  final AgoraRtcEngine _rtcEngine;\n  final HiveBox<TaskModel> _taskCache;\n\n  Future<void> claimTaskByQr(String qrCode) async {\n    // First-scan-wins smart assignment\n    final task = await _taskRepository.claimTask(qrCode);\n    await _taskCache.put(task.id, task);\n    state = ScannerState.taskAssigned(task);\n    await _fcmService.notifyDepartment(task.departmentId);\n  }\n}",
     "img": "orv_top.png",
     "gallery": [],
-    "tech": ["Flutter 3.19+", "Riverpod", "WebRTC", "Agora RTC", "Hive", "Firebase"],
+    "tech": [
+      "Flutter 3.19+",
+      "Riverpod",
+      "WebRTC",
+      "Agora RTC",
+      "Hive",
+      "Firebase"
+    ],
     "desc": "Enterprise communication and operations application tailored for SEWS manufacturing. Features WebRTC audio/video calls, QR workstation scanner, first-scan-wins task claiming, and offline local caching.",
     "features": [
       "WebRTC Audio & Video Calling Engine",
@@ -179,7 +219,13 @@
     "codeSnippet": "@cli.command()\n@click.option(\"--repo-path\", required=True, help=\"Path to local Git repository\")\n@click.option(\"--dry-run\", is_flag=True, help=\"Preview post without publishing\")\ndef publish(repo_path: str, dry_run: bool):\n    sanitizer = LogSanitizer()\n    payload = extract_port_trigger(repo_path)\n    if dry_run:\n        click.echo(f\"[DRY-RUN] Verified Release: {payload.title}\")\n        return\n    LinkedInClient().share_update(payload)",
     "img": "kaelar_top.png",
     "gallery": [],
-    "tech": ["Python", "GitHub Actions", "LinkedIn API", "CI/CD", "Pytest"],
+    "tech": [
+      "Python",
+      "GitHub Actions",
+      "LinkedIn API",
+      "CI/CD",
+      "Pytest"
+    ],
     "desc": "Automated developer release broadcasting CLI and CI/CD action. Generates release announcements from trigger files, runs dry-run validations, and securely publishes project updates directly to LinkedIn.",
     "features": [
       "GitHub Actions Automated Trigger Pipeline",
@@ -201,7 +247,13 @@
     "codeSnippet": "with DAG(dag_id=\"media_medallion_pipeline\", schedule=\"@daily\", catchup=False) as dag:\n    # Bronze: Raw Ingestion via Distributed Scraper\n    scrape_raw = PythonOperator(task_id=\"scrape_news_bronze\", python_callable=scrape)\n    # Silver: Cleansed & Normalized Delta Parquet\n    clean_silver = SparkSubmitOperator(task_id=\"transform_silver\", conn_id=\"spark\")\n    # Gold: Aggregated Analytics Warehouse\n    load_gold = PostgresOperator(task_id=\"aggregate_gold_warehouse\", sql=\"load.sql\")\n    scrape_raw >> clean_silver >> load_gold",
     "img": "lotm_top.png",
     "gallery": [],
-    "tech": ["Python", "Docker", "Apache Airflow", "Medallion Lakehouse", "Kafka"],
+    "tech": [
+      "Python",
+      "Docker",
+      "Apache Airflow",
+      "Medallion Lakehouse",
+      "Kafka"
+    ],
     "desc": "Distributed Big Data platform for ingesting, transforming, and visualizing media news articles using a Medallion Lakehouse architecture (Bronze, Silver, Gold layers) with Airflow scheduling.",
     "features": [
       "Distributed Automated Web Scraping Pipeline",
@@ -223,7 +275,13 @@
     "codeSnippet": "export const getRecommendations = async (userPreferences, watchlist) => {\n  const genres = watchlist.map(m => m.genre_ids).flat();\n  const response = await api.get('/discover/movie', {\n    params: {\n      with_genres: [...new Set(genres)].join(','),\n      sort_by: 'popularity.desc',\n      vote_count_gte: 100\n    }\n  });\n  return response.data.results;\n};",
     "img": "book_website_screenshot_1763671051794.png",
     "gallery": [],
-    "tech": ["React", "Node.js", "Express", "REST API", "Vercel"],
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "REST API",
+      "Vercel"
+    ],
     "desc": "Full-stack movie discovery and recommendation platform featuring dynamic TMDB search, custom watchlists, curated genres, and a companion mobile client.",
     "features": [
       "Live Deployed Production Architecture",
@@ -233,5 +291,35 @@
     ],
     "github": "https://github.com/anasmouquinee/film-rec",
     "link": "https://film-rec.vercel.app"
+  },
+  {
+    "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
+    "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
+    "featured": false,
+    "hasCodeSnippet": true,
+    "codeLanguage": "python",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG('news_stream_etl', start_date=datetime(2023, 1, 1), schedule_interval='@daily') as dag:\n    scrape_task = BashOperator(task_id='scrape_news', bash_command='python scrapers/main.py')\n    ingest_task = BashOperator(task_id='ingest_to_lake', bash_command='python ingestion/minio_writer.py')\n    process_task = BashOperator(task_id='process_raw', bash_command='python pipelines/processor.py')\n    \n    scrape_task >> ingest_task >> process_task",
+    "img": null,
+    "gallery": [],
+    "tech": [
+      "Python",
+      "Apache Airflow",
+      "Kafka",
+      "MinIO",
+      "Docker",
+      "Kubernetes"
+    ],
+    "desc": "This project delivers a comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data at scale. It leverages a modern lakehouse architecture to provide robust ETL/ELT capabilities, enabling advanced analytics and real-time insights from diverse media streams.",
+    "features": [
+      "Distributed data ingestion and real-time event streaming via Kafka",
+      "Enterprise Lakehouse architecture using MinIO for raw data and PostgreSQL for structured data",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow",
+      "Comprehensive monitoring (Prometheus, Grafana) and visualization (Apache Superset) for media intelligence",
+      "Containerized deployment with Docker and scalable orchestration via Kubernetes"
+    ],
+    "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
+    "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   }
 ]
