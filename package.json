@@ -1,0 +1,21 @@
+{
+  "name": "anas-mouquine-portfolio",
+  "version": "2.0.0",
+  "description": "Interactive, state-of-the-art developer portfolio with automated repository sync and verified credentials",
+  "main": "index.html",
+  "scripts": {
+    "sync": "node scripts/sync-portfolio.js",
+    "sync:local": "node scripts/sync-portfolio.js --local",
+    "sync:github": "node scripts/sync-portfolio.js --github"
+  },
+  "keywords": [
+    "portfolio",
+    "developer",
+    "react",
+    "framer-motion",
+    "automation",
+    "full-stack"
+  ],
+  "author": "Anas Mouquine",
+  "license": "MIT"
+}

@@ -2,466 +2,383 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anas Mouquine | Creative Developer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anas Mouquine | Full Stack Engineer & AI Architect</title>
 
-    <!-- React & Tailwind -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SEO & OpenGraph Meta Tags -->
+  <meta name="description" content="Portfolio of Anas Mouquine - Full Stack Engineer, AI Multi-Agent & RAG Architect, and Mobile Developer based in Casablanca, Morocco. Explore projects, verified credentials, and skills.">
+  <meta name="keywords" content="Anas Mouquine, Full Stack Developer, AI Multi-Agent, Flutter, React Native, Python, React, Casablanca, Morocco, Portfolio">
+  <meta name="author" content="Anas Mouquine">
+  
+  <meta property="og:title" content="Anas Mouquine | Full Stack Engineer & AI Architect">
+  <meta property="og:description" content="Interactive developer portfolio showcasing autonomous AI systems, mobile hubs, and 11 verified Coursera credentials.">
+  <meta property="og:image" content="main.jpg">
+  <meta property="og:type" content="website">
 
-    <!-- Framer Motion -->
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <!-- Tailwind CSS & FontAwesome Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dark: '#030014',
-                        primary: '#a855f7',
-                        secondary: '#3b82f6',
-                    },
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                    }
-                }
-            }
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#030014',
+            primary: '#a855f7',
+            secondary: '#3b82f6',
+            accent: '#06b6d4'
+          }
         }
-    </script>
+      }
+    }
+  </script>
 </head>
 
 <body>
-    <div class="noise-overlay"></div>
-    <div id="root"></div>
+  <!-- Ambient Cosmic Lights & Interactive Particles -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+  <div class="noise-overlay"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { motion, AnimatePresence } = window.Motion || window.FramerMotion;
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="flex items-center justify-between py-4 mb-8 border-b border-white/10 relative z-20">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-mono font-bold text-lg shadow-lg group-hover:scale-105 transition-transform">
+          AM
+        </div>
+        <div>
+          <div class="font-display font-bold text-white tracking-wide">Anas Mouquine</div>
+          <div class="text-xs text-gray-400 font-mono">Portfolio • Casablanca, MA</div>
+        </div>
+      </a>
 
-        const projects = [
-            {
-                id: 1,
-                title: "Kaelar's Novel Archive",
-                category: "Web Novel Library",
-                img: "kaelar_top.png",
-                gallery: ["kaelar_top.png", "kaelar_mid.png", "kaelar_bot.png"],
-                tech: ["JavaScript", "HTML5", "CSS3"],
-                desc: "A comprehensive library for web novels. Features a clean, readable interface and a vast collection of stories, designed for an optimal reading experience.",
-                features: ["Responsive Layout", "Dark Mode", "Search Functionality"],
-                link: "https://kaelarsnovel.netlify.app/"
-            },
-            {
-                id: 2,
-                title: "Solo Leveling Experience",
-                category: "Immersive Fan Page",
-                img: "solo_top.png",
-                gallery: ["solo_top.png", "solo_mid.png", "solo_bot.png"],
-                tech: ["HTML5", "CSS3", "Thematic UI"],
-                desc: "A dedicated immersive page for the popular novel 'Solo Leveling', featuring character art and thematic design that captures the essence of the series.",
-                features: ["Character Showcase", "Thematic Styling", "Responsive Design"],
-                link: "https://kaelarsnovel.netlify.app/solo/solo.html"
-            },
-            {
-                id: 3,
-                title: "Omniscient Reader Hub",
-                category: "Interactive Fan Site",
-                img: "orv_top.png",
-                gallery: ["orv_top.png", "orv_mid.png", "orv_bot.png"],
-                tech: ["HTML5", "CSS3", "Fan Art Integration"],
-                desc: "An interactive fan page for 'Omniscient Reader's Viewpoint', capturing the apocalyptic atmosphere of the series with a focus on storytelling visuals.",
-                features: ["Visual Storytelling", "Atmospheric Design", "Mobile Responsive"],
-                link: "https://kaelarsnovel.netlify.app/orv/orv.html"
-            },
-            {
-                id: 4,
-                title: "Lord of the Mysteries",
-                category: "Atmospheric Landing Page",
-                img: "lotm_top.png",
-                gallery: ["lotm_top.png", "lotm_mid.png", "lotm_bot.png"],
-                tech: ["HTML5", "CSS3", "Lore-Accurate Design"],
-                desc: "A mysterious and atmospheric landing page for 'Lord of the Mysteries', utilizing dark aesthetics and lore-accurate design elements to immerse the visitor.",
-                features: ["Dark Aesthetic", "Lore Integration", "Smooth Layout"],
-                link: "https://kaelarsnovel.netlify.app/lotm/lotm.html"
-            }
-        ];
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+        <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+        <a href="#certifications" class="hover:text-white transition-colors">Certificates</a>
+        <a href="#skills" class="hover:text-white transition-colors">Skills</a>
+        <a href="#about" class="hover:text-white transition-colors">About</a>
+      </nav>
 
-        const certs = [
-            { name: "Advanced React", issuer: "Meta", date: "2024", icon: "fab fa-react", color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/20", link: "https://www.coursera.org/account/accomplishments/verify/EOQZZ5AJA4PN" },
-            { name: "Software Engineering", issuer: "HKUST", date: "2024", icon: "fas fa-laptop-code", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20", link: "https://www.coursera.org/account/accomplishments/verify/PYISBTHNMK4R" },
-            { name: "UI/UX Design Fundamentals", issuer: "Microsoft", date: "2024", icon: "fab fa-microsoft", color: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/20", link: "https://www.coursera.org/account/accomplishments/verify/PSEWVE6G37XO" },
-            { name: "Interactivity with JavaScript", issuer: "Univ. of Michigan", date: "2024", icon: "fab fa-js", color: "text-yellow-300", bg: "bg-yellow-300/10", border: "border-yellow-300/20", link: "https://www.coursera.org/account/accomplishments/verify/HX5EFZ91RJYY" },
-            { name: "Programming with JavaScript", issuer: "Meta", date: "2024", icon: "fab fa-js-square", color: "text-yellow-400", bg: "bg-yellow-400/10", border: "border-yellow-400/20", link: "https://www.coursera.org/account/accomplishments/verify/VJC3EUC85T53" },
-            { name: "Python for Web Data", issuer: "Univ. of Michigan", date: "2024", icon: "fab fa-python", color: "text-blue-300", bg: "bg-blue-300/10", border: "border-blue-300/20", link: "https://www.coursera.org/account/accomplishments/verify/3HIOWYMU2G7V" },
-            { name: "Object-Oriented C++", issuer: "EPFL", date: "2024", icon: "fas fa-code", color: "text-red-400", bg: "bg-red-400/10", border: "border-red-400/20", link: "https://www.coursera.org/account/accomplishments/verify/402FN9N1EN8K" },
-            { name: "Successful Negotiation", issuer: "Univ. of Michigan", date: "2024", icon: "fas fa-handshake", color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20", link: "https://www.coursera.org/account/accomplishments/verify/ZEC0HV4KGGCC" }
-        ];
+      <div class="flex items-center gap-3">
+        <button onclick="copyEmail()" class="btn-secondary text-xs py-2 px-4">
+          <i class="fas fa-envelope"></i>
+          <span>Copy Email</span>
+        </button>
+        <a href="https://github.com/anasmouquinee" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-105">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </header>
 
-        // --- COMPONENTS ---
+    <!-- Bento Grid Section 1: Hero & Highlights -->
+    <section class="bento-grid mb-12">
+      
+      <!-- 1. Hero 3D Tilt Card (2x2 Span) -->
+      <div class="bento-card tilt-card md:col-span-2 md:row-span-2 min-h-[460px] justify-between group">
+        <div class="tilt-inner h-full flex flex-col justify-between relative z-10">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Available for Projects & Roles</span>
+              </div>
+              <span class="text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+                Software & AI
+              </span>
+            </div>
 
-        const BentoItem = ({ children, className, delay = 0, onClick }) => (
-            <motion.div
-                layoutId={onClick ? `card-${className}` : undefined}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: delay, type: "spring", stiffness: 100 }}
-                className={`bento-card ${className} ${onClick ? 'cursor-pointer' : ''}`}
-                onClick={onClick}
-            >
-                {children}
-            </motion.div>
-        );
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-none">
+              Anas<br />
+              <span class="text-gradient">Mouquine.</span>
+            </h1>
 
-        const SocialLink = ({ icon, href, label, color }) => (
-            <a href={href} target="_blank" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group w-full">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${color} bg-white/5 group-hover:scale-110 transition-transform`}>
-                    <i className={icon}></i>
-                </div>
-                <span className="font-medium text-gray-300 group-hover:text-white">{label}</span>
+            <div class="text-lg md:text-xl font-medium text-gray-300 mb-4 h-8 flex items-center gap-2">
+              <span class="text-primary font-mono">></span>
+              <span id="role-rotator" class="text-gradient-purple font-mono font-semibold"></span>
+            </div>
+
+            <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed mb-6">
+              Specialized in distributed AI multi-agent systems, cross-platform mobile applications, and resilient cloud architectures. Crafting high-performance digital products from Casablanca.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-6 border-t border-white/10">
+            <a href="#projects" class="btn-primary text-sm py-3 px-6">
+              <i class="fas fa-rocket"></i>
+              <span>Explore Projects</span>
             </a>
-        );
+            <a href="#certifications" class="btn-secondary text-sm py-3 px-6">
+              <i class="fas fa-certificate text-yellow-400"></i>
+              <span>11 Verified Certs</span>
+            </a>
+          </div>
+        </div>
 
-        const ProjectDetail = ({ project, onClose }) => {
-            const [currentImageIndex, setCurrentImageIndex] = useState(0);
+        <div class="tilt-glare"></div>
+      </div>
 
-            return (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-dark/90 backdrop-blur-xl overflow-y-auto"
-                >
-                    <div className="max-w-6xl w-full bg-dark border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative min-h-[80vh] flex flex-col md:flex-row">
-                        <button
-                            onClick={onClose}
-                            className="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors"
-                        >
-                            <i className="fas fa-times"></i>
-                        </button>
+      <!-- 2. Interactive Avatar with Floating Orbit Badges -->
+      <div class="bento-card tilt-card md:col-span-1 min-h-[220px] items-center justify-center p-6">
+        <div class="tilt-inner avatar-wrapper">
+          <div class="avatar-image-container">
+            <img src="main.jpg" alt="Anas Mouquine" class="avatar-img" onerror="this.src='project/proj1.jpg'"/>
+          </div>
 
-                        {/* Gallery Side (Carousel) */}
-                        <div className="w-full md:w-1/2 bg-black/20 relative overflow-hidden h-64 md:h-auto min-h-[300px] md:min-h-full border-r border-white/5 group">
-                            <AnimatePresence mode="wait">
-                                <motion.img
-                                    key={currentImageIndex}
-                                    src={project.gallery[currentImageIndex]}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="absolute inset-0 w-full h-full object-cover object-top"
-                                    alt={`${project.title} screenshot ${currentImageIndex + 1}`}
-                                />
-                            </AnimatePresence>
+          <div class="floating-badge floating-badge-1">
+            <i class="fas fa-brain text-cyan-400"></i>
+            <span>AI & RAG</span>
+          </div>
+          <div class="floating-badge floating-badge-2">
+            <i class="fas fa-mobile-alt text-purple-400"></i>
+            <span>Flutter & Mobile</span>
+          </div>
+        </div>
+        <div class="tilt-glare"></div>
+      </div>
 
-                            {/* Carousel Controls */}
-                            <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentImageIndex((prev) => (prev === 0 ? project.gallery.length - 1 : prev - 1));
-                                    }}
-                                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-primary transition-colors flex items-center justify-center"
-                                >
-                                    <i className="fas fa-chevron-left"></i>
-                                </button>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentImageIndex((prev) => (prev + 1) % project.gallery.length);
-                                    }}
-                                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-primary transition-colors flex items-center justify-center"
-                                >
-                                    <i className="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
+      <!-- 3. Casablanca Live Clock & Location -->
+      <div class="bento-card md:col-span-1 justify-between bg-gradient-to-br from-blue-950/30 to-purple-950/30">
+        <div class="flex items-center justify-between">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+            <i class="fas fa-location-dot"></i>
+          </div>
+          <span class="text-xs font-mono text-gray-400">Timezone</span>
+        </div>
 
-                            {/* Dots */}
-                            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                                {project.gallery.map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className={`w-2 h-2 rounded-full transition-all ${i === currentImageIndex ? 'bg-primary w-4' : 'bg-white/50'}`}
-                                    ></div>
-                                ))}
-                            </div>
-                        </div>
+        <div class="my-4">
+          <h3 class="text-2xl font-bold text-white mb-1">Casablanca</h3>
+          <p class="text-gray-400 text-sm">Morocco • North Africa</p>
+        </div>
 
-                        {/* Content Side */}
-                        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-[50vh] md:h-auto overflow-y-auto custom-scrollbar">
-                            <div className="mb-6">
-                                <span className="text-primary font-mono text-sm tracking-wider uppercase">{project.category}</span>
-                                <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-4 leading-tight">{project.title}</h2>
-                                <div className="flex flex-wrap gap-2 mb-6">
-                                    {project.tech.map((t, i) => (
-                                        <span key={i} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
-                                            {t}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
+        <div class="p-3 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
+          <span class="text-xs text-gray-400 flex items-center gap-2">
+            <i class="far fa-clock text-primary"></i> Local Time
+          </span>
+          <span id="casablanca-clock" class="text-xs font-mono font-bold text-white tracking-wider">--:--:-- GMT+1</span>
+        </div>
+      </div>
 
-                            <div className="prose prose-invert max-w-none mb-8">
-                                <p className="text-gray-300 text-lg leading-relaxed mb-6">{project.desc}</p>
-                                <h3 className="text-xl font-bold text-white mb-3">Key Features</h3>
-                                <ul className="space-y-2">
-                                    {project.features.map((f, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-gray-400">
-                                            <i className="fas fa-check text-primary mt-1.5"></i>
-                                            <span>{f}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+      <!-- 4. Quick Metrics / Stats Card -->
+      <div class="bento-card md:col-span-1 justify-center text-center p-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+            <div class="text-3xl font-bold text-white mb-1">26+</div>
+            <div class="text-[11px] font-mono text-primary uppercase">GitHub Repos</div>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+            <div class="text-3xl font-bold text-white mb-1">11</div>
+            <div class="text-[11px] font-mono text-cyan-400 uppercase">Verified Certs</div>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+            <div class="text-3xl font-bold text-white mb-1">3+</div>
+            <div class="text-[11px] font-mono text-yellow-400 uppercase">Yrs Experience</div>
+          </div>
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+            <div class="text-3xl font-bold text-white mb-1">100%</div>
+            <div class="text-[11px] font-mono text-emerald-400 uppercase">Clean Code</div>
+          </div>
+        </div>
+      </div>
 
-                            <div className="mt-auto pt-8 border-t border-white/10 flex gap-4">
-                                <a href={project.link} className="flex-1 bg-primary text-white font-bold py-4 rounded-xl text-center hover:bg-primary/90 transition-colors">
-                                    Live Demo
-                                </a>
-                                <a href="https://github.com/anasmouquinee/mynovel-site" target="_blank" className="flex-1 bg-white/5 text-white font-bold py-4 rounded-xl text-center hover:bg-white/10 transition-colors">
-                                    View Code
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-            );
-        };
+      <!-- 5. Social & Direct Connect Card -->
+      <div class="bento-card md:col-span-1 justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold uppercase text-gray-400 tracking-wider">Network</span>
+          <i class="fas fa-link text-primary text-xs"></i>
+        </div>
 
-        const App = () => {
-            const [activeProject, setActiveProject] = useState(null);
-            const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+        <div class="space-y-2">
+          <a href="https://github.com/anasmouquinee" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+            <span class="flex items-center gap-3 text-sm text-gray-300 group-hover:text-white">
+              <i class="fab fa-github text-base text-gray-400 group-hover:text-white"></i> GitHub
+            </span>
+            <span class="text-xs text-gray-500 font-mono">@anasmouquinee</span>
+          </a>
 
-            // Auto-rotate projects in the carousel
-            useEffect(() => {
-                if (activeProject) return; // Stop rotation if a project is open
-                const interval = setInterval(() => {
-                    setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
-                }, 4000);
-                return () => clearInterval(interval);
-            }, [activeProject]);
+          <a href="https://www.linkedin.com/in/anas-mouqine-329207304/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+            <span class="flex items-center gap-3 text-sm text-gray-300 group-hover:text-white">
+              <i class="fab fa-linkedin text-base text-blue-400"></i> LinkedIn
+            </span>
+            <span class="text-xs text-gray-500 font-mono">anas-mouqine</span>
+          </a>
 
-            const currentProject = projects[currentProjectIndex];
+          <a href="https://www.instagram.com/anasmouquine__/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+            <span class="flex items-center gap-3 text-sm text-gray-300 group-hover:text-white">
+              <i class="fab fa-instagram text-base text-pink-400"></i> Instagram
+            </span>
+            <span class="text-xs text-gray-500 font-mono">@anasmouquine__</span>
+          </a>
+        </div>
+      </div>
 
-            return (
-                <div className="min-h-screen p-4 md:p-8 flex items-center justify-center">
-                    <AnimatePresence>
-                        {activeProject && (
-                            <ProjectDetail
-                                project={activeProject}
-                                onClose={() => setActiveProject(null)}
-                            />
-                        )}
-                    </AnimatePresence>
+    </section>
 
-                    <div className="bento-grid w-full">
+    <!-- Featured Innovation Banner (Auto-rotating carousel) -->
+    <section class="mb-14">
+      <div id="featured-banner" class="bento-card !p-0 min-h-[360px] md:min-h-[420px] relative overflow-hidden group cursor-pointer">
+        <!-- Injected dynamically via script.js -->
+      </div>
+    </section>
 
-                        {/* 1. Profile / Hero Card */}
-                        <BentoItem className="col-span-2 row-span-2 min-h-[400px] relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                            <div className="relative z-10 flex flex-col h-full justify-between">
-                                <div>
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium mb-6">
-                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                        Available for work
-                                    </div>
-                                    <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">
-                                        Anas<br />
-                                        <span className="text-gradient">Mouquine.</span>
-                                    </h1>
-                                    <p className="text-gray-400 text-lg max-w-md">
-                                        Full Stack Engineer & Creative Developer based in Casablanca.
-                                    </p>
-                                </div>
-                                <div className="flex gap-4 mt-8">
-                                    <a href="#contact" className="px-6 py-3 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform">
-                                        Let's Talk
-                                    </a>
-                                </div>
-                            </div>
-                            <img
-                                src="main.jpg"
-                                className="absolute bottom-0 right-0 w-64 h-64 object-cover rounded-tl-[100px] opacity-50 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0 mask-image-gradient"
-                                style={{ maskImage: 'linear-gradient(to top, black 50%, transparent 100%)' }}
-                            />
-                        </BentoItem>
+    <!-- Projects Section -->
+    <section id="projects" class="mb-16">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono font-bold uppercase tracking-wider mb-2">
+            <i class="fas fa-folder-open"></i> Portfolio Showcase
+          </div>
+          <h2 class="text-3xl md:text-5xl font-bold text-white">Featured Projects</h2>
+          <p class="text-gray-400 text-sm md:text-base mt-1">Explore production deployments, mobile applications, and AI agent frameworks.</p>
+        </div>
 
-                        {/* 2. Map */}
-                        <BentoItem className="col-span-1 min-h-[200px] relative !p-0 overflow-hidden" delay={0.1}>
-                            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-black"></div>
-                            <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-7.6114,33.5731,11,0/600x600?access_token=YOUR_TOKEN')] bg-cover bg-center opacity-50 hover:opacity-70 transition-opacity"></div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
-                            <div className="absolute bottom-4 left-4">
-                                <h3 className="text-xl font-bold">Casablanca</h3>
-                                <p className="text-gray-400 text-sm">Morocco (GMT+1)</p>
-                            </div>
-                        </BentoItem>
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+          <button onclick="filterProjects('all', this)" class="filter-tab active">All (10)</button>
+          <button onclick="filterProjects('ai', this)" class="filter-tab">AI & Agents</button>
+          <button onclick="filterProjects('mobile', this)" class="filter-tab">Mobile & IoT</button>
+          <button onclick="filterProjects('web', this)" class="filter-tab">Full-Stack & Web</button>
+          <button onclick="filterProjects('cloud', this)" class="filter-tab">Cloud & Systems</button>
+        </div>
+      </div>
 
-                        {/* 3. Stack */}
-                        <BentoItem className="col-span-1 flex flex-col justify-center" delay={0.2}>
-                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">My Stack</h3>
-                            <div className="flex flex-wrap gap-3">
-                                {['React', 'Node.js', 'Java', 'Tailwind', 'Figma', 'MongoDB'].map((tech, i) => (
-                                    <span key={i} className="px-3 py-1.5 bg-white/5 rounded-lg text-sm font-mono hover:bg-primary/20 hover:text-primary transition-colors cursor-default">
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </BentoItem>
+      <!-- Projects Grid -->
+      <div id="projects-grid" class="bento-grid">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+    </section>
 
-                        {/* 4. Socials */}
-                        <BentoItem className="col-span-1 flex flex-col justify-between" delay={0.3}>
-                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Connect</h3>
-                            <div className="space-y-1">
-                                <SocialLink icon="fab fa-github" label="Github" href="https://github.com/anasmouquinee" color="text-white" />
-                                <SocialLink icon="fab fa-linkedin" label="LinkedIn" href="https://www.linkedin.com/in/anas-mouqine-329207304/" color="text-blue-400" />
-                                <SocialLink icon="fab fa-instagram" label="Instagram" href="https://www.instagram.com/anasmouquine__/" color="text-pink-500" />
-                            </div>
-                        </BentoItem>
+    <!-- Verified Certifications Section -->
+    <section id="certifications" class="mb-16">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+            <i class="fas fa-award"></i> Verified Credentials
+          </div>
+          <h2 class="text-3xl md:text-5xl font-bold text-white">11 Coursera Certifications</h2>
+          <p class="text-gray-400 text-sm md:text-base mt-1">Accredited by Google, Meta, Microsoft, University of Michigan, HKUST, and EPFL.</p>
+        </div>
 
-                        {/* 4.5. Services (New to fill gap) */}
-                        <BentoItem className="col-span-1 flex flex-col justify-center" delay={0.35}>
-                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Services</h3>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
-                                    <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
-                                        <i className="fas fa-code"></i>
-                                    </div>
-                                    <span className="font-medium">Web Development</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
-                                    <div className="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400">
-                                        <i className="fas fa-paint-brush"></i>
-                                    </div>
-                                    <span className="font-medium">UI/UX Design</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors cursor-default">
-                                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
-                                        <i className="fas fa-rocket"></i>
-                                    </div>
-                                    <span className="font-medium">Freelancing</span>
-                                </div>
-                            </div>
-                        </BentoItem>
+        <div class="flex items-center gap-2 text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+          <i class="fas fa-shield-check text-emerald-400"></i> All Credentials Authenticated
+        </div>
+      </div>
 
-                        {/* 5. PROJECT CAROUSEL (Rolling Projects) */}
-                        <BentoItem
-                            className="col-span-1 md:col-span-2 relative overflow-hidden group cursor-pointer"
-                            delay={0.4}
-                            onClick={() => setActiveProject(currentProject)}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-transparent z-10"></div>
-                            <AnimatePresence mode="wait">
-                                <motion.img
-                                    key={currentProject.img}
-                                    src={currentProject.img}
-                                    initial={{ opacity: 0, scale: 1.1 }}
-                                    animate={{ opacity: 0.6, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.7 }}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                />
-                            </AnimatePresence>
+      <!-- Certificates Bento Container -->
+      <div id="certs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+    </section>
 
-                            <div className="relative z-20 h-full flex flex-col justify-center p-6 md:p-10">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                                    <span className="text-primary text-xs font-mono uppercase tracking-widest">Featured Project</span>
-                                </div>
+    <!-- Skills Ecosystem Section -->
+    <section id="skills" class="mb-16">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+          <i class="fas fa-cubes"></i> Technical Matrix
+        </div>
+        <h2 class="text-3xl md:text-5xl font-bold text-white">Skills & Competencies</h2>
+        <p class="text-gray-400 text-sm md:text-base mt-1">Comprehensive overview of technologies, frameworks, and methodologies.</p>
+      </div>
 
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={currentProject.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <h3 className="text-3xl md:text-4xl font-bold mb-4">{currentProject.title}</h3>
-                                        <p className="text-gray-300 max-w-md mb-6 line-clamp-2">{currentProject.desc}</p>
-                                        <div className="flex gap-2">
-                                            {currentProject.tech.slice(0, 3).map((t, i) => (
-                                                <span key={i} className="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/10">{t}</span>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                </AnimatePresence>
+      <div id="skills-matrix" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+    </section>
 
-                                <div className="absolute bottom-6 right-6 flex gap-1">
-                                    {projects.map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className={`h-1 rounded-full transition-all duration-300 ${i === currentProjectIndex ? 'w-8 bg-primary' : 'w-2 bg-white/20'}`}
-                                        ></div>
-                                    ))}
-                                </div>
-                            </div>
-                        </BentoItem>
+    <!-- Contact & Project Trigger Section -->
+    <section id="about" class="bento-grid mb-12">
+      <!-- Big Contact Callout -->
+      <div class="bento-card md:col-span-2 lg:col-span-3 bg-gradient-to-r from-purple-900/30 via-indigo-900/30 to-blue-900/30 justify-between p-8 md:p-12">
+        <div class="max-w-2xl">
+          <span class="text-primary font-mono text-xs uppercase tracking-widest font-bold">Let's Collaborate</span>
+          <h3 class="text-3xl md:text-5xl font-bold text-white mt-2 mb-4">Have an ambitious project or engineering role?</h3>
+          <p class="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+            Whether you are building autonomous AI agents, enterprise mobile applications, or scaling full-stack platforms, I'm ready to bring technical leadership and engineering excellence to your team.
+          </p>
+        </div>
 
-                        {/* 6. Certifications (New) */}
-                        <BentoItem className="col-span-1 bg-gradient-to-br from-blue-900/20 to-purple-900/20" delay={0.5}>
-                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Certifications</h3>
-                            <div className="space-y-3">
-                                {certs.map((cert, i) => (
-                                    <a href={cert.link} target="_blank" key={i} className={`flex items-center gap-3 p-3 rounded-xl border transition-colors ${cert.bg} ${cert.border} hover:scale-105 transition-transform cursor-pointer`}>
-                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${cert.color} bg-white/10`}>
-                                            <i className={cert.icon}></i>
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-white">{cert.name}</div>
-                                            <div className="text-xs text-gray-400">{cert.issuer} • {cert.date}</div>
-                                        </div>
-                                    </a>
-                                ))}
-                            </div>
-                        </BentoItem>
+        <div class="flex flex-wrap items-center gap-4">
+          <button onclick="copyEmail()" class="btn-primary text-base py-4 px-8">
+            <i class="fas fa-paper-plane"></i>
+            <span>Copy anasmouqine@gmail.com</span>
+          </button>
+          <a href="https://www.linkedin.com/in/anas-mouqine-329207304/" target="_blank" rel="noopener noreferrer" class="btn-secondary text-base py-4 px-8">
+            <i class="fab fa-linkedin text-blue-400"></i>
+            <span>Connect on LinkedIn</span>
+          </a>
+        </div>
+      </div>
 
-                        {/* 7. Stats */}
-                        <BentoItem className="col-span-1" delay={0.6}>
-                            <div className="flex flex-col h-full justify-center items-center text-center">
-                                <h3 className="text-5xl font-bold text-white mb-1">3+</h3>
-                                <p className="text-primary text-sm font-medium">Years Experience</p>
-                            </div>
-                        </BentoItem>
+      <!-- Automation / add to port.txt Badge -->
+      <div class="bento-card md:col-span-2 lg:col-span-1 justify-between bg-black/40">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-terminal text-primary"></i>
+            <span class="text-xs font-mono font-bold text-gray-400 uppercase">Automation Engine</span>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Automated Project Sync</h4>
+          <p class="text-gray-400 text-xs leading-relaxed mb-4">
+            This portfolio automatically ingests and updates projects containing <code class="text-primary bg-white/5 px-1.5 py-0.5 rounded font-mono">add to port.txt</code> and screenshots across GitHub.
+          </p>
+        </div>
 
-                        {/* 8. Quote */}
-                        <BentoItem className="col-span-1 md:col-span-2 flex items-center justify-center text-center" delay={0.7}>
-                            <div>
-                                <i className="fas fa-quote-left text-3xl text-white/10 mb-4"></i>
-                                <p className="text-xl md:text-2xl font-display font-medium leading-relaxed">
-                                    "Code is poetry written for machines, but designed for humans."
-                                </p>
-                            </div>
-                        </BentoItem>
+        <div class="p-3 bg-white/5 rounded-xl border border-white/10 text-xs font-mono text-gray-300">
+          <span class="text-emerald-400">●</span> npm run sync
+        </div>
+      </div>
+    </section>
 
-                        {/* 9. Contact CTA */}
-                        <BentoItem className="col-span-1 md:col-span-2 bg-white text-black !border-none" delay={0.8}>
-                            <div className="flex flex-col md:flex-row items-center justify-between h-full gap-4">
-                                <div>
-                                    <h3 className="text-2xl font-bold mb-1">Have a project?</h3>
-                                    <p className="text-gray-600">Let's build something amazing together.</p>
-                                </div>
-                                <a href="mailto:anasmouqine@gmail.com" className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
-                                    <i className="fas fa-arrow-right -rotate-45"></i>
-                                </a>
-                            </div>
-                        </BentoItem>
+    <!-- Footer -->
+    <footer class="pt-8 pb-12 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-mono">
+      <div>
+        © 2026 Anas Mouquine. Crafted with precision & clean code.
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#projects" class="hover:text-gray-300 transition-colors">Projects</a>
+        <a href="#certifications" class="hover:text-gray-300 transition-colors">Certificates</a>
+        <a href="#skills" class="hover:text-gray-300 transition-colors">Skills</a>
+        <a href="https://github.com/anasmouquinee/port" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors">
+          <i class="fab fa-github"></i> Repository
+        </a>
+      </div>
+    </footer>
 
-                    </div>
-                </div>
-            );
-        };
+  </main>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+  <!-- Project Detail Modal -->
+  <div id="project-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <button onclick="closeProjectModal()" class="modal-close-btn" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="project-modal-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Detail Modal -->
+  <div id="cert-modal" class="modal-backdrop">
+    <div class="modal-content !max-w-xl">
+      <button onclick="closeCertModal()" class="modal-close-btn" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="cert-modal-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Execution -->
+  <script src="script.js"></script>
 </body>
 
 </html>

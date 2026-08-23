@@ -1,0 +1,24 @@
+# ==========================================
+# PORTFOLIO INGESTION TRIGGER FILE
+# Save this file as "add to port.txt" or "port.txt"
+# in the root or docs/ folder of your repository.
+# ==========================================
+
+Title: My Awesome Project
+Category: AI & Autonomous Systems
+Filter: ai
+Featured: true
+Description: A concise and impactful 2-3 sentence overview explaining what this project solves, how it works, and key architecture decisions.
+Tech: Python, React, FastAPI, Docker, PostgreSQL
+Demo: https://myproject-demo.com
+GitHub: https://github.com/anasmouquinee/my-awesome-project
+
+# Key Features (one per line)
+Feature: Real-Time Data Streaming with WebSockets
+Feature: Multi-Agent Autonomous Delegation Workflow
+Feature: Dockerized Scalable Microservices Architecture
+Feature: Interactive Dashboard with Dark Mode UI
+
+# Screenshots / Images (Optional - Leave blank to auto-detect *.png / *.jpg files in repo)
+# Screenshot: assets/screenshot1.png
+# Screenshot: assets/screenshot2.png

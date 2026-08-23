@@ -1,0 +1,234 @@
+[
+  {
+    "id": "G2064X5FGLVB",
+    "name": "Agile Project Management",
+    "issuer": "Google",
+    "issuerIcon": "fab fa-google",
+    "date": "2024",
+    "color": "text-yellow-400",
+    "accentColor": "#eab308",
+    "bg": "rgba(234, 179, 8, 0.1)",
+    "border": "rgba(234, 179, 8, 0.25)",
+    "badge": "Agile & Leadership",
+    "shareUrl": "https://coursera.org/share/4ff37e31e732f4b4fc12ebd8861ca8f9",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/G2064X5FGLVB",
+    "skills": [
+      "Agile Project Management",
+      "Scrum & Sprint Planning",
+      "Product Roadmaps",
+      "User Stories & Backlogs",
+      "Team Leadership",
+      "Prioritization"
+    ]
+  },
+  {
+    "id": "NCRUXK7BVMLJ",
+    "name": "React Native",
+    "issuer": "Meta",
+    "issuerIcon": "fab fa-react",
+    "date": "2024",
+    "color": "text-cyan-400",
+    "accentColor": "#22d3ee",
+    "bg": "rgba(34, 211, 238, 0.1)",
+    "border": "rgba(34, 211, 238, 0.25)",
+    "badge": "Mobile Engineering",
+    "shareUrl": "https://coursera.org/share/4d61818815951a542ad0bac26fbd2c3d",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/NCRUXK7BVMLJ",
+    "skills": [
+      "React Native",
+      "Cross-Platform Mobile Dev",
+      "UI Components",
+      "Mobile Architecture",
+      "Interactive Design"
+    ]
+  },
+  {
+    "id": "EOQZZ5AJA4PN",
+    "name": "Advanced React",
+    "issuer": "Meta",
+    "issuerIcon": "fab fa-react",
+    "date": "2024",
+    "color": "text-blue-400",
+    "accentColor": "#60a5fa",
+    "bg": "rgba(96, 165, 250, 0.1)",
+    "border": "rgba(96, 165, 250, 0.25)",
+    "badge": "Frontend Architecture",
+    "shareUrl": "https://coursera.org/share/e08573d01e864b68add1e79eb26fa354",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/EOQZZ5AJA4PN",
+    "skills": [
+      "React Hooks & Context API",
+      "State Management",
+      "Performance Optimization",
+      "Unit Testing (Jest)",
+      "Custom Hooks",
+      "Software Design Patterns"
+    ]
+  },
+  {
+    "id": "7I9S1PQCF5V3",
+    "name": "React Basics",
+    "issuer": "Meta",
+    "issuerIcon": "fab fa-react",
+    "date": "2024",
+    "color": "text-sky-400",
+    "accentColor": "#38bdf8",
+    "bg": "rgba(56, 189, 248, 0.1)",
+    "border": "rgba(56, 189, 248, 0.25)",
+    "badge": "Frontend Core",
+    "shareUrl": "https://coursera.org/share/d350c1763426eb95e9c27e9767e61561",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/7I9S1PQCF5V3",
+    "skills": [
+      "React.js & JSX",
+      "Component Lifecycle",
+      "Props & Data Flow",
+      "Event Handling",
+      "Webpack & Tooling"
+    ]
+  },
+  {
+    "id": "VJC3EUC85T53",
+    "name": "Programming with JavaScript",
+    "issuer": "Meta",
+    "issuerIcon": "fab fa-js-square",
+    "date": "2024",
+    "color": "text-amber-400",
+    "accentColor": "#fbbf24",
+    "bg": "rgba(251, 191, 36, 0.1)",
+    "border": "rgba(251, 191, 36, 0.25)",
+    "badge": "Core Programming",
+    "shareUrl": "https://coursera.org/share/b26c92209ec2d45a5b6bb455d60df359",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/VJC3EUC85T53",
+    "skills": [
+      "JavaScript ES6+",
+      "Asynchronous JS",
+      "Object-Oriented Programming",
+      "Jest Unit Testing",
+      "Node.js",
+      "Data Structures"
+    ]
+  },
+  {
+    "id": "3HIOWYMU2G7V",
+    "name": "Using Python to Access Web Data",
+    "issuer": "Univ. of Michigan",
+    "issuerIcon": "fab fa-python",
+    "date": "2024",
+    "color": "text-emerald-400",
+    "accentColor": "#34d399",
+    "bg": "rgba(52, 211, 153, 0.1)",
+    "border": "rgba(52, 211, 153, 0.25)",
+    "badge": "Data & Backend",
+    "shareUrl": "https://coursera.org/share/57706b3a06ea5d0d4fcea0bb93528275",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/3HIOWYMU2G7V",
+    "skills": [
+      "Python Programming",
+      "RESTful APIs",
+      "Web Scraping",
+      "JSON & XML Parsing",
+      "Network Protocols (HTTP/Sockets)"
+    ]
+  },
+  {
+    "id": "HX5EFZ91RJYY",
+    "name": "Interactivity with JavaScript",
+    "issuer": "Univ. of Michigan",
+    "issuerIcon": "fab fa-js",
+    "date": "2024",
+    "color": "text-yellow-300",
+    "accentColor": "#fde047",
+    "bg": "rgba(253, 224, 71, 0.1)",
+    "border": "rgba(253, 224, 71, 0.25)",
+    "badge": "Interactive Web",
+    "shareUrl": "https://coursera.org/share/6a1490d428a5f78696926ccf480e2f7e",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/HX5EFZ91RJYY",
+    "skills": [
+      "DOM Manipulation",
+      "Event-Driven Architecture",
+      "Web Accessibility (WCAG 2.2)",
+      "Interactive UI Design"
+    ]
+  },
+  {
+    "id": "PYISBTHNMK4R",
+    "name": "Software Engineering: Design & Management",
+    "issuer": "HKUST",
+    "issuerIcon": "fas fa-laptop-code",
+    "date": "2024",
+    "color": "text-indigo-400",
+    "accentColor": "#818cf8",
+    "bg": "rgba(129, 140, 248, 0.1)",
+    "border": "rgba(129, 140, 248, 0.25)",
+    "badge": "System Architecture",
+    "shareUrl": "https://coursera.org/share/8459bab8390a13da8ee112ed898f86e4",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/PYISBTHNMK4R",
+    "skills": [
+      "Software Architecture",
+      "Design Patterns",
+      "Unified Modeling Language (UML)",
+      "SDLC & SQA",
+      "Systems Analysis"
+    ]
+  },
+  {
+    "id": "PSEWVE6G37XO",
+    "name": "Fundamentals of UI/UX Design",
+    "issuer": "Microsoft",
+    "issuerIcon": "fab fa-microsoft",
+    "date": "2024",
+    "color": "text-purple-400",
+    "accentColor": "#c084fc",
+    "bg": "rgba(192, 132, 252, 0.1)",
+    "border": "rgba(192, 132, 252, 0.25)",
+    "badge": "Product & UI/UX",
+    "shareUrl": "https://coursera.org/share/1fcd2903ecb6b2040eea25e08165a1e6",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/PSEWVE6G37XO",
+    "skills": [
+      "UI/UX Design",
+      "Wireframing & Prototyping",
+      "Human-Centered Design",
+      "Design Systems & Thinking",
+      "User Experience"
+    ]
+  },
+  {
+    "id": "402FN9N1EN8K",
+    "name": "Programmation Orientée Objet (en C++)",
+    "issuer": "EPFL",
+    "issuerIcon": "fas fa-code",
+    "date": "2024",
+    "color": "text-rose-400",
+    "accentColor": "#fb7185",
+    "bg": "rgba(251, 113, 133, 0.1)",
+    "border": "rgba(251, 113, 133, 0.25)",
+    "badge": "Systems & OOP",
+    "shareUrl": "https://coursera.org/share/99672f0899704076acecffcf0748f1f2",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/402FN9N1EN8K",
+    "skills": [
+      "C++ & Modern OOP",
+      "Memory Management & Pointers",
+      "Class Hierarchies & Polymorphism",
+      "Algorithms & Complexity"
+    ]
+  },
+  {
+    "id": "ZEC0HV4KGGCC",
+    "name": "Successful Negotiation Strategies",
+    "issuer": "Univ. of Michigan",
+    "issuerIcon": "fas fa-handshake",
+    "date": "2024",
+    "color": "text-teal-400",
+    "accentColor": "#2dd4bf",
+    "bg": "rgba(45, 212, 191, 0.1)",
+    "border": "rgba(45, 212, 191, 0.25)",
+    "badge": "Strategy & Leadership",
+    "shareUrl": "https://coursera.org/share/d8057cade3be0df82a2b00beea4c55aa",
+    "verifyUrl": "https://www.coursera.org/account/accomplishments/verify/ZEC0HV4KGGCC",
+    "skills": [
+      "Negotiation Strategy",
+      "Contract Analysis",
+      "Conflict Resolution",
+      "Stakeholder Communication",
+      "Decision Making"
+    ]
+  }
+]
