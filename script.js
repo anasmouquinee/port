@@ -315,23 +315,25 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(dag_id='news_lakehouse_etl', start_date=datetime(2023, 1, 1),\n             schedule_interval='@hourly', catchup=False) as dag:\n        scrape_task = BashOperator(task_id='scrape_articles',\n                                   bash_command='python scrapers/run.py')\n        ingest_raw_task = BashOperator(task_id='ingest_raw_data',\n                                       bash_command='python ingestion/minio_upload.py')\n        process_curated_task = BashOperator(task_id='process_curated',\n                                            bash_command='python pipelines/transform.py')\n        scrape_task >> ingest_raw_task >> process_curated_task",
+    "codeSnippet": "from airflow.operators.bash import BashOperator\n\ndef create_data_processing_task(dag):\n    process_news_articles = BashOperator(\n        task_id='process_scraped_articles',\n        bash_command=(\n            \"python /opt/airflow/dags/scripts/process_articles.py \"\n            \"--input_s3_path s3://raw-news/ --output_s3_path s3://processed-news/\"\n        ),\n        dag=dag,\n    )\n    return process_news_articles",
     "img": null,
     "gallery": [],
     "tech": [
+      "Docker",
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
       "Apache Superset",
-      "Docker",
-      "Kubernetes"
+      "Kubernetes",
+      "Python"
     ],
-    "desc": "This project implements a comprehensive, distributed enterprise data lakehouse for real-time media intelligence. It orchestrates the ingestion, processing, and visualization of news articles using a medallion architecture to achieve scalable data transformation and analytics.",
+    "desc": "This platform builds a comprehensive, distributed lakehouse for real-time media intelligence, enabling ingestion, processing, and visualization of news articles. It solves the challenge of analyzing vast unstructured data streams to derive actionable insights using a modern data architecture.",
     "features": [
-      "End-to-end distributed data lakehouse leveraging a medallion architecture.",
-      "Real-time data ingestion and stream processing utilizing Apache Kafka.",
-      "Automated and orchestrated ETL/ELT pipelines with Apache Airflow.",
-      "Dynamic media intelligence visualization and monitoring through Superset & Grafana."
+      "Distributed Lakehouse Architecture (Medallion pattern) for scalable data storage and processing",
+      "Real-time data ingestion and stream processing using Apache Kafka for media intelligence",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for end-to-end data flow management",
+      "Integrated monitoring with Prometheus & Grafana and interactive analytics with Apache Superset",
+      "Containerized deployment with Docker Compose and scalable orchestration via Kubernetes"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
