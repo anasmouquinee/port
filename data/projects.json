@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom minio import Minio\n\ndef process_raw_article_data(bucket_name, object_name):\n    client = Minio(\"minio:9000\", access_key=\"minio_admin\", secret_key=\"anaskaelar\")\n    response = client.get_object(bucket_name, object_name)\n    df = pd.read_parquet(response.read()) # Assuming raw data is parquet\n    df_clean = df.drop_duplicates(subset=['title', 'url'])\n    df_enriched = df_clean[df_clean['text'].str.len() > 50]\n    return df_enriched.to_parquet()",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_article_for_silver(raw_article_json: str) -> dict:\n    \"\"\"Parses and standardizes a raw news article from Bronze layer.\"\"\"\n    article = json.loads(raw_article_json)\n    processed_article = {\n        \"article_id\": article.get(\"id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"source_url\": article.get(\"url\"),\n        \"published_at\": datetime.fromisoformat(article.get(\"published_date\")),\n        \"content_hash\": hash(article.get(\"content\", \"\"))\n    }\n    return processed_article",
     "img": null,
     "gallery": [],
     "tech": [
+      "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
-      "Apache Superset",
-      "PostgreSQL",
-      "Kubernetes"
+      "Kubernetes",
+      "Data Lakehouse",
+      "Apache Superset"
     ],
-    "desc": "This platform establishes an enterprise-grade lakehouse architecture for real-time media intelligence, integrating robust data ingestion, processing, and visualization capabilities. It leverages a distributed stack to efficiently transform raw news articles into actionable insights, supporting scalable ETL/ELT operations and comprehensive monitoring.",
+    "desc": "This project delivers a comprehensive Enterprise Lakehouse & Real-Time Media Intelligence Platform for end-to-end ingestion, processing, and visualization of news articles. It leverages a distributed architecture with scraping, data lake/warehouse, and a medallion approach to provide actionable media insights.",
     "features": [
-      "Enterprise Lakehouse Architecture (Medallion) for structured and scalable data management.",
-      "Real-time data ingestion and processing using web scrapers and Apache Kafka.",
-      "Distributed workflow orchestration of complex ETL/ELT pipelines with Apache Airflow.",
-      "Integrated monitoring (Prometheus/Grafana) and dynamic business intelligence with Apache Superset."
+      "Real-time, scalable data ingestion and streaming via Apache Kafka.",
+      "Robust, distributed orchestration of ETL/ELT pipelines using Apache Airflow.",
+      "Enterprise-grade Data Lakehouse implementation with a Medallion Architecture (Bronze, Silver, Gold layers).",
+      "Integrated real-time media intelligence and visualization dashboards powered by Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
