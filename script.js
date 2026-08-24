@@ -315,7 +315,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import hashlib\nfrom datetime import datetime\n\ndef process_news_article(article: dict) -> dict:\n    \"\"\"Standardizes and enriches a raw news article dictionary.\"\"\"\n    processed_article = {\n        \"id\": hashlib.sha256(article['url'].encode()).hexdigest(),\n        \"title\": article.get(\"title\", \"Untitled\").strip(),\n        \"publish_date\": datetime.fromisoformat(article[\"published_at\"].replace(\"Z\", \"+00:00\")).date().isoformat()\n                        if \"published_at\" in article else None,\n        \"source_url\": article.get(\"url\")\n    }\n    if not all(processed_article.values()):\n        raise ValueError(\"Article missing essential fields.\")\n    return processed_article",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_etl_pipeline',\n    start_date=days_ago(1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'lakehouse'],\n) as dag:\n    scrape = BashOperator(task_id='scrape_data', bash_command='python /app/scraper.py')\n    transform = BashOperator(task_id='transform_data', bash_command='python /app/transformer.py')\n    load = BashOperator(task_id='load_to_warehouse', bash_command='python /app/loader.py')\n    scrape >> transform >> load",
     "img": null,
     "gallery": [],
     "tech": [
@@ -326,12 +326,12 @@ const EMBEDDED_PROJECTS = [
       "Apache Superset",
       "Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. It achieves enterprise-grade media intelligence through a robust Lakehouse architecture and advanced ETL/ELT pipelines.",
+    "desc": "This distributed enterprise platform provides real-time media intelligence by ingesting, processing, and visualizing news article data. It leverages a modern lakehouse architecture with robust ETL/ELT pipelines, data warehousing, and a medallion data strategy for scalable, high-performance analytics.",
     "features": [
-      "Real-time Media Intelligence Platform for up-to-the-minute news insights",
-      "Distributed Lakehouse Architecture with Medallion approach using MinIO & PostgreSQL",
-      "Automated ETL/ELT Pipelines orchestrated by Apache Airflow and Kafka",
-      "Integrated Monitoring & Visualization via Prometheus, Grafana, and Apache Superset"
+      "Real-time data ingestion and stream processing with Apache Kafka",
+      "Enterprise lakehouse architecture (MinIO, PostgreSQL) with Medallion data strategy",
+      "Automated, scalable data pipelines orchestrated by Apache Airflow for ETL/ELT",
+      "Comprehensive monitoring (Prometheus, Grafana) and business intelligence visualization (Apache Superset)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
