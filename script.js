@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nimport pandas as pd\n\ndef clean_article_data(raw_data: str) -> dict:\n    \"\"\"Extracts and cleans essential fields from a raw news article JSON.\"\"\"\n    article = json.loads(raw_data)\n    return {\n        \"id\": article.get(\"article_id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"publish_date\": pd.to_datetime(article.get(\"published\"), errors='coerce'),\n        \"source_domain\": article.get(\"domain\"),\n        \"content_hash\": hash(article.get(\"text\", \"\")) # Example feature\n    }",
+    "codeSnippet": "def clean_and_enrich_article(raw_article_data: dict) -> dict:\n    cleaned_data = {\n        \"id\": raw_article_data.get(\"id\"),\n        \"title\": raw_article_data.get(\"title\", \"\").strip(),\n        \"content\": raw_article_data.get(\"text\", \"\")[:500].strip(),\n        \"published_at\": raw_article_data.get(\"date\"),\n        \"source\": raw_article_data.get(\"source_url\")\n    }\n    cleaned_data[\"sentiment\"] = \"positive\" if \"good news\" in cleaned_data[\"content\"].lower() else \"neutral\"\n    return cleaned_data",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
+      "Apache Kafka",
       "Apache Airflow",
-      "Kafka",
       "MinIO",
       "Apache Superset",
+      "Docker",
       "Kubernetes"
     ],
-    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse designed for real-time media intelligence, enabling the ingestion, processing, and visualization of news article data. It leverages a medallion architecture and advanced ETL/ELT pipelines to ensure scalable and robust data management for critical insights.",
+    "desc": "This platform establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, enabling ingestion, processing, and visualization of news article data. It leverages a modern medallion architecture and robust ETL/ELT pipelines to deliver scalable, actionable insights from diverse media sources.",
     "features": [
-      "Implemented a scalable, real-time distributed data ingestion system for news articles.",
-      "Architected an Enterprise Lakehouse with a Medallion architecture for robust data management.",
-      "Orchestrated complex ETL/ELT pipelines using Apache Airflow for automated data processing.",
-      "Developed a comprehensive media intelligence platform with integrated visualization and monitoring."
+      "Distributed enterprise lakehouse for real-time media intelligence",
+      "Modern Medallion Architecture (Bronze, Silver, Gold layers) for data processing",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow and Kafka",
+      "Containerized deployment with Docker and scalable orchestration with Kubernetes"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
