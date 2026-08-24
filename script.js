@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom io import StringIO\n\ndef clean_and_enrich_news_data(raw_csv_data: str) -> pd.DataFrame:\n    \"\"\"Applies cleansing, sentiment analysis placeholder, and schema transformation.\"\"\"\n    df = pd.read_csv(StringIO(raw_csv_data))\n    df['processed_title'] = df['title'].str.strip().str.lower()\n    df['processed_content'] = df['content'].str.strip().str.lower()\n    # Placeholder for NLP / Sentiment Analysis\n    df['sentiment_score'] = df['processed_content'].apply(lambda x: 0.5)\n    return df[['id', 'processed_title', 'processed_content', 'sentiment_score']]",
+    "codeSnippet": "from airflow.decorators import task\nimport json\n\n@task\ndef process_news_sentiment(article_data: dict) -> dict:\n    \"\"\"Analyzes sentiment and enriches news article metadata.\"\"\"\n    text = article_data.get('content', '')\n    # Placeholder for actual sentiment analysis library\n    sentiment = \"positive\" if \"breakthrough\" in text.lower() else \"neutral\"\n\n    article_data['sentiment'] = sentiment\n    article_data['processed_timestamp'] = \"2023-10-27T10:00:00Z\" # Current timestamp\n    return article_data\n",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO",
+      "Apache Airflow",
+      "MinIO (S3)",
       "PostgreSQL",
-      "Apache Superset"
+      "Apache Superset",
+      "Docker & Kubernetes"
     ],
-    "desc": "This project develops a comprehensive, distributed platform for real-time media intelligence, ingesting, processing, and visualizing data from global news articles. It achieves this by implementing a modern data lakehouse architecture with real-time streaming, automated ETL/ELT pipelines, and scalable microservices for deep analytical insights.",
+    "desc": "Developed a robust enterprise lakehouse platform for real-time ingestion, processing, and visualization of global news articles. This distributed architecture leverages streaming ETL/ELT pipelines, data warehousing, and a comprehensive monitoring stack to deliver actionable media intelligence.",
     "features": [
-      "Implemented an enterprise-grade data lakehouse architecture using MinIO for scalable object storage and PostgreSQL for structured data warehousing.",
-      "Designed and orchestrated real-time ETL/ELT pipelines with Apache Airflow and Kafka for continuous data ingestion and processing from diverse news sources.",
-      "Developed robust data quality and governance frameworks to ensure data reliability and adherence to Medallion Architecture principles.",
-      "Integrated interactive dashboards with Apache Superset and comprehensive system monitoring with Prometheus & Grafana for real-time media intelligence."
+      "Implemented a distributed data ingestion and real-time processing pipeline leveraging Apache Kafka for high throughput.",
+      "Designed and built an Enterprise Lakehouse architecture using MinIO for raw data and PostgreSQL for curated insights.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation and quality assurance.",
+      "Integrated Apache Superset for interactive data visualization and a Prometheus/Grafana stack for comprehensive system monitoring."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
