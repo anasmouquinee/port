@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom datetime import datetime\n\ndef clean_and_enrich_news(df_raw: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Cleans text, extracts entities, and enriches news data.\"\"\"\n    df_processed = df_raw.copy()\n    df_processed['headline'] = df_processed['title'].str.upper()\n    df_processed['processed_date'] = datetime.now().isoformat()\n    df_processed['sentiment'] = df_processed['content'].apply(\n        lambda x: 'positive' if 'breakthrough' in x.lower() else 'neutral'\n    )\n    return df_processed",
+    "codeSnippet": "import hashlib\nfrom datetime import datetime\n\ndef process_news_article(article: dict) -> dict:\n    \"\"\"Standardizes and enriches a raw news article dictionary.\"\"\"\n    processed_article = {\n        \"id\": hashlib.sha256(article['url'].encode()).hexdigest(),\n        \"title\": article.get(\"title\", \"Untitled\").strip(),\n        \"publish_date\": datetime.fromisoformat(article[\"published_at\"].replace(\"Z\", \"+00:00\")).date().isoformat()\n                        if \"published_at\" in article else None,\n        \"source_url\": article.get(\"url\")\n    }\n    if not all(processed_article.values()):\n        raise ValueError(\"Article missing essential fields.\")\n    return processed_article",
     "img": null,
     "gallery": [],
     "tech": [
+      "Python",
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
       "Apache Superset",
-      "Kubernetes",
-      "Python"
+      "Kubernetes"
     ],
-    "desc": "This project implements a comprehensive, distributed enterprise lakehouse for real-time media intelligence, ingesting, processing, and visualizing news articles. It leverages a modern data stack to build an end-to-end platform for data scraping, storage, and analytics, demonstrating robust data engineering principles.",
+    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. It achieves enterprise-grade media intelligence through a robust Lakehouse architecture and advanced ETL/ELT pipelines.",
     "features": [
-      "Real-Time Data Ingestion and Processing from News Sources via Apache Kafka",
-      "Scalable Enterprise Lakehouse Architecture leveraging MinIO and Medallion Layers",
-      "Automated Data Orchestration & ETL/ELT Pipelines with Apache Airflow",
-      "Integrated Business Intelligence & Real-Time Monitoring with Superset, Grafana, and Prometheus"
+      "Real-time Media Intelligence Platform for up-to-the-minute news insights",
+      "Distributed Lakehouse Architecture with Medallion approach using MinIO & PostgreSQL",
+      "Automated ETL/ELT Pipelines orchestrated by Apache Airflow and Kafka",
+      "Integrated Monitoring & Visualization via Prometheus, Grafana, and Apache Superset"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
