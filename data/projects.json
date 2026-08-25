@@ -300,23 +300,24 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(\n    dag_id=\"news_data_processing\",\n    start_date=datetime(2023, 1, 1),\n    schedule_interval=\"@daily\",\n    catchup=False\n)\ndef news_data_pipeline():\n    @task\n    def extract_from_minio(bucket, key):\n        # Simulate fetching raw news data from MinIO\n        return {\"source\": \"minio\", \"data\": \"sample_news\"}\n\n    @task\n    def transform_data(raw_data):\n        # Simulate cleaning and enriching data\n        return {\"status\": \"processed\", \"transformed_data\": raw_data[\"data\"]}\n\n    @task\n    def load_to_warehouse(data):\n        # Simulate loading transformed data into PostgreSQL\n        return f\"Loaded {data['transformed_data']} to warehouse.\"\n\n    raw_news = extract_from_minio(bucket=\"raw-news\", key=\"articles.json\")\n    transformed_news = transform_data(raw_news)\n    load_to_warehouse(transformed_news)\n\nnews_data_pipeline()",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    scrape = BashOperator(task_id='scrape_task', bash_command='python scrapers/run.py')\n    ingest_minio = BashOperator(task_id='ingest_minio_task', bash_command='python ingestion/load.py')\n    transform_data = BashOperator(task_id='transform_task', bash_command='python pipelines/transform.py')\n\n    scrape >> ingest_minio >> transform_data",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
-      "PostgreSQL",
+      "Kafka",
+      "MinIO (Data Lake)",
       "Apache Superset",
+      "Kubernetes",
       "Docker"
     ],
-    "desc": "Engineered a real-time media intelligence platform leveraging a distributed lakehouse architecture for comprehensive news data ingestion, processing, and visualization. This system provides scalable analytics and robust data governance for enterprise-level media monitoring and insights.",
+    "desc": "This project is a comprehensive and distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages a modern enterprise lakehouse architecture, real-time streaming, and robust ETL/ELT pipelines to deliver actionable insights.",
     "features": [
-      "Implemented a distributed Lakehouse architecture (Medallion Pattern) for scalable ingestion and processing of news data.",
-      "Orchestrated complex ETL/ELT pipelines using Apache Airflow for data transformation and quality assurance.",
-      "Enabled real-time data streaming with Apache Kafka for immediate processing of scraped media articles.",
-      "Developed interactive dashboards and reporting with Apache Superset for comprehensive media intelligence visualization."
+      "Scalable Enterprise Lakehouse Architecture (MinIO, PostgreSQL)",
+      "Real-time Data Ingestion & Streaming with Kafka and custom scrapers",
+      "Automated ETL/ELT Pipelines and Workflow Orchestration with Apache Airflow",
+      "Distributed Deployment & Containerization using Kubernetes and Docker Compose",
+      "Integrated Business Intelligence & Monitoring (Superset, Prometheus, Grafana)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
