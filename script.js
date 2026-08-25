@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_article_for_silver(raw_article_json: str) -> dict:\n    \"\"\"Parses and standardizes a raw news article from Bronze layer.\"\"\"\n    article = json.loads(raw_article_json)\n    processed_article = {\n        \"article_id\": article.get(\"id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"source_url\": article.get(\"url\"),\n        \"published_at\": datetime.fromisoformat(article.get(\"published_date\")),\n        \"content_hash\": hash(article.get(\"content\", \"\"))\n    }\n    return processed_article",
+    "codeSnippet": "from airflow.decorators import task\nfrom airflow.providers.apache.kafka.hooks.producer import KafkaProducerHook\nfrom minio import Minio\nimport json\n\n@task\ndef ingest_and_store_article(article_data: dict, topic: str):\n    # Publish to Kafka\n    kafka_producer = KafkaProducerHook(kafka_conn_id='kafka_default')\n    kafka_producer.send(topic, json.dumps(article_data).encode('utf-8'))\n\n    # Store raw data in MinIO (Bronze layer)\n    minio_client = Minio(\"localhost:9000\", access_key=\"minio_admin\", secret_key=\"anaskaelar\", secure=False)\n    object_name = f\"bronze/articles/{article_data['id']}.json\"\n    minio_client.put_object(\"news-lakehouse\", object_name, json.dumps(article_data).encode('utf-8'),\n                            len(json.dumps(article_data).encode('utf-8')), content_type=\"application/json\")",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "Kubernetes",
-      "Data Lakehouse",
+      "MinIO (S3)",
+      "PostgreSQL",
       "Apache Superset"
     ],
-    "desc": "This project delivers a comprehensive Enterprise Lakehouse & Real-Time Media Intelligence Platform for end-to-end ingestion, processing, and visualization of news articles. It leverages a distributed architecture with scraping, data lake/warehouse, and a medallion approach to provide actionable media insights.",
+    "desc": "This distributed enterprise lakehouse platform centralizes real-time media intelligence by ingesting, processing, and visualizing vast volumes of news article data. It leverages a modern medallion architecture with robust ETL/ELT pipelines, providing comprehensive insights through integrated data warehousing and powerful dashboards.",
     "features": [
-      "Real-time, scalable data ingestion and streaming via Apache Kafka.",
-      "Robust, distributed orchestration of ETL/ELT pipelines using Apache Airflow.",
-      "Enterprise-grade Data Lakehouse implementation with a Medallion Architecture (Bronze, Silver, Gold layers).",
-      "Integrated real-time media intelligence and visualization dashboards powered by Apache Superset."
+      "Real-time distributed data ingestion and processing with Apache Kafka",
+      "Enterprise Data Lakehouse built on a Medallion Architecture (Bronze, Silver, Gold layers)",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow",
+      "Interactive media intelligence dashboards with Apache Superset and PostgreSQL"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
