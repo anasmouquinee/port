@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import task\nfrom airflow.providers.apache.kafka.hooks.producer import KafkaProducerHook\nfrom minio import Minio\nimport json\n\n@task\ndef ingest_and_store_article(article_data: dict, topic: str):\n    # Publish to Kafka\n    kafka_producer = KafkaProducerHook(kafka_conn_id='kafka_default')\n    kafka_producer.send(topic, json.dumps(article_data).encode('utf-8'))\n\n    # Store raw data in MinIO (Bronze layer)\n    minio_client = Minio(\"localhost:9000\", access_key=\"minio_admin\", secret_key=\"anaskaelar\", secure=False)\n    object_name = f\"bronze/articles/{article_data['id']}.json\"\n    minio_client.put_object(\"news-lakehouse\", object_name, json.dumps(article_data).encode('utf-8'),\n                            len(json.dumps(article_data).encode('utf-8')), content_type=\"application/json\")",
+    "codeSnippet": "from datetime import datetime\n\ndef extract_transform_load(source_topic, target_storage):\n    \"\"\"\n    Simulates an ETL step for processing news articles.\n    Extracts from Kafka, transforms, and loads to storage.\n    \"\"\"\n    print(f\"Starting ETL for {source_topic} to {target_storage} at {datetime.now()}\")\n    # In a real scenario: Consume from Kafka, apply transformations, store to MinIO/PostgreSQL\n    print(\"ETL complete: Data processed and loaded.\")",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
-      "PostgreSQL",
-      "Apache Superset"
+      "Data Lakehouse (MinIO/S3)",
+      "Apache Superset",
+      "Docker & Kubernetes",
+      "Python"
     ],
-    "desc": "This distributed enterprise lakehouse platform centralizes real-time media intelligence by ingesting, processing, and visualizing vast volumes of news article data. It leverages a modern medallion architecture with robust ETL/ELT pipelines, providing comprehensive insights through integrated data warehousing and powerful dashboards.",
+    "desc": "Developed a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. This project establishes a modern enterprise lakehouse architecture, enabling advanced media intelligence and scalable data management.",
     "features": [
-      "Real-time distributed data ingestion and processing with Apache Kafka",
-      "Enterprise Data Lakehouse built on a Medallion Architecture (Bronze, Silver, Gold layers)",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow",
-      "Interactive media intelligence dashboards with Apache Superset and PostgreSQL"
+      "Engineered a distributed Lakehouse platform combining MinIO (Data Lake) and PostgreSQL (Data Warehouse) for scalable, real-time media intelligence.",
+      "Implemented custom scrapers and Apache Kafka for high-throughput news article ingestion, orchestrated by Apache Airflow for robust ETL/ELT pipelines.",
+      "Integrated Apache Superset for interactive data dashboards, complemented by Prometheus and Grafana for real-time operational monitoring.",
+      "Deployed the entire platform using Docker Compose for local development and designed for scalable orchestration with Kubernetes."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
