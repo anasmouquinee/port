@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_stream_processing',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['data_lakehouse', 'real_time'],\n) as dag:\n    ingest_raw = BashOperator(\n        task_id='ingest_raw_data',\n        bash_command='python /app/ingestion/ingest.py',\n    )\n    process_bronze = BashOperator(\n        task_id='process_to_bronze',\n        bash_command='python /app/pipelines/bronze_transform.py',\n    )\n    ingest_raw >> process_bronze",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='newsstream_pipeline',\n    start_date=days_ago(1),\n    schedule_interval='@hourly',\n    catchup=False,\n    tags=['data_lakehouse'],\n) as dag:\n    scrape_task = BashOperator(task_id='scrape_news', bash_command='python scrapers/run.py')\n    raw_to_bronze_task = BashOperator(task_id='raw_to_bronze', bash_command='python pipelines/raw.py')\n    bronze_to_silver_task = BashOperator(task_id='bronze_to_silver', bash_command='python pipelines/bronze.py')\n\n    scrape_task >> raw_to_bronze_task >> bronze_to_silver_task",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (Data Lake)",
-      "Kubernetes",
+      "MinIO",
+      "PostgreSQL",
       "Apache Superset",
-      "Python"
+      "Kubernetes"
     ],
-    "desc": "This project establishes a distributed enterprise lakehouse for real-time media intelligence, enabling comprehensive ingestion, processing, and analysis of news articles. It implements a Medallion Architecture with ETL/ELT pipelines, leveraging technologies like Kafka, Airflow, and MinIO for scalable data management and analytics.",
+    "desc": "Engineered a comprehensive, distributed enterprise lakehouse platform for real-time ingestion, processing, and visualization of news media data. This solution leverages a medallion architecture and advanced ETL/ELT pipelines to deliver actionable media intelligence and robust data governance.",
     "features": [
-      "Distributed Enterprise Lakehouse and Data Warehouse leveraging MinIO and PostgreSQL.",
-      "Real-time media intelligence stream processing and ingestion powered by Apache Kafka.",
-      "Automated ETL/ELT pipelines orchestrated with Apache Airflow following a Medallion Architecture.",
-      "Integrated real-time monitoring (Prometheus, Grafana) and interactive data visualization (Apache Superset)."
+      "Real-time data ingestion and stream processing from diverse news sources.",
+      "Distributed Enterprise Lakehouse leveraging a Medallion Architecture for structured data.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation and quality.",
+      "Integrated real-time media intelligence and interactive visualization dashboards via Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
