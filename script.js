@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef extract_transform_load_news():\n    # Simulate data extraction from MinIO, transformation, and loading to PostgreSQL\n    print(\"Executing ETL: Extracting raw news, transforming, and loading to DWH.\")\n    # This function would interact with MinIO S3 for data lake and PostgreSQL for data warehouse.\n    pass\n\n# Example task within an Airflow DAG for data processing:\netl_task = PythonOperator(\n    task_id='process_news_data',\n    python_callable=extract_transform_load_news\n)\n",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_stream_processing',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['data_lakehouse', 'real_time'],\n) as dag:\n    ingest_raw = BashOperator(\n        task_id='ingest_raw_data',\n        bash_command='python /app/ingestion/ingest.py',\n    )\n    process_bronze = BashOperator(\n        task_id='process_to_bronze',\n        bash_command='python /app/pipelines/bronze_transform.py',\n    )\n    ingest_raw >> process_bronze",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
+      "MinIO (Data Lake)",
       "Kubernetes",
       "Apache Superset",
-      "MinIO",
-      "PostgreSQL"
+      "Python"
     ],
-    "desc": "Developed a comprehensive, distributed platform for real-time media intelligence, capable of ingesting, processing, and visualizing news articles at scale. This project establishes a robust enterprise lakehouse architecture with automated ETL/ELT pipelines for actionable insights and scalable data management.",
+    "desc": "This project establishes a distributed enterprise lakehouse for real-time media intelligence, enabling comprehensive ingestion, processing, and analysis of news articles. It implements a Medallion Architecture with ETL/ELT pipelines, leveraging technologies like Kafka, Airflow, and MinIO for scalable data management and analytics.",
     "features": [
-      "Implemented a scalable, distributed lakehouse architecture for real-time media intelligence.",
-      "Orchestrated complex data pipelines with Apache Airflow for automated ETL/ELT processes.",
-      "Integrated Apache Kafka for high-throughput, real-time news article ingestion and stream processing.",
-      "Deployed a comprehensive monitoring and visualization stack using Prometheus, Grafana, and Apache Superset."
+      "Distributed Enterprise Lakehouse and Data Warehouse leveraging MinIO and PostgreSQL.",
+      "Real-time media intelligence stream processing and ingestion powered by Apache Kafka.",
+      "Automated ETL/ELT pipelines orchestrated with Apache Airflow following a Medallion Architecture.",
+      "Integrated real-time monitoring (Prometheus, Grafana) and interactive data visualization (Apache Superset)."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
