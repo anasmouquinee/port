@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from datetime import datetime\n\ndef extract_transform_load(source_topic, target_storage):\n    \"\"\"\n    Simulates an ETL step for processing news articles.\n    Extracts from Kafka, transforms, and loads to storage.\n    \"\"\"\n    print(f\"Starting ETL for {source_topic} to {target_storage} at {datetime.now()}\")\n    # In a real scenario: Consume from Kafka, apply transformations, store to MinIO/PostgreSQL\n    print(\"ETL complete: Data processed and loaded.\")",
+    "codeSnippet": "import requests\nfrom bs4 import BeautifulSoup\n\ndef extract_article_data(url: str) -> dict:\n    response = requests.get(url)\n    response.raise_for_status()\n    soup = BeautifulSoup(response.text, 'html.parser')\n\n    title = soup.find('h1').get_text(strip=True) if soup.find('h1') else 'N/A'\n    content = \"\\n\".join([p.get_text(strip=True) for p in soup.find_all('p')])\n\n    return {\"url\": url, \"title\": title, \"content\": content}",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Python",
       "Apache Airflow",
-      "Data Lakehouse (MinIO/S3)",
-      "Apache Superset",
-      "Docker & Kubernetes",
-      "Python"
+      "Apache Kafka",
+      "MinIO (S3)",
+      "PostgreSQL",
+      "Apache Superset"
     ],
-    "desc": "Developed a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. This project establishes a modern enterprise lakehouse architecture, enabling advanced media intelligence and scalable data management.",
+    "desc": "This distributed enterprise platform provides real-time media intelligence by ingesting, processing, and visualizing news article data from various sources. It leverages a modern lakehouse architecture with robust ETL/ELT pipelines, enabling scalable data management and advanced analytics for comprehensive media insights.",
     "features": [
-      "Engineered a distributed Lakehouse platform combining MinIO (Data Lake) and PostgreSQL (Data Warehouse) for scalable, real-time media intelligence.",
-      "Implemented custom scrapers and Apache Kafka for high-throughput news article ingestion, orchestrated by Apache Airflow for robust ETL/ELT pipelines.",
-      "Integrated Apache Superset for interactive data dashboards, complemented by Prometheus and Grafana for real-time operational monitoring.",
-      "Deployed the entire platform using Docker Compose for local development and designed for scalable orchestration with Kubernetes."
+      "Implemented a scalable Enterprise Lakehouse Architecture (Medallion Zones)",
+      "Engineered real-time data ingestion and processing pipelines with Apache Kafka",
+      "Developed automated ETL/ELT workflows orchestrated by Apache Airflow",
+      "Integrated comprehensive data visualization and monitoring with Superset, Prometheus, and Grafana"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
