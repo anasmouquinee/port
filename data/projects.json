@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from datetime import datetime\n\ndef transform_article_data(raw_data: dict) -> dict:\n    \"\"\"\n    Transforms raw article data by cleaning text and extracting key entities.\n    \"\"\"\n    article_id = raw_data.get(\"id\")\n    title = raw_data.get(\"title\", \"\").strip()\n    content = raw_data.get(\"content\", \"\").replace('\\n', ' ').strip()\n    # Placeholder for an NLP function\n    sentiment = \"positive\" # analyze_sentiment(content)\n\n    return {\n        \"article_id\": article_id,\n        \"processed_title\": title,\n        \"summary_text\": content[:200] + \"...\",\n        \"sentiment_score\": sentiment,\n        \"processing_timestamp\": datetime.now().isoformat()\n    }",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    scrape_news = BashOperator(task_id='scrape_data', bash_command='python /app/scrapers/main.py')\n    load_bronze = BashOperator(task_id='load_bronze_layer', bash_command='python /app/pipelines/load_minio.py')\n    process_silver = BashOperator(task_id='process_silver_layer', bash_command='python /app/pipelines/transform.py')\n    load_gold = BashOperator(task_id='load_gold_layer', bash_command='python /app/pipelines/aggregate.py')\n\n    scrape_news >> load_bronze >> process_silver >> load_gold",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
-      "Docker",
+      "MinIO S3",
+      "Apache Superset",
       "Kubernetes",
-      "Apache Superset"
+      "Python"
     ],
-    "desc": "This project develops a comprehensive, distributed enterprise lakehouse for real-time media intelligence, integrating data ingestion, processing, and visualization from news articles. It leverages a Medallion Architecture with robust ETL/ELT pipelines to provide actionable insights from diverse news sources through a scalable data platform.",
+    "desc": "Developed a comprehensive, distributed enterprise lakehouse platform for real-time ingestion, processing, and visualization of news articles, providing critical media intelligence. Engineered a robust data pipeline utilizing a medallion architecture, ETL/ELT processes, and containerized services to manage and analyze high-volume, dynamic data streams.",
     "features": [
-      "Implemented a distributed enterprise lakehouse leveraging a Medallion Architecture for scalable data ingestion and processing.",
-      "Orchestrated real-time ETL/ELT pipelines using Apache Airflow and Kafka for continuous media intelligence delivery.",
-      "Designed and deployed a containerized infrastructure with Docker and Kubernetes for high availability and scalability.",
-      "Integrated comprehensive data visualization (Superset) and monitoring (Prometheus, Grafana) for operational insights."
+      "End-to-end distributed platform for real-time news data ingestion, processing, and visualization.",
+      "Implemented a robust Medallion Architecture (Bronze, Silver, Gold layers) within a Data Lakehouse (MinIO, PostgreSQL).",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow ensuring data quality and transformations.",
+      "Scalable deployment leveraging Docker and Kubernetes, with comprehensive monitoring via Prometheus and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,7 +329,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    open: true\n  },\n  resolve: {\n    alias: {\n      '@': '/src'\n    }\n  }\n});",
+    "codeSnippet": "import React, { FC } from 'react';\n\ninterface AIStatusProps {\n  status: 'active' | 'inactive' | 'processing';\n  lastUpdate: Date;\n}\n\nconst AIStatusDisplay: FC<AIStatusProps> = ({ status, lastUpdate }) => (\n  <div className={`status-display status-${status}`}>\n    <h3>AI Engine Status: {status.toUpperCase()}</h3>\n    <p>Last Updated: {lastUpdate.toLocaleString()}</p>\n  </div>\n);",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,16 +338,16 @@
       "Vite",
       "Oxlint",
       "Docker",
-      "npm/Yarn"
+      "Vercel"
     ],
-    "desc": "This repository establishes a modern, type-safe frontend foundation for the Omnipulse AI Studio using React, TypeScript, and Vite. It emphasizes developer experience and code quality through fast hot module reloading and robust Oxlint configurations, laying the groundwork for interactive AI applications.",
+    "desc": "Developed a modern, high-performance web application, OmniPulse AI Studio, serving as an intuitive user interface for AI-driven workflows and data visualization. Leveraging React, TypeScript, and Vite, this project prioritizes a streamlined development experience, robust type safety, and efficient bundle management.",
     "features": [
-      "High-Performance Frontend Development: Leverages Vite for lightning-fast development, hot module replacement (HMR), and optimized build processes.",
-      "Robust Type Safety: Implements TypeScript throughout the codebase to ensure type consistency, reduce bugs, and enhance maintainability.",
-      "Automated Code Quality: Utilizes Oxlint for strict linting rules, enforcing coding standards and identifying potential issues early in development.",
-      "Containerized Development Environment: Provides a Dockerfile for consistent, isolated development and deployment environments."
+      "Optimized Frontend Architecture: Utilizes React with Vite for a high-performance, HMR-enabled development and production environment.",
+      "Robust Type Safety: Implements TypeScript across the codebase to ensure strong type checking and enhanced maintainability.",
+      "Advanced Code Quality Enforcement: Integrates Oxlint, configured for type-aware linting, to enforce strict code standards and identify potential issues early.",
+      "Containerized Deployment Workflow: Leverages Docker for consistent environment provisioning and streamlined deployment readiness."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
-    "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
+    "link": "https://omnipulse-ai-studio.vercel.app"
   }
 ]
