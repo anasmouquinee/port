@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom io import BytesIO\n\ndef process_news_data(raw_bytes: bytes) -> bytes:\n    \"\"\"Loads raw news data, cleans, and converts to a refined format.\"\"\"\n    # Assume raw_bytes is a CSV or JSON payload from Kafka/Data Lake\n    df = pd.read_csv(BytesIO(raw_bytes))\n    \n    # Basic text cleaning and sentiment analysis placeholder\n    df['title'] = df['title'].str.strip().str.lower()\n    df['content'] = df['content'].fillna('').str.lower()\n    \n    # Select and reorder columns for refined zone\n    refined_df = df[['id', 'title', 'content', 'published_date']]\n    return refined_df.to_parquet(index=False)",
+    "codeSnippet": "from airflow.operators.python import PythonOperator\n\ndef _process_raw_data(source: str):\n    \"\"\"Placeholder for transforming raw ingested data into refined zone.\"\"\"\n    print(f\"Starting processing for raw data from: {source}...\")\n    # Logic to fetch raw data from MinIO, transform, and store in curated zone\n    # e.g., raw_data = MinIODatabase().get_raw_data(source)\n    #       processed_data = DataProcessor.clean_and_enrich(raw_data)\n    #       MinIODatabase().save_curated_data(processed_data)\n    print(f\"Finished processing raw data for: {source}.\")\n\nprocess_task = PythonOperator(\n    task_id='process_news_articles',\n    python_callable=_process_raw_data,\n    op_kwargs={'source': 'news_articles'},\n)",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Python",
       "Apache Airflow",
-      "Kubernetes",
+      "Apache Kafka",
       "MinIO",
-      "Apache Superset",
-      "Python"
+      "Docker",
+      "Kubernetes"
     ],
-    "desc": "A comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It implements a modern data lakehouse architecture with real-time ingestion, robust ETL/ELT pipelines, and extensive monitoring for advanced analytics and insights.",
+    "desc": "This project implements a comprehensive and distributed enterprise lakehouse platform for real-time media intelligence, designed for ingestion, processing, and visualization of news article data. It leverages a modern data architecture to provide scalable data analytics and actionable insights from various media sources.",
     "features": [
-      "Implemented a robust Enterprise Lakehouse architecture (Data Lake & Data Warehouse) following the Medallion pattern.",
-      "Engineered real-time data ingestion and processing pipelines using Apache Kafka for high-throughput media intelligence.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow and deployed a distributed infrastructure using Docker and Kubernetes.",
-      "Integrated comprehensive monitoring (Prometheus, Grafana) and business intelligence (Apache Superset) for operational visibility and data visualization."
+      "Implemented a distributed enterprise lakehouse architecture with Medallion zones for scalable data management.",
+      "Developed real-time media intelligence platform with dynamic news article scraping and processing capabilities.",
+      "Orchestrated complex ETL/ELT pipelines using Apache Airflow for automated data workflows and governance.",
+      "Integrated comprehensive data visualization (Apache Superset) and monitoring (Prometheus/Grafana) for operational insights."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,25 +328,13 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    open: true\n  },\n  build: {\n    outDir: 'dist'\n  }\n});",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Oxlint",
-      "Docker",
-      "Vercel"
-    ],
-    "desc": "omnipulse-ai-studio provides a robust frontend foundation for an AI studio, leveraging a modern React, TypeScript, and Vite stack. It emphasizes high code quality through Oxlint integration and streamlines deployment with Docker and Vercel.",
-    "features": [
-      "Leverages a cutting-edge React, TypeScript, and Vite stack for rapid development and optimized performance.",
-      "Integrates Oxlint for advanced static code analysis, ensuring high code quality and maintainability.",
-      "Utilizes Docker for containerized development and deployment, ensuring environmental consistency.",
-      "Configured for seamless continuous deployment via Vercel, enabling agile iteration and delivery."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
   }
