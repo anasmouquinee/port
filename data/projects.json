@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.operators.python import PythonOperator\n\ndef _process_raw_data(source: str):\n    \"\"\"Placeholder for transforming raw ingested data into refined zone.\"\"\"\n    print(f\"Starting processing for raw data from: {source}...\")\n    # Logic to fetch raw data from MinIO, transform, and store in curated zone\n    # e.g., raw_data = MinIODatabase().get_raw_data(source)\n    #       processed_data = DataProcessor.clean_and_enrich(raw_data)\n    #       MinIODatabase().save_curated_data(processed_data)\n    print(f\"Finished processing raw data for: {source}.\")\n\nprocess_task = PythonOperator(\n    task_id='process_news_articles',\n    python_callable=_process_raw_data,\n    op_kwargs={'source': 'news_articles'},\n)",
+    "codeSnippet": "import json\nfrom kafka import KafkaProducer\nfrom minio import Minio\n\ndef ingest_and_store(article: dict, kafka_topic: str, minio_bucket: str):\n    producer = KafkaProducer(bootstrap_servers='kafka:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))\n    minio_client = Minio('minio:9000', access_key='minio_admin', secret_key='anaskaelar', secure=False)\n\n    # Publish to Kafka for real-time processing\n    producer.send(kafka_topic, article)\n\n    # Store raw article in MinIO Data Lake\n    object_name = f\"raw_articles/{article['id']}.json\"\n    minio_client.put_object(minio_bucket, object_name, json.dumps(article).encode('utf-8'), len(json.dumps(article).encode('utf-8')))",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
       "MinIO",
+      "Apache Superset",
       "Docker",
       "Kubernetes"
     ],
-    "desc": "This project implements a comprehensive and distributed enterprise lakehouse platform for real-time media intelligence, designed for ingestion, processing, and visualization of news article data. It leverages a modern data architecture to provide scalable data analytics and actionable insights from various media sources.",
+    "desc": "This robust platform provides real-time media intelligence by ingesting, processing, and visualizing news articles from diverse sources. It leverages a distributed lakehouse architecture and powerful ETL/ELT pipelines for scalable data management and analytics.",
     "features": [
-      "Implemented a distributed enterprise lakehouse architecture with Medallion zones for scalable data management.",
-      "Developed real-time media intelligence platform with dynamic news article scraping and processing capabilities.",
-      "Orchestrated complex ETL/ELT pipelines using Apache Airflow for automated data workflows and governance.",
-      "Integrated comprehensive data visualization (Apache Superset) and monitoring (Prometheus/Grafana) for operational insights."
+      "Implemented a scalable enterprise lakehouse architecture following the Medallion Model.",
+      "Orchestrated real-time data ingestion and stream processing with Apache Kafka and Airflow.",
+      "Developed robust ETL/ELT pipelines for diverse news article data sources.",
+      "Provided dynamic media intelligence visualization and monitoring via Superset, Grafana, and Prometheus."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,13 +328,25 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIResponse {\n  prediction: string;\n  confidence: number;\n}\n\nexport const getAIPrediction = async (input: string): Promise<AIResponse> => {\n  const { data } = await axios.post<AIResponse>('/api/predict', { input });\n  return data;\n};",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Oxlint",
+      "Node.js",
+      "Docker"
+    ],
+    "desc": "Developed a robust AI studio frontend using React, TypeScript, and Vite, designed to provide an intuitive interface for interacting with AI models. The project emphasizes code quality with Oxlint for static analysis and leverages Docker for consistent, containerized deployment across environments.",
+    "features": [
+      "Modern single-page application architecture using React, TypeScript, and Vite.",
+      "Enforced high code quality and consistency with Oxlint and type-aware linting.",
+      "Containerized deployment using Docker for environment consistency and scalability.",
+      "Optimized development workflow with Hot Module Replacement (HMR) and Vercel integration."
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
   }
