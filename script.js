@@ -315,23 +315,25 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom airflow.utils.dates import days_ago\nfrom airflow import DAG\n\ndef extract_and_load_news():\n    print(\"Extracting news articles from source...\")\n    print(\"Loading raw data into MinIO Data Lake and Kafka...\")\n\nwith DAG(\n    dag_id='news_stream_ingestion',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['news', 'lakehouse']\n) as dag:\n    ingest_task = PythonOperator(\n        task_id='ingest_raw_news_data',\n        python_callable=extract_and_load_news,\n    )",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_news_data():\n    # Simulate fetching from Kafka and transforming data\n    print(\"Fetching raw news articles from Kafka stream...\")\n    print(\"Applying data cleansing and enrichment transformations.\")\n    print(\"Storing transformed data in Silver layer of Lakehouse.\")\n\nwith DAG(\n    'news_data_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    transform_task = PythonOperator(\n        task_id='transform_and_store_news',\n        python_callable=process_news_data\n    )",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
-      "Kubernetes",
-      "Apache Superset"
+      "MinIO (Data Lake)",
+      "Apache Superset",
+      "Docker & Kubernetes"
     ],
-    "desc": "This distributed platform enables end-to-end ingestion, processing, and visualization of news articles for real-time media intelligence. It implements a robust Lakehouse architecture, integrating scraping, data lake, data warehouse, and comprehensive ETL/ELT processes to deliver actionable insights.",
+    "desc": "This platform engineers a distributed enterprise lakehouse for real-time media intelligence, enabling the ingestion, processing, and visualization of global news data.\nIt implements a robust Medallion Architecture and end-to-end data pipelines for comprehensive media analytics and insights.",
     "features": [
-      "Developed a comprehensive Lakehouse architecture for real-time media intelligence.",
-      "Orchestrated complex data pipelines for ingestion and transformation using Apache Airflow.",
-      "Implemented distributed data scraping, a scalable data lake (MinIO), and analytical visualization (Superset).",
-      "Designed for containerized deployment with Docker and Kubernetes for high availability and scalability."
+      "Distributed real-time data ingestion and stream processing with Kafka.",
+      "Scalable Data Lakehouse architecture utilizing MinIO for raw and refined data.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow (Medallion Architecture).",
+      "Interactive real-time media intelligence dashboards powered by Apache Superset.",
+      "Comprehensive infrastructure monitoring with Prometheus and Grafana.",
+      "Containerized deployment strategy for high availability and scalability."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,7 +346,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import { useState, useCallback } from 'react';\n\ntype UseToggle = [boolean, () => void];\n\nconst useToggle = (initialState: boolean = false): UseToggle => {\n  const [state, setState] = useState<boolean>(initialState);\n  const toggle = useCallback(() => setState(prev => !prev), []);\n  return [state, toggle];\n};",
+    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n  },\n  build: {\n    outDir: 'dist',\n    sourcemap: true,\n  },\n});",
     "img": null,
     "gallery": [],
     "tech": [
@@ -355,12 +357,12 @@ const EMBEDDED_PROJECTS = [
       "Docker",
       "Vercel"
     ],
-    "desc": "Developed a high-performance frontend foundation for the Omnipulse AI Studio, designed to support sophisticated AI model interaction and data visualization. This project leverages React, TypeScript, and Vite, enhanced with advanced Oxlint configurations for strict code quality, Docker for consistent environments, and Vercel for streamlined deployment.",
+    "desc": "OmniPulse AI Studio is a modern web application designed to provide an interactive interface for AI functionalities. It leverages React, TypeScript, and Vite for a highly performant and maintainable frontend development experience, optimized with Oxlint for code quality.",
     "features": [
-      "Leverages a cutting-edge React, TypeScript, and Vite stack for optimal frontend performance.",
-      "Implements advanced Oxlint configurations with type-aware rules for rigorous code quality and developer experience.",
-      "Ensures consistent deployment and scalability through Docker containerization and Vercel integration.",
-      "Architected for future performance with pre-configured support for the React Compiler."
+      "Modern frontend architecture powered by React, TypeScript, and Vite for optimal performance and developer experience.",
+      "Enhanced code quality and consistency through comprehensive linting with Oxlint and type-aware rules.",
+      "Streamlined development and deployment workflow utilizing Docker for containerization and Vercel for continuous integration.",
+      "Configurable build processes and development environment for rapid iteration and scalability."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
