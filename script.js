@@ -315,24 +315,24 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom io import BytesIO\n\ndef process_raw_article_data(raw_bytes: bytes) -> bytes:\n    \"\"\"Transforms raw news article data (e.g., JSON) to a processed format.\"\"\"\n    # Example: read JSON, clean text, convert to parquet/structured format\n    df = pd.read_json(BytesIO(raw_bytes))\n    df['title_cleaned'] = df['title'].str.lower().str.strip()\n    # df['sentiment_score'] = df['content'].apply(analyze_sentiment) # Hypothetical\n    return df.to_parquet(index=False)",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    tags=['data_lake', 'etl']\n) as dag:\n    ingest_raw = BashOperator(task_id='ingest_news', bash_command='python /app/ingestion/run.py')\n    process_bronze = BashOperator(task_id='to_bronze', bash_command='spark-submit /app/pipelines/bronze.py')\n    ingest_raw >> process_bronze",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "PostgreSQL",
+      "Apache Superset",
       "Docker",
-      "Apache Superset"
+      "Kubernetes"
     ],
-    "desc": "This project develops a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. It leverages a modern Lakehouse architecture, including a Medallion data pipeline, to deliver advanced media intelligence.",
+    "desc": "Anas developed a comprehensive and distributed platform for real-time ingestion, processing, and visualization of news articles. This project implements a robust enterprise lakehouse architecture, utilizing a Medallion pattern for scalable data management and advanced media intelligence analytics.",
     "features": [
-      "Distributed Lakehouse Architecture (Medallion Pattern) for scalable data management",
-      "Real-time news data ingestion and processing with Apache Kafka and Airflow",
-      "End-to-end data pipeline from scraping to advanced analytics and visualization",
-      "Containerized deployment with Docker and orchestratable via Kubernetes for high availability"
+      "Real-time data ingestion and stream processing with Apache Kafka.",
+      "Orchestration of complex ETL/ELT pipelines using Apache Airflow for data transformation.",
+      "Scalable enterprise data lakehouse architecture with MinIO and Medallion zones.",
+      "Interactive real-time media intelligence dashboards via Apache Superset.",
+      "Containerized deployment using Docker Compose and Kubernetes for distributed scalability."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
