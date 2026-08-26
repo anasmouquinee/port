@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_ingestion_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    scrape_task = BashOperator(task_id='scrape_data', bash_command='python /ingestion/scraper.py')\n    raw_to_bronze_task = BashOperator(task_id='transform_raw', bash_command='python /pipelines/raw_to_bronze.py')\n    bronze_to_silver_task = BashOperator(task_id='refine_data', bash_command='python /pipelines/bronze_to_silver.py')\n    \n    scrape_task >> raw_to_bronze_task >> bronze_to_silver_task",
+    "codeSnippet": "from datetime import datetime\n\ndef transform_article_data(raw_data: dict) -> dict:\n    \"\"\"\n    Transforms raw article data by cleaning text and extracting key entities.\n    \"\"\"\n    article_id = raw_data.get(\"id\")\n    title = raw_data.get(\"title\", \"\").strip()\n    content = raw_data.get(\"content\", \"\").replace('\\n', ' ').strip()\n    # Placeholder for an NLP function\n    sentiment = \"positive\" # analyze_sentiment(content)\n\n    return {\n        \"article_id\": article_id,\n        \"processed_title\": title,\n        \"summary_text\": content[:200] + \"...\",\n        \"sentiment_score\": sentiment,\n        \"processing_timestamp\": datetime.now().isoformat()\n    }",
     "img": null,
     "gallery": [],
     "tech": [
+      "Apache Kafka",
       "Apache Airflow",
-      "Kafka",
-      "MinIO",
+      "MinIO (S3)",
+      "Docker",
       "Kubernetes",
-      "Apache Superset",
-      "Python"
+      "Apache Superset"
     ],
-    "desc": "This project is a comprehensive and distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It establishes an enterprise-grade lakehouse architecture with automated ETL/ELT pipelines, providing scalable data management and analytics capabilities.",
+    "desc": "This project develops a comprehensive, distributed enterprise lakehouse for real-time media intelligence, integrating data ingestion, processing, and visualization from news articles. It leverages a Medallion Architecture with robust ETL/ELT pipelines to provide actionable insights from diverse news sources through a scalable data platform.",
     "features": [
-      "Real-time, distributed news article ingestion and scraping at scale.",
-      "Scalable Enterprise Lakehouse architecture implementing the Medallion approach (Data Lake to Data Warehouse).",
-      "Automated and orchestrated ETL/ELT data pipelines using Apache Airflow for robust data transformation.",
-      "Integrated monitoring (Prometheus, Grafana) and interactive data visualization (Apache Superset) for media intelligence."
+      "Implemented a distributed enterprise lakehouse leveraging a Medallion Architecture for scalable data ingestion and processing.",
+      "Orchestrated real-time ETL/ELT pipelines using Apache Airflow and Kafka for continuous media intelligence delivery.",
+      "Designed and deployed a containerized infrastructure with Docker and Kubernetes for high availability and scalability.",
+      "Integrated comprehensive data visualization (Superset) and monitoring (Prometheus, Grafana) for operational insights."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,28 +324,28 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
+    "category": "Full-Stack & Web",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface PredictionResult {\n  output: string;\n  confidence: number;\n}\n\nexport async function predictWithAI(\n  modelId: string,\n  inputData: any\n): Promise<PredictionResult> {\n  const response = await fetch(`/api/models/${modelId}/predict`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(inputData),\n  });\n  if (!response.ok) throw new Error('AI prediction failed');\n  return response.json();\n}",
+    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    open: true\n  },\n  resolve: {\n    alias: {\n      '@': '/src'\n    }\n  }\n});",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Docker",
       "Oxlint",
-      "AI/ML Frameworks"
+      "Docker",
+      "npm/Yarn"
     ],
-    "desc": "Omnipulse AI Studio is a sophisticated web-based platform designed for building and managing AI models and applications. It leverages modern front-end technologies to provide an intuitive user experience for complex AI workflows.",
+    "desc": "This repository establishes a modern, type-safe frontend foundation for the Omnipulse AI Studio using React, TypeScript, and Vite. It emphasizes developer experience and code quality through fast hot module reloading and robust Oxlint configurations, laying the groundwork for interactive AI applications.",
     "features": [
-      "Interactive web interface for AI model management and visualization.",
-      "Optimized development workflow with Vite and Hot Module Replacement (HMR).",
-      "Robust code quality and maintainability enforced by Oxlint and TypeScript.",
-      "Containerized deployment readiness via Dockerfile for scalable operations."
+      "High-Performance Frontend Development: Leverages Vite for lightning-fast development, hot module replacement (HMR), and optimized build processes.",
+      "Robust Type Safety: Implements TypeScript throughout the codebase to ensure type consistency, reduce bugs, and enhance maintainability.",
+      "Automated Code Quality: Utilizes Oxlint for strict linting rules, enforcing coding standards and identifying potential issues early in development.",
+      "Containerized Development Environment: Provides a Dockerfile for consistent, isolated development and deployment environments."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
