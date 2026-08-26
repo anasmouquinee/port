@@ -315,7 +315,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom datetime import datetime\nimport json\n\n# Core function for transforming raw news data into a bronze-layer format.\ndef transform_raw_to_bronze(raw_json_record: str) -> dict:\n    record = json.loads(raw_json_record)\n    processed_record = {\n        \"article_id\": record.get(\"id\"),\n        \"title_clean\": record.get(\"title\", \"\").strip(),\n        \"source_name\": record.get(\"source\", {}).get(\"name\"),\n        \"published_utc\": pd.to_datetime(record.get(\"publishedAt\")).isoformat(),\n        \"ingested_timestamp\": datetime.utcnow().isoformat()\n    }\n    return processed_record",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef transform_raw_article(raw_json_data: str) -> dict:\n    data = json.loads(raw_json_data)\n    transformed = {\n        \"article_id\": data.get(\"id\"),\n        \"title\": data.get(\"title\", \"\"),\n        \"url\": data.get(\"url\", \"\"),\n        \"publish_date\": datetime.fromisoformat(data[\"published_at\"].replace('Z', '+00:00')) if \"published_at\" in data else None,\n        \"source\": data.get(\"source\", {}).get(\"name\", \"Unknown\"),\n        \"content_length\": len(data.get(\"content\", \"\")),\n        \"language\": data.get(\"lang\", \"en\")\n    }\n    return transformed",
     "img": null,
     "gallery": [],
     "tech": [
@@ -326,12 +326,12 @@ const EMBEDDED_PROJECTS = [
       "Docker",
       "Kubernetes"
     ],
-    "desc": "Global NewsStream is a comprehensive, distributed platform for real-time media intelligence, enabling ingestion, processing, and visualization of news article data. It leverages a modern lakehouse architecture with an ELT medallion approach for scalable data transformation and actionable insights.",
+    "desc": "This project delivers a robust, distributed real-time media intelligence platform designed for ingesting, processing, and visualizing vast streams of news articles. It leverages a sophisticated enterprise lakehouse architecture with automated ETL/ELT pipelines, enabling scalable data management and comprehensive insights into media trends.",
     "features": [
-      "Real-time data ingestion and processing pipeline for media intelligence",
-      "Distributed Lakehouse architecture leveraging a Medallion data model",
-      "Containerized microservices deployment with Kubernetes for scalability and resilience",
-      "End-to-end data orchestration with Airflow and comprehensive observability stack"
+      "Distributed Real-Time Data Ingestion & Streaming with Apache Kafka.",
+      "Enterprise Lakehouse Architecture for scalable data storage and processing (MinIO, PostgreSQL).",
+      "Automated Medallion Architecture ETL/ELT Pipelines orchestrated by Apache Airflow.",
+      "Comprehensive Media Intelligence Dashboards & Monitoring (Superset, Grafana)."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -343,24 +343,24 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()], // Enable React HMR and Fast Refresh\n  server: {\n    port: 3000 // Development server port\n  },\n  build: {\n    outDir: 'dist' // Output directory for production build\n  }\n});",
+    "codeLanguage": "json",
+    "codeSnippet": "{\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Docker",
       "Oxlint",
+      "Docker",
       "Vercel"
     ],
-    "desc": "OmniPulse AI Studio serves as a sophisticated web interface for AI applications, designed to provide an intuitive user experience for managing and interacting with advanced AI models. It leverages modern frontend technologies to deliver a high-performance and maintainable platform for AI-driven solutions.",
+    "desc": "omnipulse-ai-studio is a modern web application framework, built with React, TypeScript, and Vite, designed to provide a robust foundation for an AI studio environment. It leverages advanced tooling like Oxlint for code quality and a flexible architecture for scalable, interactive user interfaces.",
     "features": [
-      "Modern Frontend Architecture: Implemented with React, TypeScript, and Vite for a high-performance, type-safe, and scalable user interface.",
-      "Advanced Code Quality & Linting: Integrated Oxlint with type-aware rules to enforce code consistency and maintainability across the codebase.",
-      "Containerized Development & Deployment: Utilizes Docker for reproducible development environments and Vercel for efficient, continuous deployment.",
-      "Optimized Development Workflow: Employs Hot Module Replacement (HMR) and optimized build processes for rapid development cycles and enhanced developer productivity."
+      "Modern frontend architecture with React, TypeScript, and Vite for performance",
+      "Enhanced code quality and maintainability through Oxlint integration",
+      "Containerized development and deployment with Docker for consistency",
+      "Streamlined continuous delivery via Vercel for rapid iteration"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
