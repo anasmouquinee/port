@@ -310,17 +310,29 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom airflow.utils.dates import days_ago\nfrom airflow import DAG\n\ndef extract_and_load_news():\n    print(\"Extracting news articles from source...\")\n    print(\"Loading raw data into MinIO Data Lake and Kafka...\")\n\nwith DAG(\n    dag_id='news_stream_ingestion',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['news', 'lakehouse']\n) as dag:\n    ingest_task = PythonOperator(\n        task_id='ingest_raw_news_data',\n        python_callable=extract_and_load_news,\n    )",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Python",
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "Kubernetes",
+      "Apache Superset"
+    ],
+    "desc": "This distributed platform enables end-to-end ingestion, processing, and visualization of news articles for real-time media intelligence. It implements a robust Lakehouse architecture, integrating scraping, data lake, data warehouse, and comprehensive ETL/ELT processes to deliver actionable insights.",
+    "features": [
+      "Developed a comprehensive Lakehouse architecture for real-time media intelligence.",
+      "Orchestrated complex data pipelines for ingestion and transformation using Apache Airflow.",
+      "Implemented distributed data scraping, a scalable data lake (MinIO), and analytical visualization (Superset).",
+      "Designed for containerized deployment with Docker and Kubernetes for high availability and scalability."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -331,13 +343,25 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import { useState, useCallback } from 'react';\n\ntype UseToggle = [boolean, () => void];\n\nconst useToggle = (initialState: boolean = false): UseToggle => {\n  const [state, setState] = useState<boolean>(initialState);\n  const toggle = useCallback(() => setState(prev => !prev), []);\n  return [state, toggle];\n};",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Oxlint",
+      "Docker",
+      "Vercel"
+    ],
+    "desc": "Developed a high-performance frontend foundation for the Omnipulse AI Studio, designed to support sophisticated AI model interaction and data visualization. This project leverages React, TypeScript, and Vite, enhanced with advanced Oxlint configurations for strict code quality, Docker for consistent environments, and Vercel for streamlined deployment.",
+    "features": [
+      "Leverages a cutting-edge React, TypeScript, and Vite stack for optimal frontend performance.",
+      "Implements advanced Oxlint configurations with type-aware rules for rigorous code quality and developer experience.",
+      "Ensures consistent deployment and scalability through Docker containerization and Vercel integration.",
+      "Architected for future performance with pre-configured support for the React Compiler."
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
   }
