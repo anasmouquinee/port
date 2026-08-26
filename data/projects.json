@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef transform_raw_article(raw_json_data: str) -> dict:\n    data = json.loads(raw_json_data)\n    transformed = {\n        \"article_id\": data.get(\"id\"),\n        \"title\": data.get(\"title\", \"\"),\n        \"url\": data.get(\"url\", \"\"),\n        \"publish_date\": datetime.fromisoformat(data[\"published_at\"].replace('Z', '+00:00')) if \"published_at\" in data else None,\n        \"source\": data.get(\"source\", {}).get(\"name\", \"Unknown\"),\n        \"content_length\": len(data.get(\"content\", \"\")),\n        \"language\": data.get(\"lang\", \"en\")\n    }\n    return transformed",
+    "codeSnippet": "import pandas as pd\nfrom io import BytesIO\n\ndef process_news_data(raw_bytes: bytes) -> bytes:\n    \"\"\"Loads raw news data, cleans, and converts to a refined format.\"\"\"\n    # Assume raw_bytes is a CSV or JSON payload from Kafka/Data Lake\n    df = pd.read_csv(BytesIO(raw_bytes))\n    \n    # Basic text cleaning and sentiment analysis placeholder\n    df['title'] = df['title'].str.strip().str.lower()\n    df['content'] = df['content'].fillna('').str.lower()\n    \n    # Select and reorder columns for refined zone\n    refined_df = df[['id', 'title', 'content', 'published_date']]\n    return refined_df.to_parquet(index=False)",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
+      "Kubernetes",
       "MinIO",
       "Apache Superset",
-      "Docker",
-      "Kubernetes"
+      "Python"
     ],
-    "desc": "This project delivers a robust, distributed real-time media intelligence platform designed for ingesting, processing, and visualizing vast streams of news articles. It leverages a sophisticated enterprise lakehouse architecture with automated ETL/ELT pipelines, enabling scalable data management and comprehensive insights into media trends.",
+    "desc": "A comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It implements a modern data lakehouse architecture with real-time ingestion, robust ETL/ELT pipelines, and extensive monitoring for advanced analytics and insights.",
     "features": [
-      "Distributed Real-Time Data Ingestion & Streaming with Apache Kafka.",
-      "Enterprise Lakehouse Architecture for scalable data storage and processing (MinIO, PostgreSQL).",
-      "Automated Medallion Architecture ETL/ELT Pipelines orchestrated by Apache Airflow.",
-      "Comprehensive Media Intelligence Dashboards & Monitoring (Superset, Grafana)."
+      "Implemented a robust Enterprise Lakehouse architecture (Data Lake & Data Warehouse) following the Medallion pattern.",
+      "Engineered real-time data ingestion and processing pipelines using Apache Kafka for high-throughput media intelligence.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow and deployed a distributed infrastructure using Docker and Kubernetes.",
+      "Integrated comprehensive monitoring (Prometheus, Grafana) and business intelligence (Apache Superset) for operational visibility and data visualization."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,8 +328,8 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "json",
-    "codeSnippet": "{\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    open: true\n  },\n  build: {\n    outDir: 'dist'\n  }\n});",
     "img": null,
     "gallery": [],
     "tech": [
@@ -340,12 +340,12 @@
       "Docker",
       "Vercel"
     ],
-    "desc": "omnipulse-ai-studio is a modern web application framework, built with React, TypeScript, and Vite, designed to provide a robust foundation for an AI studio environment. It leverages advanced tooling like Oxlint for code quality and a flexible architecture for scalable, interactive user interfaces.",
+    "desc": "omnipulse-ai-studio provides a robust frontend foundation for an AI studio, leveraging a modern React, TypeScript, and Vite stack. It emphasizes high code quality through Oxlint integration and streamlines deployment with Docker and Vercel.",
     "features": [
-      "Modern frontend architecture with React, TypeScript, and Vite for performance",
-      "Enhanced code quality and maintainability through Oxlint integration",
-      "Containerized development and deployment with Docker for consistency",
-      "Streamlined continuous delivery via Vercel for rapid iteration"
+      "Leverages a cutting-edge React, TypeScript, and Vite stack for rapid development and optimized performance.",
+      "Integrates Oxlint for advanced static code analysis, ensuring high code quality and maintainability.",
+      "Utilizes Docker for containerized development and deployment, ensuring environmental consistency.",
+      "Configured for seamless continuous deployment via Vercel, enabling agile iteration and delivery."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
