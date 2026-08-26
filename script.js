@@ -310,29 +310,17 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom kafka import KafkaProducer\nfrom minio import Minio\n\ndef ingest_and_store(article: dict, kafka_topic: str, minio_bucket: str):\n    producer = KafkaProducer(bootstrap_servers='kafka:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))\n    minio_client = Minio('minio:9000', access_key='minio_admin', secret_key='anaskaelar', secure=False)\n\n    # Publish to Kafka for real-time processing\n    producer.send(kafka_topic, article)\n\n    # Store raw article in MinIO Data Lake\n    object_name = f\"raw_articles/{article['id']}.json\"\n    minio_client.put_object(minio_bucket, object_name, json.dumps(article).encode('utf-8'), len(json.dumps(article).encode('utf-8')))",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Apache Kafka",
-      "Apache Airflow",
-      "MinIO",
-      "Apache Superset",
-      "Docker",
-      "Kubernetes"
-    ],
-    "desc": "This robust platform provides real-time media intelligence by ingesting, processing, and visualizing news articles from diverse sources. It leverages a distributed lakehouse architecture and powerful ETL/ELT pipelines for scalable data management and analytics.",
-    "features": [
-      "Implemented a scalable enterprise lakehouse architecture following the Medallion Model.",
-      "Orchestrated real-time data ingestion and stream processing with Apache Kafka and Airflow.",
-      "Developed robust ETL/ELT pipelines for diverse news article data sources.",
-      "Provided dynamic media intelligence visualization and monitoring via Superset, Grafana, and Prometheus."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -343,25 +331,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AIResponse {\n  prediction: string;\n  confidence: number;\n}\n\nexport const getAIPrediction = async (input: string): Promise<AIResponse> => {\n  const { data } = await axios.post<AIResponse>('/api/predict', { input });\n  return data;\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Oxlint",
-      "Node.js",
-      "Docker"
-    ],
-    "desc": "Developed a robust AI studio frontend using React, TypeScript, and Vite, designed to provide an intuitive interface for interacting with AI models. The project emphasizes code quality with Oxlint for static analysis and leverages Docker for consistent, containerized deployment across environments.",
-    "features": [
-      "Modern single-page application architecture using React, TypeScript, and Vite.",
-      "Enforced high code quality and consistency with Oxlint and type-aware linting.",
-      "Containerized deployment using Docker for environment consistency and scalability.",
-      "Optimized development workflow with Hot Module Replacement (HMR) and Vercel integration."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://github.com/anasmouquinee/omnipulse-ai-studio"
   }
