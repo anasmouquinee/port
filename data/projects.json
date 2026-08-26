@@ -299,24 +299,24 @@
     "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    scrape_news = BashOperator(task_id='scrape_data', bash_command='python /app/scrapers/main.py')\n    load_bronze = BashOperator(task_id='load_bronze_layer', bash_command='python /app/pipelines/load_minio.py')\n    process_silver = BashOperator(task_id='process_silver_layer', bash_command='python /app/pipelines/transform.py')\n    load_gold = BashOperator(task_id='load_gold_layer', bash_command='python /app/pipelines/aggregate.py')\n\n    scrape_news >> load_bronze >> process_silver >> load_gold",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO S3",
-      "Apache Superset",
+      "MinIO",
       "Kubernetes",
+      "Apache Superset",
       "Python"
     ],
-    "desc": "Developed a comprehensive, distributed enterprise lakehouse platform for real-time ingestion, processing, and visualization of news articles, providing critical media intelligence. Engineered a robust data pipeline utilizing a medallion architecture, ETL/ELT processes, and containerized services to manage and analyze high-volume, dynamic data streams.",
+    "desc": "This project delivers a comprehensive, real-time media intelligence platform for ingesting, processing, and visualizing data from news articles. It establishes a distributed enterprise Lakehouse architecture leveraging robust ETL/ELT pipelines, data warehousing, and advanced monitoring for scalable media analytics.",
     "features": [
-      "End-to-end distributed platform for real-time news data ingestion, processing, and visualization.",
-      "Implemented a robust Medallion Architecture (Bronze, Silver, Gold layers) within a Data Lakehouse (MinIO, PostgreSQL).",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow ensuring data quality and transformations.",
-      "Scalable deployment leveraging Docker and Kubernetes, with comprehensive monitoring via Prometheus and Grafana."
+      "Distributed Enterprise Lakehouse Architecture for unified data management.",
+      "Real-time Data Ingestion & Processing with Apache Kafka for immediate media intelligence.",
+      "Automated ETL/ELT Pipelines orchestrated by Apache Airflow for robust data transformation.",
+      "Dynamic Media Intelligence Dashboards with Apache Superset and full infrastructure monitoring."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,23 +329,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import React, { FC } from 'react';\n\ninterface AIStatusProps {\n  status: 'active' | 'inactive' | 'processing';\n  lastUpdate: Date;\n}\n\nconst AIStatusDisplay: FC<AIStatusProps> = ({ status, lastUpdate }) => (\n  <div className={`status-display status-${status}`}>\n    <h3>AI Engine Status: {status.toUpperCase()}</h3>\n    <p>Last Updated: {lastUpdate.toLocaleString()}</p>\n  </div>\n);",
+    "codeSnippet": "export const generateAIOutput = async (inputPrompt: string): Promise<string> => {\n  const response = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt: inputPrompt }),\n  });\n  if (!response.ok) {\n    const errorData = await response.json();\n    throw new Error(errorData.message || 'Failed to generate AI output.');\n  }\n  const data = await response.json();\n  return data.generatedText;\n};",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Oxlint",
+      "Node.js",
       "Docker",
-      "Vercel"
+      "RESTful API"
     ],
-    "desc": "Developed a modern, high-performance web application, OmniPulse AI Studio, serving as an intuitive user interface for AI-driven workflows and data visualization. Leveraging React, TypeScript, and Vite, this project prioritizes a streamlined development experience, robust type safety, and efficient bundle management.",
+    "desc": "OmniPulse AI Studio is a full-stack web application designed to provide a comprehensive environment for interacting with or developing AI-driven solutions. It leverages modern frontend technologies like React and TypeScript, integrated with a robust backend, to deliver a performant and scalable platform for AI experimentation and deployment.",
     "features": [
-      "Optimized Frontend Architecture: Utilizes React with Vite for a high-performance, HMR-enabled development and production environment.",
-      "Robust Type Safety: Implements TypeScript across the codebase to ensure strong type checking and enhanced maintainability.",
-      "Advanced Code Quality Enforcement: Integrates Oxlint, configured for type-aware linting, to enforce strict code standards and identify potential issues early.",
-      "Containerized Deployment Workflow: Leverages Docker for consistent environment provisioning and streamlined deployment readiness."
+      "Component-driven UI built with React and TypeScript for robust, maintainable user experiences.",
+      "Backend API for managing AI model interactions and data processing.",
+      "Containerized deployment using Docker and Vercel for scalable and portable environments.",
+      "Optimized development workflow with Vite and Oxlint for enhanced performance and code quality."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
