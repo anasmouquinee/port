@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from json import loads, dumps\nfrom datetime import datetime\n\ndef transform_raw_news_payload(raw_data):\n    raw_payload = loads(raw_data)\n    transformed = {\n        \"article_id\": raw_payload.get(\"id\"),\n        \"title\": raw_payload.get(\"headline\"),\n        \"source\": raw_payload.get(\"publisher\"),\n        \"published_date\": raw_payload.get(\"date\"),\n        \"summary\": raw_payload.get(\"content\", \"\")[:150],\n        \"processed_at\": str(datetime.now())\n    }\n    return dumps(transformed, ensure_ascii=False)",
+    "codeSnippet": "from pyspark.sql import SparkSession\nfrom pyspark.sql.functions import current_timestamp\n\n# Initialize Spark Session for processing\nspark = SparkSession.builder.appName(\"LakehouseTransform\").getOrCreate()\n\n# Read raw data from MinIO Bronze layer\ndf_bronze = spark.read.json(\"s3a://news-lakehouse/bronze/{{ ds }}/raw_articles.json\")\n\n# Apply data quality and transformation logic for Silver layer\ndf_silver = df_bronze.filter(\"category IS NOT NULL\") \\\n                     .withColumn(\"processed_at\", current_timestamp())\n\n# Write refined data to MinIO Silver layer in Parquet format\ndf_silver.write.mode(\"append\").parquet(\"s3a://news-lakehouse/silver/{{ ds }}/\")",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO Data Lake",
-      "Docker",
-      "Kubernetes"
+      "MinIO (S3)",
+      "PostgreSQL",
+      "Apache Superset",
+      "Docker/Kubernetes"
     ],
-    "desc": "This distributed enterprise lakehouse platform ingests, processes, and visualizes real-time news article data to deliver comprehensive media intelligence. It leverages a medallion architecture, real-time streaming, and robust orchestration for scalable data management and analytics.",
+    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data. It leverages a modern lakehouse architecture to provide advanced media intelligence capabilities, integrating scraping, data warehousing, and robust analytics.",
     "features": [
-      "Implemented an enterprise-grade Medallion Lakehouse architecture for scalable data ingestion and processing.",
-      "Orchestrated real-time data pipelines using Apache Kafka and Apache Airflow for continuous media intelligence.",
-      "Deployed a robust, containerized infrastructure with Docker and Kubernetes for high availability and scalability.",
-      "Integrated Apache Superset, Prometheus, and Grafana for comprehensive data visualization and system monitoring."
+      "Comprehensive real-time data ingestion and processing for media intelligence",
+      "Distributed Lakehouse architecture leveraging MinIO for scalable data storage",
+      "End-to-end data pipeline orchestration using Apache Airflow for ETL/ELT workflows",
+      "Integrated real-time monitoring, visualization, and business intelligence with Prometheus, Grafana, and Apache Superset"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,7 +344,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "async function getAIResponse(prompt: string): Promise<string> {\n  const response = await fetch('/api/generate-text', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt }),\n  });\n  if (!response.ok) {\n    throw new Error(`HTTP error! status: ${response.status}`);\n  }\n  const data = await response.json();\n  return data.generatedText;\n}",
+    "codeSnippet": "{\n  \"$schema\": \"./node_modules/oxlint/configuration_schema.json\",\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,14 +353,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "Vercel"
+      "Oxlint"
     ],
-    "desc": "A robust web platform designed as an AI studio, enabling users to interact with and manage AI-generated content and services. This project leverages a modern React and TypeScript frontend with Vite for high performance, integrated with a scalable backend for AI processing.",
+    "desc": "Omnipulse AI Studio is a robust web application built with React, TypeScript, and Vite, designed to provide a dynamic platform for AI-driven functionalities. It leverages a modern front-end architecture, ensuring high performance and a scalable foundation for advanced AI integration.",
     "features": [
-      "Modern, type-safe web frontend with React and TypeScript",
-      "Optimized development workflow using Vite for rapid iteration",
-      "Robust API integration for interacting with AI models and services",
-      "Containerized deployment strategy with Docker and Vercel for scalability"
+      "Modular frontend architecture built with React and Vite for optimal performance.",
+      "Type-safe development facilitated by TypeScript for robust and maintainable codebases.",
+      "Enhanced code quality and developer workflow through integrated Oxlint configuration.",
+      "Containerized deployment strategy using Docker for environmental consistency and scalability."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
