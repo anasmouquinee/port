@@ -310,17 +310,29 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\nproducer = KafkaProducer(\n    bootstrap_servers=['kafka:9092'],\n    value_serializer=lambda v: json.dumps(v).encode('utf-8')\n)\n\ndef publish_scraped_article(article_data):\n    \"\"\"Publishes a scraped article to the raw_news Kafka topic.\"\"\"\n    producer.send('raw_news', article_data)\n    print(f\"Published article: {article_data['title']}\")",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Python",
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "Apache Superset",
+      "Docker & Kubernetes"
+    ],
+    "desc": "This distributed enterprise lakehouse platform ingests, processes, and visualizes real-time media intelligence from global news articles. It establishes a robust data foundation for advanced analytics and strategic insights through a medallion architecture and comprehensive ETL/ELT pipelines.",
+    "features": [
+      "Distributed, real-time data ingestion from diverse news sources using custom scrapers.",
+      "Scalable Enterprise Lakehouse Architecture for structured and unstructured data storage (MinIO & PostgreSQL).",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation and quality.",
+      "Real-time media intelligence dashboards and monitoring via Superset, Prometheus, and Grafana."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -332,7 +344,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AIResponse {\n  output: string;\n  success: boolean;\n}\n\nconst generateAIOutput = async (prompt: string, config: any): Promise<AIResponse> => {\n  const response = await fetch('/api/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, config })\n  });\n  if (!response.ok) throw new Error(\"API call failed.\");\n  return response.json();\n};",
+    "codeSnippet": "import axios from 'axios';\n\ninterface PromptRequest {\n  prompt: string;\n  model?: string;\n}\n\nasync function submitAiPrompt(data: PromptRequest): Promise<string> {\n  try {\n    const response = await axios.post('/api/ai/generate', data);\n    return response.data.output;\n  } catch (error) {\n    console.error('AI prompt submission failed:', error);\n    throw new Error('Could not generate AI response.');\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -341,14 +353,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "Oxlint"
+      "Vercel"
     ],
-    "desc": "This project implements a sophisticated AI studio platform, integrating React, TypeScript, and Vite for a dynamic web frontend. It features a robust API backend, facilitating AI model interactions and demonstrating advanced full-stack development with a focus on code quality and performance via Oxlint.",
+    "desc": "This project is a sophisticated web-based AI studio application, enabling users to interact with and manage AI prompts effectively. It demonstrates a robust full-stack architecture, combining a modern frontend with a capable backend to deliver a seamless and powerful AI development experience.",
     "features": [
-      "Full-stack architecture enabling a responsive React-TypeScript frontend for AI studio functionalities.",
-      "Integration of a dedicated API backend to manage AI model interactions and data processing.",
-      "Advanced code quality and performance enforcement using Oxlint with type-aware linting.",
-      "Containerized deployment readiness via Docker and optimized for Vercel for scalable cloud hosting."
+      "Leveraged React, TypeScript, and Vite for a high-performance, type-safe, and modular web frontend with Hot Module Replacement (HMR).",
+      "Implemented robust code quality standards using Oxlint, including type-aware linting for enhanced developer productivity and maintainability.",
+      "Designed and integrated a scalable API backend to manage AI prompt processing and core studio functionalities.",
+      "Streamlined development and deployment workflows with Docker containerization and Vercel for continuous integration and delivery."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
