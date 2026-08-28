@@ -300,7 +300,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='newsstream_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'etl']\n) as dag:\n    ingest_raw_data = BashOperator(\n        task_id='ingest_raw_data',\n        bash_command='python /app/scrapers/run_scraper.py'\n    )\n    process_bronze_layer = BashOperator(\n        task_id='process_bronze_layer',\n        bash_command='python /app/pipelines/bronze_processor.py'\n    )\n    ingest_raw_data >> process_bronze_layer",
+    "codeSnippet": "from airflow.operators.python import PythonOperator\n\ndef transform_raw_to_silver(source_path: str, dest_path: str):\n    \"\"\"\n    Reads raw data from object storage, applies transformations,\n    and writes to a silver layer.\n    \"\"\"\n    print(f\"Reading raw data from: {source_path}\")\n    # Placeholder for actual data processing logic (e.g., Pandas)\n    transformed_data = f\"Transformed content from {source_path}\"\n    print(f\"Writing transformed data to: {dest_path}\")\n\n# Example Airflow task definition\ntransform_task = PythonOperator(\n    task_id='transform_articles_to_silver',\n    python_callable=transform_raw_to_silver,\n    op_kwargs={\n        'source_path': 's3://raw-zone/news/{{ ds }}.json',\n        'dest_path': 's3://silver-zone/news/{{ ds }}.parquet'\n    },\n)",
     "img": null,
     "gallery": [],
     "tech": [
@@ -308,15 +308,15 @@
       "Apache Airflow",
       "MinIO",
       "Apache Superset",
-      "Kubernetes",
+      "Docker",
       "Python"
     ],
-    "desc": "This project is a comprehensive, distributed platform for ingesting, processing, and visualizing real-time news article data. Leveraging a lakehouse architecture with advanced ETL/ELT pipelines, it delivers actionable media intelligence through scalable data processing and rich interactive dashboards.",
+    "desc": "Engineered a distributed enterprise lakehouse platform for real-time media intelligence, capable of ingesting, processing, and visualizing news articles from diverse sources. This solution implements a robust medallion architecture with automated ETL/ELT pipelines, providing dynamic insights into global media trends.",
     "features": [
-      "Real-time data ingestion and stream processing with Apache Kafka for dynamic media intelligence.",
-      "Orchestration of complex ETL/ELT pipelines using Apache Airflow for robust data transformation.",
-      "Scalable Lakehouse architecture leveraging MinIO and PostgreSQL, implementing a Medallion architecture.",
-      "Containerized deployment via Docker and Kubernetes for high availability and distributed scaling."
+      "Distributed Real-Time Data Ingestion with Kafka for diverse news sources",
+      "Scalable Enterprise Lakehouse Architecture (Medallion Pattern) with MinIO and PostgreSQL",
+      "Automated ETL/ELT Workflows Orchestrated by Apache Airflow",
+      "Interactive Media Intelligence Dashboards via Apache Superset for Trend Analysis"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,7 +329,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AIPromptRequest {\n  text: string;\n  modelId?: string;\n}\n\ninterface AICompletionResponse {\n  output: string;\n  tokens: number;\n  success: boolean;\n}\n\nasync function requestAICompletion(req: AIPromptRequest): Promise<AICompletionResponse> {\n  const res = await fetch('/api/ai/complete', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(req),\n  });\n  return res.json();\n}",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptResponse {\n  output: string;\n  tokens: number;\n}\n\nexport async function submitAIPrompt(prompt: string): Promise<AIPromptResponse> {\n  try {\n    const response = await axios.post<AIPromptResponse>('/api/generate', { prompt });\n    return response.data;\n  } catch (error) {\n    console.error(\"AI prompt submission failed:\", error);\n    throw new Error(\"Failed to process AI prompt.\");\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "AI/ML Integration"
+      "Apache Kafka"
     ],
-    "desc": "omnipulse-ai-studio is a robust full-stack web application designed as an interactive platform for AI model interaction and prompt engineering. It leverages a modern React and TypeScript frontend alongside a powerful API to facilitate seamless development and testing of AI-driven functionalities.",
+    "desc": "Developed a robust, modern AI studio platform for full-stack interaction with artificial intelligence models. This project offers a high-performance web interface built with React and TypeScript, enabling efficient development and deployment of AI-powered features.",
     "features": [
-      "Interactive AI Prompt Engineering & Testing Capabilities",
-      "Containerized Full-Stack Deployment with Docker",
-      "Modern, Type-Safe Frontend with React & TypeScript",
-      "Scalable API Architecture for AI Services"
+      "Developed a high-performance, type-safe frontend with React and TypeScript, optimized by Vite",
+      "Implemented robust API integration for seamless interaction with AI backend services",
+      "Ensured consistent, portable deployment through Docker containerization",
+      "Integrated real-time data streaming capabilities using Apache Kafka for event-driven architectures"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
