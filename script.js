@@ -315,23 +315,24 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily', tags=['data_lake', 'etl']\n) as dag:\n    scrape_raw = BashOperator(task_id='scrape_news', bash_command='python /app/scrapers/main.py')\n    process_bronze_silver = BashOperator(task_id='transform_data', bash_command='spark-submit /app/pipelines/process.py')\n    load_gold_dw = BashOperator(task_id='load_warehouse', bash_command='dbt run')\n\n    scrape_raw >> process_bronze_silver >> load_gold_dw",
+    "codeSnippet": "from airflow.decorators import task\nimport json\n\n@task\ndef process_news_article_data(article_data: str) -> dict:\n    \"\"\"Extracts key fields from raw news article JSON and normalizes them.\"\"\"\n    data = json.loads(article_data)\n    processed = {\n        \"title\": data.get(\"title\", \"N/A\").strip(),\n        \"author\": data.get(\"author\", \"Unknown\"),\n        \"publish_date\": data.get(\"publishedAt\"),\n        \"source\": data.get(\"source\", {}).get(\"name\")\n    }\n    return processed",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "Kubernetes",
       "MinIO",
       "PostgreSQL",
+      "Kubernetes",
       "Apache Superset"
     ],
-    "desc": "This distributed platform ingests, processes, and visualizes real-time news article data, establishing a comprehensive media intelligence system. It leverages a medallion architecture for data governance and employs a robust ELT pipeline with a data lake and warehouse for scalable analytics and reporting.",
+    "desc": "This project establishes a robust Enterprise Lakehouse for real-time media intelligence, enabling comprehensive ingestion, processing, and visualization of news article data. It leverages a distributed, containerized architecture to deliver scalable data pipelines, from scraping to a medallion-structured data warehouse, ensuring real-time insights and operational analytics.",
     "features": [
-      "Distributed real-time data ingestion and processing pipelines with Apache Kafka",
-      "Enterprise Lakehouse architecture (Bronze, Silver, Gold) on MinIO and PostgreSQL",
-      "Automated ELT orchestration using Apache Airflow for data transformation",
-      "Containerized deployment and scalability across services with Docker & Kubernetes"
+      "Implements real-time data streaming from web scrapers via Apache Kafka to support immediate data availability and processing.",
+      "Establishes a scalable data lake on MinIO with a Medallion Architecture (Bronze, Silver, Gold layers) for structured data transformation and storage.",
+      "Utilizes Apache Airflow to orchestrate complex ETL/ELT workflows, managing data ingestion, cleaning, transformation, and loading.",
+      "Deploys the entire platform using Docker and Docker Compose, with a clear path to Kubernetes for highly available and scalable operations.",
+      "Provides robust visualization capabilities via Apache Superset for interactive dashboards and real-time media intelligence."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,28 +340,28 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "// src/services/aiService.ts\ninterface AIPromptResult {\n  response: string;\n  model: string;\n}\n\nconst generateAIResponse = async (prompt: string): Promise<AIPromptResult> => {\n  const apiResponse = await fetch('/api/prompt', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ query: prompt }),\n  });\n  if (!apiResponse.ok) throw new Error('AI service error');\n  const data = await apiResponse.json();\n  return { response: data.text, model: data.modelUsed };\n};",
+    "codeSnippet": "interface PromptConfig {\n  instruction: string;\n  context?: string;\n  userQuery: string;\n}\n\nexport function constructFullPrompt(config: PromptConfig): string {\n  let prompt = `Instruction: ${config.instruction}`;\n  if (config.context) prompt += `\\nContext: ${config.context}`;\n  prompt += `\\nUser Query: ${config.userQuery}`;\n  return prompt;\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
-      "Vite",
       "Node.js",
+      "Vite",
       "Docker",
-      "Vercel"
+      "AI Model Integration"
     ],
-    "desc": "Anas developed Omnipulse AI Studio, a cutting-edge web application providing an interactive platform for AI model development and prompt engineering. It leverages React, TypeScript, and Vite for a highly performant and maintainable frontend, integrated with a robust API for backend AI capabilities.",
+    "desc": "OmniPulse AI Content Studio empowers users to interact with and generate AI-driven content through an intuitive web interface. It leverages a modern React/Vite frontend and a robust backend to orchestrate AI model interactions, ensuring a seamless and responsive user experience.",
     "features": [
-      "Interactive AI Development Studio: Provides a user-friendly web interface for developing and experimenting with AI models and prompts.",
-      "Decoupled Full-Stack Architecture: Implements a scalable architecture with a React/TypeScript frontend and a dedicated API backend.",
-      "Containerized Deployment with Docker: Ensures consistent and efficient deployment across environments using Docker.",
-      "Optimized Frontend with Vite & Type-Safety: Leverages Vite for rapid development and builds, coupled with TypeScript for enhanced code quality and maintainability."
+      "Interactive AI content generation via a modern web interface",
+      "Scalable API backend for seamless integration with AI model services",
+      "Containerized application deployment using Docker for environment consistency",
+      "Optimized frontend development with React, TypeScript, and Vite for rapid iteration"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
