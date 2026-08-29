@@ -315,24 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lake_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily'\n) as dag:\n    scrape_task = BashOperator(\n        task_id='scrape_data',\n        bash_command='python /app/scrapers/run.py'\n    )\n    transform_task = BashOperator(\n        task_id='transform_bronze',\n        bash_command='python /app/pipelines/raw_to_bronze.py'\n    )\n    scrape_task >> transform_task",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(dag_id='news_lakehouse_etl', start_date=days_ago(1),\n        schedule_interval='@daily', catchup=False) as dag:\n    ingest_task = BashOperator(task_id='ingest_raw', bash_command='python /app/scraper.py')\n    bronze_task = BashOperator(task_id='process_bronze', bash_command='spark-submit /app/raw_to_bronze.py')\n    silver_task = BashOperator(task_id='transform_silver', bash_command='spark-submit /app/bronze_to_silver.py')\n\n    ingest_task >> bronze_task >> silver_task",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
       "MinIO",
       "Kubernetes",
       "Apache Superset",
-      "Python"
+      "Prometheus/Grafana"
     ],
-    "desc": "Engineered a comprehensive, distributed enterprise lakehouse platform for real-time media intelligence, enabling ingestion, processing, and visualization of news article data. This robust architecture leverages a Medallion pattern for data warehousing and provides a scalable foundation for advanced analytics.",
+    "desc": "This platform establishes a comprehensive, distributed media intelligence system, addressing the challenge of real-time news data aggregation, processing, and visualization. Its technical achievement lies in integrating a robust lakehouse architecture with streaming technologies, automated ETL/ELT pipelines, and advanced monitoring for scalable insights.",
     "features": [
-      "Real-time media intelligence and data ingestion pipeline",
-      "Enterprise Lakehouse architecture with Medallion data pattern",
-      "Distributed orchestration for ETL/ELT workflows using Apache Airflow",
-      "Scalable containerized deployment with Docker and Kubernetes",
-      "Comprehensive data visualization and monitoring dashboards"
+      "Real-time news data ingestion and stream processing via Apache Kafka.",
+      "Scalable Lakehouse architecture with a Medallion pattern for robust data management and quality.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for end-to-end data flow.",
+      "Integrated monitoring (Prometheus/Grafana) and interactive BI dashboards (Apache Superset) for media intelligence."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -345,23 +344,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import { Request, Response } from 'express';\nimport { aiService } from '../services/aiService'; // Placeholder AI interaction\n\nexport const handleAiPrompt = async (req: Request, res: Response) => {\n    const { prompt, settings } = req.body;\n    if (!prompt) return res.status(400).json({ message: \"Prompt missing\" });\n\n    try {\n        const result = await aiService.generateResponse(prompt, settings);\n        res.status(200).json({ data: result });\n    } catch (error) {\n        console.error(\"AI processing error:\", error);\n        res.status(500).json({ message: \"Error generating response\" });\n    }\n};",
+    "codeSnippet": "async function fetchAIResponse(prompt: string): Promise<string> {\n  const response = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt }),\n  });\n\n  if (!response.ok) {\n    throw new Error(`AI API failed: ${response.status}`);\n  }\n\n  const data = await response.json();\n  return data.text;\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
-      "Node.js",
       "Vite",
+      "Node.js",
       "Docker",
-      "Vercel"
+      "Generative AI"
     ],
-    "desc": "Anas developed OmniPulse AI Studio, a modern web application designed for interacting with and managing AI prompts and data. Leveraging React, TypeScript, and Vite for a high-performance frontend, it integrates with a backend API to orchestrate complex AI workflows and data processing.",
+    "desc": "OmniPulse AI Studio is a full-stack web platform designed for interactive development and testing of generative AI models. It leverages modern React, Vite, and TypeScript for a robust and performant frontend, coupled with a containerized API layer for scalable AI service integration.",
     "features": [
-      "Interactive AI Prompt Engineering & Testing Interface",
-      "Scalable Backend API for AI Model Integration and Data Processing",
-      "High-Performance Frontend developed with React, TypeScript, and Vite",
-      "Containerized Deployment with Docker and CI/CD via Vercel"
+      "Containerized API for scalable and modular AI service endpoints",
+      "Type-safe, performance-optimized frontend built with React, Vite, and TypeScript",
+      "Advanced Oxlint configuration for robust code quality and developer experience",
+      "Full-stack architecture supporting interactive AI model prompting and response handling"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
