@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='newsstream_data_processing',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    transform_task = BashOperator(\n        task_id='transform_bronze_to_silver',\n        bash_command='spark-submit /opt/airflow/pipelines/bronze_to_silver.py',\n    )",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_stream_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'lakehouse', 'elt'],\n) as dag:\n    ingest_raw_data = BashOperator(\n        task_id='ingest_raw_news',\n        bash_command='python /app/scrapers/run_scraper.py',\n    )\n    process_to_bronze = BashOperator(\n        task_id='process_to_bronze_layer',\n        bash_command='spark-submit /app/pipelines/bronze_processor.py',\n    )\n    ingest_raw_data >> process_to_bronze",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
       "Apache Airflow",
       "Apache Kafka",
-      "Kubernetes",
       "MinIO",
-      "Apache Superset"
+      "Apache Superset",
+      "Kubernetes",
+      "Python"
     ],
-    "desc": "This project is a comprehensive, distributed platform for ingesting, processing, and visualizing news article data, leveraging a modern data lakehouse architecture. It achieves real-time media intelligence through scalable data pipelines, robust storage, and advanced analytical tools.",
+    "desc": "This platform provides a comprehensive, distributed solution for real-time media intelligence by ingesting, processing, and visualizing news article data from various sources. It leverages a robust enterprise lakehouse architecture, implementing ETL/ELT processes and real-time streaming to deliver scalable and insightful media analytics.",
     "features": [
-      "Real-time data ingestion and stream processing with Apache Kafka for immediate media intelligence.",
-      "Scalable Lakehouse Architecture implementing a Medallion data model with MinIO and PostgreSQL.",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data transformation.",
-      "Integrated monitoring and business intelligence via Prometheus, Grafana, and Apache Superset."
+      "Implemented a distributed Enterprise Lakehouse architecture (Medallion Zone) for scalable data storage and processing.",
+      "Engineered real-time data ingestion and streaming pipelines using Apache Kafka for high-throughput news article processing.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow, automating data transformation from raw to curated layers.",
+      "Integrated comprehensive monitoring (Prometheus, Grafana) and interactive data visualization (Apache Superset) for media intelligence."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,7 +329,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AIPromptRequest {\n  prompt: string;\n  parameters?: Record<string, any>;\n}\n\nasync function submitAIPrompt(request: AIPromptRequest): Promise<string> {\n  const res = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(request),\n  });\n  if (!res.ok) throw new Error('AI service failed');\n  const data = await res.json();\n  return data.response; // Assuming 'response' field contains AI output\n}",
+    "codeSnippet": "import OpenAI from 'openai'; // Example AI SDK\n\nconst openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });\n\nexport async function processPromptWithAI(prompt: string): Promise<string> {\n  // Processes user prompt using a configured AI model\n  const completion = await openai.chat.completions.create({\n    messages: [{ role: 'user', content: prompt }],\n    model: 'gpt-3.5-turbo', // Configurable AI model\n    temperature: 0.7,\n    max_tokens: 150,\n  });\n  return completion.choices[0].message.content || 'No response generated.';\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,15 +338,14 @@
       "Node.js",
       "Vite",
       "Docker",
-      "AI/ML Frameworks"
+      "AI/LLM Integration"
     ],
-    "desc": "Engineered a full-stack AI studio platform enabling interactive development and deployment of AI-driven applications. Leveraged a modern React/Vite/TypeScript frontend with a robust backend, integrating advanced linting and containerization for scalable, high-quality development.",
+    "desc": "Omnipulse AI Studio is a comprehensive full-stack application designed to provide an interactive platform for AI development and experimentation. It integrates modern web frameworks with robust backend services, enabling scalable AI-driven features and data management.",
     "features": [
-      "Interactive User Interface with React and Vite for a highly responsive development experience",
-      "Enhanced Code Quality and Type Safety through comprehensive TypeScript integration across the codebase",
-      "Integrated API for seamless interaction with AI models and prompt engineering capabilities",
-      "Streamlined Deployment Workflow utilizing Docker for containerization and Vercel for continuous integration",
-      "Robust Development Environment with Oxlint for static analysis and performance optimization"
+      "Full-stack architecture with dedicated API for AI services.",
+      "Interactive AI prompt testing and management capabilities.",
+      "Containerized deployment using Docker for consistency and scalability.",
+      "High-performance frontend developed with React, TypeScript, and Vite."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
