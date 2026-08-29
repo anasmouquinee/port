@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef extract_data(): print(\"Extracting news articles from sources...\")\ndef transform_data(): print(\"Cleaning and transforming raw data...\")\ndef load_data(): print(\"Loading processed data to data warehouse...\")\n\nwith DAG('news_stream_etl', start_date=datetime(2023, 1, 1),\n             schedule_interval='@daily', catchup=False) as dag:\n    extract = PythonOperator(task_id='extract', python_callable=extract_data)\n    transform = PythonOperator(task_id='transform', python_callable=transform_data)\n    load = PythonOperator(task_id='load', python_callable=load_data)\n    extract >> transform >> load",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='newsstream_data_processing',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    transform_task = BashOperator(\n        task_id='transform_bronze_to_silver',\n        bash_command='spark-submit /opt/airflow/pipelines/bronze_to_silver.py',\n    )",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Python",
       "Apache Airflow",
+      "Apache Kafka",
       "Kubernetes",
       "MinIO",
-      "Apache Superset",
-      "Docker"
+      "Apache Superset"
     ],
-    "desc": "This project builds a robust, distributed real-time media intelligence platform using a sophisticated lakehouse architecture. It effectively addresses the challenge of ingesting, processing, and visualizing vast streams of news article data for enterprise-level insights and analytics.",
+    "desc": "This project is a comprehensive, distributed platform for ingesting, processing, and visualizing news article data, leveraging a modern data lakehouse architecture. It achieves real-time media intelligence through scalable data pipelines, robust storage, and advanced analytical tools.",
     "features": [
-      "Distributed Lakehouse Architecture for scalable data storage and processing",
-      "Real-time Data Ingestion & Stream Processing with Kafka and custom scrapers",
-      "Automated ETL/ELT Orchestration via Apache Airflow pipelines",
-      "Enterprise-grade Data Visualization & Monitoring with Superset, Prometheus, and Grafana"
+      "Real-time data ingestion and stream processing with Apache Kafka for immediate media intelligence.",
+      "Scalable Lakehouse Architecture implementing a Medallion data model with MinIO and PostgreSQL.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data transformation.",
+      "Integrated monitoring and business intelligence via Prometheus, Grafana, and Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,12 +324,12 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import OpenAI from 'openai';\n\nconst openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });\n\nexport async function generateResponse(prompt: string, model: string = 'gpt-3.5-turbo'): Promise<string> {\n  const completion = await openai.chat.completions.create({\n    messages: [{ role: 'user', content: prompt }],\n    model: model,\n    max_tokens: 150\n  });\n  return completion.choices[0]?.message?.content || 'No response generated.';\n}",
+    "codeSnippet": "interface AIPromptRequest {\n  prompt: string;\n  parameters?: Record<string, any>;\n}\n\nasync function submitAIPrompt(request: AIPromptRequest): Promise<string> {\n  const res = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(request),\n  });\n  if (!res.ok) throw new Error('AI service failed');\n  const data = await res.json();\n  return data.response; // Assuming 'response' field contains AI output\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,15 @@
       "Node.js",
       "Vite",
       "Docker",
-      "OpenAI API"
+      "AI/ML Frameworks"
     ],
-    "desc": "Developed a full-stack AI studio platform enabling streamlined development and management of AI applications. Leveraged modern web technologies with robust backend services to provide a scalable and maintainable environment for AI model interaction and prompt engineering.",
+    "desc": "Engineered a full-stack AI studio platform enabling interactive development and deployment of AI-driven applications. Leveraged a modern React/Vite/TypeScript frontend with a robust backend, integrating advanced linting and containerization for scalable, high-quality development.",
     "features": [
-      "Full-stack architecture integrating React, TypeScript, and Node.js for scalable AI application development.",
-      "Implemented robust API services for seamless interaction with AI models and data management.",
-      "Containerized development environment using Docker for consistent deployments and scalability.",
-      "Integrated advanced prompt engineering and AI testing workflows for refined model outputs and quality assurance."
+      "Interactive User Interface with React and Vite for a highly responsive development experience",
+      "Enhanced Code Quality and Type Safety through comprehensive TypeScript integration across the codebase",
+      "Integrated API for seamless interaction with AI models and prompt engineering capabilities",
+      "Streamlined Deployment Workflow utilizing Docker for containerization and Vercel for continuous integration",
+      "Robust Development Environment with Oxlint for static analysis and performance optimization"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
