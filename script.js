@@ -310,29 +310,17 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom io import BytesIO\n\ndef transform_lakehouse_data(raw_bytes: bytes, transformation_pipeline: list) -> bytes:\n    # Processes data for a Lakehouse Medallion layer (e.g., Bronze to Silver).\n    # Applies a sequence of functions to raw data, returning refined bytes.\n    df = pd.read_parquet(BytesIO(raw_bytes))\n    for func in transformation_pipeline:\n        df = func(df)\n    output = BytesIO()\n    df.to_parquet(output, index=False)\n    return output.getvalue()",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Python",
-      "Apache Kafka",
-      "Apache Airflow",
-      "MinIO",
-      "Apache Superset",
-      "Kubernetes"
-    ],
-    "desc": "Developed a comprehensive, distributed enterprise lakehouse platform for real-time media intelligence, enabling ingestion, processing, and visualization of news data. This robust solution leverages an advanced medallion architecture with Kafka, Airflow, and MinIO for scalable data pipelines and analytics.",
-    "features": [
-      "Distributed Enterprise Lakehouse Architecture with Medallion Layers",
-      "Real-time Data Ingestion & Processing Pipelines (Kafka, Airflow)",
-      "Integrated Monitoring & Business Intelligence (Grafana, Superset)",
-      "Scalable Containerized Deployment & Orchestration (Docker, Kubernetes)"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -344,7 +332,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "{\n  \"$schema\": \"./node_modules/oxlint/configuration_schema.json\",\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
+    "codeSnippet": "async function generateAIResponse(prompt: string, model: string): Promise<string> {\n  try {\n    const response = await fetch('/api/ai-chat', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt, modelId: model }),\n    });\n    if (!response.ok) throw new Error(`API error: ${response.statusText}`);\n    const data: { generatedText: string } = await response.json();\n    return data.generatedText;\n  } catch (error) {\n    console.error('AI response generation failed:', error);\n    return 'Error generating response.';\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,14 +341,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "Oxlint"
+      "AI/LLM Integration"
     ],
-    "desc": "A cutting-edge full-stack web application providing a development environment for AI-driven interfaces. It leverages modern web technologies and robust tooling to deliver a high-performance, type-safe, and maintainable platform for AI studio functionalities.",
+    "desc": "Omnipulse AI Studio is a sophisticated full-stack web application designed for AI development and prompt engineering. It leverages modern React, TypeScript, and Vite for a high-performance frontend, integrated with a backend API to facilitate robust AI model interaction and data processing.",
     "features": [
-      "Modern Frontend Architecture with React, TypeScript, and Vite",
-      "Integrated Oxlint for superior code quality and type-aware linting",
-      "Containerized deployment readiness using Docker",
-      "Scalable API interaction for AI services via dedicated backend (implied by /api and testPrompt.js)"
+      "Intuitive AI Prompt Engineering Interface",
+      "Robust Full-Stack API Integration for AI Services",
+      "Containerized Deployment for Scalability (Docker/Vercel)",
+      "Optimized Frontend with Vite, TypeScript, and Oxlint"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
