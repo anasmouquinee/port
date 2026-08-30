@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef clean_news_data(raw_df: pd.DataFrame) -> pd.DataFrame:\n    processed_df = raw_df.copy()\n    processed_df['title_clean'] = processed_df['title'].str.strip().str.upper()\n    processed_df['source_std'] = processed_df['source'].str.replace(' ', '_').str.upper()\n    processed_df['pub_year'] = pd.to_datetime(processed_df['published_at']).dt.year\n    processed_df['text_len'] = processed_df['content'].apply(lambda x: len(x) if x else 0)\n    return processed_df",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(dag_id='data_lakehouse_pipeline_orchestration', start_date=datetime(2023, 1, 1)) as dag:\n    ingest_bronze = BashOperator(task_id='ingest_to_bronze', bash_command='run_ingestion_script.sh')\n    transform_silver = BashOperator(task_id='transform_to_silver', bash_command='run_transform_script.sh')\n    load_gold = BashOperator(task_id='load_to_gold', bash_command='run_gold_load_script.sh')\n    \n    ingest_bronze >> transform_silver >> load_gold # Core Medallion Architecture flow",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
+      "MinIO",
+      "PostgreSQL",
       "Apache Superset",
-      "Prometheus",
       "Kubernetes"
     ],
-    "desc": "Developed a comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages an enterprise lakehouse architecture, encompassing automated scraping, ETL/ELT pipelines, and advanced analytics for dynamic media insights.",
+    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse and real-time media intelligence platform for ingesting, processing, and visualizing news data. It achieves this through a robust medallion architecture, leveraging real-time streaming, batch ETL/ELT, and advanced observability for powerful insights.",
     "features": [
-      "Real-time Media Data Ingestion & Scraping from diverse news sources",
-      "Distributed Enterprise Lakehouse Architecture with Medallion layers (Bronze, Silver, Gold)",
-      "Automated ETL/ELT Pipelines orchestrated via Apache Airflow for data transformation and quality",
-      "Comprehensive Real-time Monitoring & Business Intelligence Dashboards using Grafana and Superset"
+      "Implemented an Enterprise Lakehouse architecture with a Medallion data strategy for structured and unstructured news data.",
+      "Designed and orchestrated real-time data ingestion pipelines using Apache Kafka and Airflow for high-throughput media intelligence.",
+      "Deployed a scalable, distributed infrastructure with Docker and Kubernetes, ensuring robustness and ease of management.",
+      "Integrated comprehensive observability solutions, including Prometheus and Grafana, for real-time monitoring of data pipelines and system health."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -325,11 +325,11 @@
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
     "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AISettings { temperature: number; maxTokens: number; }\n\n/** Simulates interaction with an external AI model. */\nexport async function processPromptWithAI(\n  userPrompt: string,\n  settings: AISettings\n): Promise<string> {\n  // In a real application, this would call an external AI API (e.g., OpenAI)\n  console.log(`Processing prompt: \"${userPrompt}\" with settings:`, settings);\n  const simulatedResponse = `AI response to \"${userPrompt}\" at temp ${settings.temperature}.`;\n  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async work\n  return simulatedResponse;\n}",
+    "codeSnippet": "interface AIResponse { text: string; confidence: number; }\n\nexport async function getAiPrediction(query: string, model: string): Promise<AIResponse> {\n  const res = await fetch(`/api/models/${model}/predict`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ query }),\n  });\n  if (!res.ok) throw new Error(`API error: ${res.statusText}`);\n  const data: AIResponse = await res.json();\n  return data;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "AI Integration"
+      "Oxlint"
     ],
-    "desc": "OmniPulse AI Studio is a sophisticated full-stack application providing an interactive environment for designing, testing, and refining AI prompts and models. It leverages a modern frontend built with React, TypeScript, and Vite, coupled with a robust backend architecture for efficient AI model interaction and data management.",
+    "desc": "Omnipulse AI Studio provides a robust platform for developing and managing AI applications, leveraging a cutting-edge React and TypeScript frontend. This project demonstrates sophisticated web engineering practices, integrating an API layer for powerful AI model interaction and ensuring high code quality with Oxlint.",
     "features": [
-      "Interactive AI Prompt & Model Interaction for rapid development",
-      "High-Performance Type-Safe Frontend with React, TypeScript, and Vite",
-      "Containerized & Scalable Backend Architecture using Docker for robust AI services",
-      "Automated Code Quality and Hot-Reloading for efficient development workflow"
+      "Modular React-TypeScript architecture powered by Vite for rapid development and a highly responsive user experience.",
+      "Integrated API layer designed for seamless interaction with AI models and backend services.",
+      "Enhanced code quality and maintainability enforced through comprehensive Oxlint static analysis rules.",
+      "Containerized development and deployment workflow utilizing Docker for environment consistency and scalability."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
