@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "def transform_article(raw_data: dict) -> dict:\n    \"\"\"Transforms raw news article data into a structured format.\"\"\"\n    transformed = {\n        \"id\": raw_data.get(\"article_id\"),\n        \"title\": raw_data.get(\"headline\"),\n        \"url\": raw_data.get(\"link\"),\n        \"published_at\": raw_data.get(\"date\"),\n        \"source\": raw_data.get(\"publisher\"),\n        \"content_summary\": raw_data.get(\"content\", \"\")[:200] + \"...\"\n    }\n    return transformed",
+    "codeSnippet": "import pandas as pd\n\ndef clean_and_enrich_news(raw_data: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Applies cleaning and basic NLP to raw news data.\"\"\"\n    df = raw_data.copy()\n    df.columns = [col.lower().replace(' ', '_') for col in df.columns]\n    df['publication_date'] = pd.to_datetime(df['publication_date'])\n    df['sentiment'] = df['text_content'].apply(\n        lambda x: 'positive' if 'good' in x else 'negative' if 'bad' in x else 'neutral'\n    )\n    return df",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Python",
       "Apache Airflow",
-      "MinIO",
+      "Apache Kafka",
+      "MinIO (S3)",
       "Apache Superset",
-      "Kubernetes",
-      "PostgreSQL"
+      "Docker/Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, streamlining the ingestion, processing, and visualization of news article data. It integrates advanced ETL/ELT pipelines and a medallion architecture to provide scalable, actionable insights from global media streams.",
+    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It leverages an Enterprise Lakehouse architecture and robust ETL/ELT pipelines to deliver scalable media intelligence.",
     "features": [
-      "Real-time media intelligence platform with distributed ingestion and processing",
-      "Enterprise Lakehouse architecture featuring a Medallion pattern for robust data management",
-      "Automated, scalable ETL/ELT pipelines orchestrated by Apache Airflow",
-      "Integrated monitoring and interactive data visualization using Grafana, Prometheus, and Superset"
+      "Real-time news article ingestion and processing pipeline via distributed scrapers and Apache Kafka",
+      "Enterprise Lakehouse architecture with MinIO for scalable data storage and Medallion data layering",
+      "Automated ETL/ELT workflows orchestrated by Apache Airflow for data transformation and warehousing",
+      "Integrated media intelligence dashboarding and monitoring using Apache Superset, Grafana, and Prometheus"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +344,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AIResponse {\n  id: string;\n  output: string;\n}\n\n/** Sends a text prompt to the backend AI service. */\nexport async function getAIResponse(promptText: string): Promise<AIResponse> {\n  const response = await fetch('/api/ai/prompt', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt: promptText }),\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  return response.json();\n}",
+    "codeSnippet": "import { Router } from 'express';\nimport { aiEngine } from '../services'; // Generic AI processing engine\n\nconst router = Router();\n\nrouter.post('/generate', async (req, res) => {\n  const { prompt, modelParams } = req.body;\n  if (!prompt) return res.status(400).json({ error: \"Prompt is required.\" });\n\n  try {\n    const output = await aiEngine.process(prompt, modelParams);\n    res.json({ result: output });\n  } catch (err) {\n    res.status(500).json({ error: \"AI processing error.\" });\n  }\n});\n\nexport default router;",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Docker",
       "Node.js",
-      "Oxlint"
+      "Docker",
+      "AI/ML"
     ],
-    "desc": "OmniPulse AI Studio provides a robust platform for developing and deploying AI-driven web applications. Leveraging modern front-end tooling with Vite, React, and TypeScript, it ensures a highly performant and maintainable user experience, integrated with potential AI API backends.",
+    "desc": "This project develops a full-stack AI studio platform enabling the creation and management of AI-driven applications and data workflows. It provides a robust frontend with React and Vite, coupled with a scalable backend for API services and data processing, facilitating rapid AI prototyping and deployment.",
     "features": [
-      "Developed with a cutting-edge React, TypeScript, and Vite stack for optimal development experience and performance.",
-      "Implemented advanced static analysis and linting with Oxlint, including type-aware rules, to ensure high code quality and maintainability.",
-      "Utilizes Docker for streamlined application containerization, facilitating consistent and portable deployment across environments.",
-      "Architected with dedicated API and data directories to support seamless integration with AI models and backend services."
+      "Full-stack architecture combining a modern React/Vite frontend with a scalable Node.js API backend.",
+      "Specialized modules for AI prompt engineering and comprehensive data processing.",
+      "Containerized deployment workflow using Docker for seamless development and production environments.",
+      "Enhanced code quality and maintainability through TypeScript and Oxlint static analysis."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
