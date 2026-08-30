@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\n\ndef transform_news_article_data(raw_json_data: str) -> str:\n    \"\"\"Transforms raw news JSON into a standardized, curated format.\"\"\"\n    article = json.loads(raw_json_data)\n    curated_article = {\n        \"id\": article.get(\"uid\", \"\"),\n        \"title\": article.get(\"headline\", \"\"),\n        \"published_at\": article.get(\"date_published\", \"\"),\n        \"summary\": article.get(\"lead_paragraph\", \"\")\n    }\n    return json.dumps(curated_article, indent=2)",
+    "codeSnippet": "import pandas as pd\n\ndef transform_news_data(raw_data: list[dict]) -> pd.DataFrame:\n    \"\"\"\n    Processes a list of raw news articles into a structured DataFrame.\n    Applies cleaning, feature engineering, and schema enforcement.\n    \"\"\"\n    df = pd.DataFrame(raw_data)\n    df = df.drop_duplicates(subset=['article_id']).set_index('article_id')\n    df['published_at'] = pd.to_datetime(df['published_at'], errors='coerce')\n    df['word_count'] = df['content'].apply(lambda x: len(x.split()) if x else 0)\n    return df[['title', 'source', 'published_at', 'word_count']]",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
+      "PostgreSQL",
       "Apache Superset",
-      "Docker",
-      "Kubernetes"
+      "Docker/Kubernetes"
     ],
-    "desc": "This project develops a comprehensive, distributed platform for ingesting, processing, and visualizing real-time news articles. It achieves advanced media intelligence through a robust lakehouse architecture, leveraging real-time streaming, automated ETL/ELT pipelines, and scalable microservices.",
+    "desc": "This project establishes a comprehensive, distributed platform for real-time media intelligence, integrating ingestion, processing, and visualization of news article data. It implements an enterprise-grade lakehouse architecture with Medallion zones, leveraging advanced ETL/ELT pipelines for robust data management and analytics.",
     "features": [
-      "Implemented a distributed lakehouse architecture for efficient data storage and processing.",
-      "Engineered real-time data ingestion and streaming pipelines using Apache Kafka.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation and loading.",
-      "Provided comprehensive media intelligence visualization via Apache Superset and integrated monitoring with Prometheus/Grafana."
+      "Real-time, Distributed Data Ingestion & Processing",
+      "Enterprise Lakehouse Architecture with Medallion Zones",
+      "Automated ETL/ELT Pipelines with Apache Airflow",
+      "Containerized Deployment & Orchestration (Docker/Kubernetes)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,7 +344,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nexport const generateAIResponse = async (prompt: string): Promise<string> => {\n  try {\n    const response = await axios.post<{ output: string }>('/api/generate', { prompt });\n    return response.data.output;\n  } catch (error) {\n    console.error('AI generation failed:', error);\n    throw new Error('Could not generate AI response.');\n  }\n};",
+    "codeSnippet": "export const fetchAIGeneration = async (prompt: string): Promise<string> => {\n  const response = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt })\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.status}`);\n  }\n  const data = await response.json();\n  return data.aiResult;\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -355,12 +355,12 @@ const EMBEDDED_PROJECTS = [
       "Docker",
       "Oxlint"
     ],
-    "desc": "A cutting-edge web studio built with React, TypeScript, and Vite, designed to streamline AI development workflows. This project emphasizes performance, type safety, and robust tooling to create a highly scalable and maintainable platform for AI model interaction.",
+    "desc": "This project delivers a sophisticated AI Studio frontend, leveraging React, TypeScript, and Vite to provide an interactive and high-performance user experience. It achieves a highly maintainable codebase through advanced linting and a modular architecture, specifically designed for integrating and managing AI applications.",
     "features": [
-      "Leverages Vite, React, and TypeScript for a high-performance, type-safe, and modular frontend experience.",
-      "Integrates advanced code quality and consistency checks using Oxlint, promoting maintainable and error-free development.",
-      "Containerized development and deployment environment with Docker, ensuring consistency across various stages.",
-      "Designed for scalable API interaction, facilitating seamless integration with AI model inference services."
+      "High-performance Frontend with Vite & React",
+      "Robust Type Safety & Code Quality via TypeScript and Oxlint",
+      "Modular API Integration for AI Backend Services",
+      "Containerized Development & Deployment Workflow"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
