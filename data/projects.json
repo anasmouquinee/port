@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_news_article():\n    # Simulates fetching, cleaning, and initial storage of a news article.\n    print(\"Fetching and processing a news article...\")\n\nwith DAG('news_article_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@hourly') as dag:\n    process_task = PythonOperator(\n        task_id='process_single_article',\n        python_callable=process_news_article,\n    )",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_processing_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    scrape = BashOperator(task_id='scrape_articles', bash_command='python scrapers/run.py')\n    ingest = BashOperator(task_id='ingest_to_kafka', bash_command='python ingestion/producer.py')\n    process = BashOperator(task_id='process_lakehouse', bash_command='python pipelines/transform.py')\n    \n    scrape >> ingest >> process",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
+      "Kubernetes",
       "Apache Superset",
-      "PostgreSQL",
       "Python"
     ],
-    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles using a modern lakehouse architecture. It establishes robust ETL/ELT pipelines to transform raw data into actionable media intelligence, enabling scalable data analytics and reporting.",
+    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from diverse sources. It leverages a distributed enterprise lakehouse architecture for scalable data management and advanced analytics.",
     "features": [
-      "Implemented a scalable enterprise lakehouse architecture for real-time media intelligence from news articles.",
-      "Designed and orchestrated robust ETL/ELT pipelines using Apache Airflow for data ingestion, processing, and warehousing.",
-      "Leveraged Apache Kafka for high-throughput real-time data streaming and MinIO as a flexible data lake.",
-      "Provided comprehensive monitoring with Prometheus/Grafana and dynamic data visualization via Apache Superset."
+      "Implemented a distributed Lakehouse architecture (MinIO, PostgreSQL) with a Medallion pattern for data quality.",
+      "Orchestrated real-time data ingestion and processing pipelines using Apache Kafka and Apache Airflow.",
+      "Developed modular web scrapers for diverse news sources, feeding a scalable, event-driven data pipeline.",
+      "Provided interactive media intelligence dashboards via Apache Superset and comprehensive monitoring with Prometheus/Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,12 +324,12 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nexport const getAIResponse = async (prompt: string): Promise<string> => {\n  try {\n    const response = await axios.post<{ output: string }>('/api/ai/generate', { prompt });\n    return response.data.output;\n  } catch (error) {\n    console.error('AI API Error:', error);\n    throw new Error('Failed to retrieve AI response.');\n  }\n};",
+    "codeSnippet": "import { generateCompletion } from './llmProvider';\n\ninterface LLMQueryParams {\n  model: string;\n  prompt: string;\n  [key: string]: any;\n}\n\nasync function executeLLMPrompt(queryParams: LLMQueryParams): Promise<string> {\n  const response = await generateCompletion(queryParams);\n  return response.text;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "RESTful API"
+      "Generative AI"
     ],
-    "desc": "Omnipulse AI Studio is a robust web application designed for interacting with and managing AI services. Built with React, TypeScript, and Vite, it integrates advanced frontend tooling and leverages a structured API for backend interactions.",
+    "desc": "Engineered a sophisticated web-based studio environment designed for developing and managing AI prompts and applications. This platform leverages a modern full-stack architecture to provide a robust and scalable interface for AI model interaction and testing.",
     "features": [
-      "Scalable AI service integration via a structured API.",
-      "Modern, performant frontend built with React, TypeScript, and Vite.",
-      "Containerized deployment ready with Docker for environmental consistency.",
-      "Enhanced code quality and maintainability through Oxlint integration."
+      "Modern Full-Stack Architecture for AI Application Development",
+      "Containerized Deployment for Consistent Environments",
+      "Integrated AI Prompt Design and Testing Capabilities",
+      "Advanced Code Quality with Oxlint for Maintainable Frontend"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
