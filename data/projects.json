@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef clean_and_enrich_news(raw_data: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Applies cleaning and basic NLP to raw news data.\"\"\"\n    df = raw_data.copy()\n    df.columns = [col.lower().replace(' ', '_') for col in df.columns]\n    df['publication_date'] = pd.to_datetime(df['publication_date'])\n    df['sentiment'] = df['text_content'].apply(\n        lambda x: 'positive' if 'good' in x else 'negative' if 'bad' in x else 'neutral'\n    )\n    return df",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_news_article():\n    # Simulates fetching, cleaning, and initial storage of a news article.\n    print(\"Fetching and processing a news article...\")\n\nwith DAG('news_article_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@hourly') as dag:\n    process_task = PythonOperator(\n        task_id='process_single_article',\n        python_callable=process_news_article,\n    )",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO (S3)",
+      "Apache Airflow",
+      "MinIO",
       "Apache Superset",
-      "Docker/Kubernetes"
+      "PostgreSQL",
+      "Python"
     ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It leverages an Enterprise Lakehouse architecture and robust ETL/ELT pipelines to deliver scalable media intelligence.",
+    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles using a modern lakehouse architecture. It establishes robust ETL/ELT pipelines to transform raw data into actionable media intelligence, enabling scalable data analytics and reporting.",
     "features": [
-      "Real-time news article ingestion and processing pipeline via distributed scrapers and Apache Kafka",
-      "Enterprise Lakehouse architecture with MinIO for scalable data storage and Medallion data layering",
-      "Automated ETL/ELT workflows orchestrated by Apache Airflow for data transformation and warehousing",
-      "Integrated media intelligence dashboarding and monitoring using Apache Superset, Grafana, and Prometheus"
+      "Implemented a scalable enterprise lakehouse architecture for real-time media intelligence from news articles.",
+      "Designed and orchestrated robust ETL/ELT pipelines using Apache Airflow for data ingestion, processing, and warehousing.",
+      "Leveraged Apache Kafka for high-throughput real-time data streaming and MinIO as a flexible data lake.",
+      "Provided comprehensive monitoring with Prometheus/Grafana and dynamic data visualization via Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,7 +329,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import { Router } from 'express';\nimport { aiEngine } from '../services'; // Generic AI processing engine\n\nconst router = Router();\n\nrouter.post('/generate', async (req, res) => {\n  const { prompt, modelParams } = req.body;\n  if (!prompt) return res.status(400).json({ error: \"Prompt is required.\" });\n\n  try {\n    const output = await aiEngine.process(prompt, modelParams);\n    res.json({ result: output });\n  } catch (err) {\n    res.status(500).json({ error: \"AI processing error.\" });\n  }\n});\n\nexport default router;",
+    "codeSnippet": "import axios from 'axios';\n\nexport const getAIResponse = async (prompt: string): Promise<string> => {\n  try {\n    const response = await axios.post<{ output: string }>('/api/ai/generate', { prompt });\n    return response.data.output;\n  } catch (error) {\n    console.error('AI API Error:', error);\n    throw new Error('Failed to retrieve AI response.');\n  }\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "AI/ML"
+      "RESTful API"
     ],
-    "desc": "This project develops a full-stack AI studio platform enabling the creation and management of AI-driven applications and data workflows. It provides a robust frontend with React and Vite, coupled with a scalable backend for API services and data processing, facilitating rapid AI prototyping and deployment.",
+    "desc": "Omnipulse AI Studio is a robust web application designed for interacting with and managing AI services. Built with React, TypeScript, and Vite, it integrates advanced frontend tooling and leverages a structured API for backend interactions.",
     "features": [
-      "Full-stack architecture combining a modern React/Vite frontend with a scalable Node.js API backend.",
-      "Specialized modules for AI prompt engineering and comprehensive data processing.",
-      "Containerized deployment workflow using Docker for seamless development and production environments.",
-      "Enhanced code quality and maintainability through TypeScript and Oxlint static analysis."
+      "Scalable AI service integration via a structured API.",
+      "Modern, performant frontend built with React, TypeScript, and Vite.",
+      "Containerized deployment ready with Docker for environmental consistency.",
+      "Enhanced code quality and maintainability through Oxlint integration."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
