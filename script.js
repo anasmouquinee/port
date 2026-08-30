@@ -315,7 +315,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import task\nimport pandas as pd\n\n@task\ndef transform_news_data(input_path: str, output_path: str):\n    \"\"\"Reads raw news data, cleans it, and writes to processed layer.\"\"\"\n    df = pd.read_parquet(input_path)\n    df['title_length'] = df['title'].apply(len)\n    df_cleaned = df.drop_duplicates(subset=['url'])\n    df_cleaned.to_parquet(output_path, index=False)\n    print(f\"Processed {len(df_cleaned)} records.\")",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_news_article(raw_data: str) -> dict:\n    \"\"\"Parses raw article data and enriches it for the data lake.\"\"\"\n    article = json.loads(raw_data)\n    \n    article['title'] = article['title'].strip()\n    article['published_at'] = datetime.fromisoformat(article['published_at']).isoformat()\n    article['source_domain'] = article['url'].split('/')[2]\n    article['processed_timestamp'] = datetime.now().isoformat()\n    \n    return article",
     "img": null,
     "gallery": [],
     "tech": [
@@ -326,13 +326,12 @@ const EMBEDDED_PROJECTS = [
       "Kubernetes",
       "Python"
     ],
-    "desc": "Global NewsStream is a comprehensive, distributed platform designed for real-time media intelligence, enabling the ingestion, processing, and visualization of news article data. It leverages a modern enterprise lakehouse architecture, integrating advanced data engineering practices for scalable ETL/ELT workflows and robust analytics.",
+    "desc": "This platform delivers real-time media intelligence through a distributed lakehouse architecture, enabling the ingestion, processing, and visualization of news articles. It establishes a robust, scalable data pipeline for enterprise-grade data management and analytics, from raw scraping to actionable insights.",
     "features": [
-      "Distributed Enterprise Lakehouse Architecture (Medallion Pattern) for scalable data storage and processing.",
-      "Real-time data ingestion and stream processing using Apache Kafka for immediate media intelligence.",
-      "Automated ETL/ELT data pipelines orchestrated by Apache Airflow for robust workflow management.",
-      "Comprehensive data visualization and monitoring via Apache Superset, Grafana, and Prometheus.",
-      "Containerized deployment leveraging Docker and Kubernetes for high availability and scalability."
+      "Distributed Enterprise Lakehouse architecture with real-time data ingestion via Apache Kafka.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation and warehousing.",
+      "Scalable microservices deployment leveraging Docker and Kubernetes for high availability.",
+      "Comprehensive media intelligence visualization and monitoring with Apache Superset, Prometheus, and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
