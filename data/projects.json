@@ -295,29 +295,17 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef transform_news_data(raw_data: list[dict]) -> pd.DataFrame:\n    \"\"\"\n    Processes a list of raw news articles into a structured DataFrame.\n    Applies cleaning, feature engineering, and schema enforcement.\n    \"\"\"\n    df = pd.DataFrame(raw_data)\n    df = df.drop_duplicates(subset=['article_id']).set_index('article_id')\n    df['published_at'] = pd.to_datetime(df['published_at'], errors='coerce')\n    df['word_count'] = df['content'].apply(lambda x: len(x.split()) if x else 0)\n    return df[['title', 'source', 'published_at', 'word_count']]",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Apache Kafka",
-      "Apache Airflow",
-      "MinIO",
-      "PostgreSQL",
-      "Apache Superset",
-      "Docker/Kubernetes"
-    ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time media intelligence, integrating ingestion, processing, and visualization of news article data. It implements an enterprise-grade lakehouse architecture with Medallion zones, leveraging advanced ETL/ELT pipelines for robust data management and analytics.",
-    "features": [
-      "Real-time, Distributed Data Ingestion & Processing",
-      "Enterprise Lakehouse Architecture with Medallion Zones",
-      "Automated ETL/ELT Pipelines with Apache Airflow",
-      "Containerized Deployment & Orchestration (Docker/Kubernetes)"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -328,25 +316,13 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "export const fetchAIGeneration = async (prompt: string): Promise<string> => {\n  const response = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt })\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.status}`);\n  }\n  const data = await response.json();\n  return data.aiResult;\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Oxlint"
-    ],
-    "desc": "This project delivers a sophisticated AI Studio frontend, leveraging React, TypeScript, and Vite to provide an interactive and high-performance user experience. It achieves a highly maintainable codebase through advanced linting and a modular architecture, specifically designed for integrating and managing AI applications.",
-    "features": [
-      "High-performance Frontend with Vite & React",
-      "Robust Type Safety & Code Quality via TypeScript and Oxlint",
-      "Modular API Integration for AI Backend Services",
-      "Containerized Development & Deployment Workflow"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
