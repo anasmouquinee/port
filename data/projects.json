@@ -295,29 +295,41 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "import pandas as pd\n\ndef clean_news_data(raw_df: pd.DataFrame) -> pd.DataFrame:\n    processed_df = raw_df.copy()\n    processed_df['title_clean'] = processed_df['title'].str.strip().str.upper()\n    processed_df['source_std'] = processed_df['source'].str.replace(' ', '_').str.upper()\n    processed_df['pub_year'] = pd.to_datetime(processed_df['published_at']).dt.year\n    processed_df['text_len'] = processed_df['content'].apply(lambda x: len(x) if x else 0)\n    return processed_df",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO (S3)",
+      "Apache Superset",
+      "Prometheus",
+      "Kubernetes"
+    ],
+    "desc": "Developed a comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages an enterprise lakehouse architecture, encompassing automated scraping, ETL/ELT pipelines, and advanced analytics for dynamic media insights.",
+    "features": [
+      "Real-time Media Data Ingestion & Scraping from diverse news sources",
+      "Distributed Enterprise Lakehouse Architecture with Medallion layers (Bronze, Silver, Gold)",
+      "Automated ETL/ELT Pipelines orchestrated via Apache Airflow for data transformation and quality",
+      "Comprehensive Real-time Monitoring & Business Intelligence Dashboards using Grafana and Superset"
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "async function generateAIResponse(prompt: string, model: string): Promise<string> {\n  try {\n    const response = await fetch('/api/ai-chat', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt, modelId: model }),\n    });\n    if (!response.ok) throw new Error(`API error: ${response.statusText}`);\n    const data: { generatedText: string } = await response.json();\n    return data.generatedText;\n  } catch (error) {\n    console.error('AI response generation failed:', error);\n    return 'Error generating response.';\n  }\n}",
+    "codeSnippet": "interface AISettings { temperature: number; maxTokens: number; }\n\n/** Simulates interaction with an external AI model. */\nexport async function processPromptWithAI(\n  userPrompt: string,\n  settings: AISettings\n): Promise<string> {\n  // In a real application, this would call an external AI API (e.g., OpenAI)\n  console.log(`Processing prompt: \"${userPrompt}\" with settings:`, settings);\n  const simulatedResponse = `AI response to \"${userPrompt}\" at temp ${settings.temperature}.`;\n  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async work\n  return simulatedResponse;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -326,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "AI/LLM Integration"
+      "AI Integration"
     ],
-    "desc": "Omnipulse AI Studio is a sophisticated full-stack web application designed for AI development and prompt engineering. It leverages modern React, TypeScript, and Vite for a high-performance frontend, integrated with a backend API to facilitate robust AI model interaction and data processing.",
+    "desc": "OmniPulse AI Studio is a sophisticated full-stack application providing an interactive environment for designing, testing, and refining AI prompts and models. It leverages a modern frontend built with React, TypeScript, and Vite, coupled with a robust backend architecture for efficient AI model interaction and data management.",
     "features": [
-      "Intuitive AI Prompt Engineering Interface",
-      "Robust Full-Stack API Integration for AI Services",
-      "Containerized Deployment for Scalability (Docker/Vercel)",
-      "Optimized Frontend with Vite, TypeScript, and Oxlint"
+      "Interactive AI Prompt & Model Interaction for rapid development",
+      "High-Performance Type-Safe Frontend with React, TypeScript, and Vite",
+      "Containerized & Scalable Backend Architecture using Docker for robust AI services",
+      "Automated Code Quality and Hot-Reloading for efficient development workflow"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
