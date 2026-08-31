@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import s3fs\nimport json\n\ndef store_processed_data_to_lake(data: dict, article_id: str):\n    \"\"\"Stores processed data in MinIO Data Lake.\"\"\"\n    fs = s3fs.S3FileSystem(\n        client_kwargs={'endpoint_url': 'http://minio:9000'},\n        key='minio_admin',\n        secret='anaskaelar'\n    )\n    bucket_name = \"curated-news\"\n    file_path = f\"{bucket_name}/{article_id}.json\"\n    with fs.open(file_path, 'w') as f:\n        json.dump(data, f)",
+    "codeSnippet": "from airflow.decorators import task\nimport pandas as pd\nfrom datetime import datetime\n\n@task\ndef transform_news_to_bronze(raw_news_data: list) -> str:\n    df = pd.DataFrame(raw_news_data)\n    df['processed_text'] = df['text'].str.lower().str.strip()\n    df['ingestion_timestamp'] = datetime.now().isoformat()\n    # Assume s3_client.upload_dataframe is available for MinIO storage\n    # s3_client.upload_dataframe(df, bucket=\"bronze\", key=\"news_articles.parquet\")\n    return f\"Processed {len(df)} articles to bronze.\"",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Docker",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO",
-      "PostgreSQL"
+      "Apache Airflow",
+      "MinIO (Data Lake)",
+      "PostgreSQL",
+      "Apache Superset",
+      "Kubernetes"
     ],
-    "desc": "Engineered a distributed enterprise lakehouse platform for real-time media intelligence, capable of ingesting, processing, and visualizing vast volumes of news article data. This robust solution leverages an advanced Medallion Architecture with orchestrated ETL/ELT pipelines to deliver actionable insights from diverse sources.",
+    "desc": "This project develops a comprehensive, distributed enterprise platform for real-time media intelligence, leveraging a Lakehouse architecture to ingest, process, and visualize news article data. It achieves scalable data management and analytics through a robust ETL/ELT pipeline and modern data stack components for advanced media insights.",
     "features": [
-      "Real-time distributed data ingestion and scraping pipelines",
-      "Enterprise Data Lakehouse with Medallion Architecture for structured and unstructured data",
-      "Automated ETL/ELT orchestration using Apache Airflow",
-      "Comprehensive monitoring and advanced analytics dashboards with Grafana and Apache Superset"
+      "Implemented a Medallion Lakehouse Architecture for structured, robust data management from raw to curated layers.",
+      "Developed real-time data ingestion pipelines using Apache Kafka for high-throughput news article streaming.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation, enrichment, and quality assurance.",
+      "Deployed a scalable, containerized infrastructure using Docker and Kubernetes for high availability and distributed processing."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
