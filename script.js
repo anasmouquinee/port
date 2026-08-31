@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom io import StringIO\n\ndef transform_news_bronze_to_silver(bronze_csv_data: str) -> str:\n    df = pd.read_csv(StringIO(bronze_csv_data))\n    df['title_cleaned'] = df['title'].str.strip().str.lower()\n    df['published_date'] = pd.to_datetime(df['published_at'], errors='coerce')\n    df.drop(columns=['unnecessary_col'], errors='ignore', inplace=True)\n    silver_buffer = StringIO()\n    df.to_csv(silver_buffer, index=False)\n    return silver_buffer.getvalue()",
+    "codeSnippet": "import s3fs\nimport json\n\ndef store_processed_data_to_lake(data: dict, article_id: str):\n    \"\"\"Stores processed data in MinIO Data Lake.\"\"\"\n    fs = s3fs.S3FileSystem(\n        client_kwargs={'endpoint_url': 'http://minio:9000'},\n        key='minio_admin',\n        secret='anaskaelar'\n    )\n    bucket_name = \"curated-news\"\n    file_path = f\"{bucket_name}/{article_id}.json\"\n    with fs.open(file_path, 'w') as f:\n        json.dump(data, f)",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
+      "Docker",
       "Apache Airflow",
-      "Kafka",
+      "Apache Kafka",
       "MinIO",
-      "Kubernetes",
-      "Apache Superset"
+      "PostgreSQL"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse and real-time media intelligence platform for ingesting, processing, and visualizing news article data. It leverages a Medallion Architecture with ETL/ELT pipelines to deliver scalable data management and actionable insights from diverse news sources.",
+    "desc": "Engineered a distributed enterprise lakehouse platform for real-time media intelligence, capable of ingesting, processing, and visualizing vast volumes of news article data. This robust solution leverages an advanced Medallion Architecture with orchestrated ETL/ELT pipelines to deliver actionable insights from diverse sources.",
     "features": [
-      "Real-time Data Ingestion & Processing with Kafka",
-      "Enterprise Lakehouse Architecture (MinIO, Medallion)",
-      "Automated Data Orchestration with Apache Airflow",
-      "Containerized & Cloud-Native Deployment (Docker, Kubernetes)"
+      "Real-time distributed data ingestion and scraping pipelines",
+      "Enterprise Data Lakehouse with Medallion Architecture for structured and unstructured data",
+      "Automated ETL/ELT orchestration using Apache Airflow",
+      "Comprehensive monitoring and advanced analytics dashboards with Grafana and Apache Superset"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -343,25 +343,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import type { AIPromptRequest, AIPromptResponse } from './types';\n\nexport async function submitAIPrompt(request: AIPromptRequest): Promise<AIPromptResponse> {\n  const response = await fetch('/api/ai/process-prompt', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(request)\n  });\n\n  if (!response.ok) {\n    const errorData = await response.json();\n    throw new Error(errorData.message || 'Failed to process AI prompt.');\n  }\n\n  return response.json();\n}",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Oxlint"
-    ],
-    "desc": "Omnipulse AI Studio provides a robust web-based platform for developing and testing AI prompts and models. Leveraging a modern React, TypeScript, and Vite stack with a dedicated API, it ensures high performance, maintainability, and a streamlined development workflow for AI solutions.",
-    "features": [
-      "Modular architecture separating frontend UI from dedicated AI processing APIs.",
-      "Leverages React, TypeScript, and Vite for a highly performant and type-safe frontend experience.",
-      "Containerized deployment using Docker for consistent, scalable, and environment-agnostic operations.",
-      "Integrated linting and build tooling (Oxlint, Vite) ensuring code quality and rapid development cycles."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
