@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_ingestion_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    scrape = BashOperator(task_id='scrape_data', bash_command='python /app/scrapers/run.py')\n    process = BashOperator(task_id='process_bronze', bash_command='python /app/pipelines/process.py')\n    load = BashOperator(task_id='load_gold', bash_command='python /app/pipelines/load.py')\n\n    scrape >> process >> load",
+    "codeSnippet": "import requests\nfrom kafka import KafkaProducer\nimport json\n\nproducer = KafkaProducer(bootstrap_servers='kafka:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))\n\ndef scrape_and_publish_news(url: str, topic: str):\n    response = requests.get(url, timeout=5)\n    response.raise_for_status()\n    article_data = {\"url\": url, \"content\": response.text[:500]}\n    producer.send(topic, article_data)\n    print(f\"Published {url} to Kafka topic {topic}\")",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
       "MinIO",
-      "PostgreSQL",
-      "Docker & Kubernetes"
+      "Docker",
+      "Apache Superset",
+      "Python"
     ],
-    "desc": "This platform delivers a comprehensive, distributed enterprise lakehouse for real-time media intelligence, ingesting and processing news articles from various sources. It achieves end-to-end data lifecycle management, from scraping and streaming to warehousing and visualization, leveraging a robust medallion architecture.",
+    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from various sources. It leverages a distributed lakehouse architecture to provide scalable data management and analytics capabilities for enterprise needs.",
     "features": [
-      "Implements distributed scraping and real-time ingestion of news articles, leveraging Kafka for high-throughput streaming.",
-      "Establishes a robust Medallion architecture with MinIO for raw/bronze storage and PostgreSQL for curated/gold data warehousing.",
-      "Automates complex ETL/ELT data pipelines using Apache Airflow, ensuring reliable and scheduled data processing.",
-      "Provides real-time system monitoring with Prometheus and Grafana, alongside interactive data visualization via Apache Superset."
+      "Real-time data ingestion and stream processing from diverse news sources.",
+      "Scalable Enterprise Lakehouse (Medallion Architecture) for structured and unstructured data.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation.",
+      "Integrated dashboards for media intelligence visualization and infrastructure monitoring."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,29 +324,28 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
+    "category": "Full-Stack & Web",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "async function generateAIPromptResponse(\n  modelId: string,\n  promptText: string,\n  temperature: number = 0.7\n): Promise<string> {\n  try {\n    const response = await fetch(`/api/models/${modelId}/generate`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt: promptText, temp: temperature })\n    });\n    if (!response.ok) {\n      throw new Error(`API error: ${response.statusText}`);\n    }\n    const data = await response.json();\n    return data.generatedText;\n  } catch (error) {\n    console.error('Failed to generate response:', error);\n    return 'Error: Could not get response.';\n  }\n}",
+    "codeSnippet": "import { AIModelProvider } from './aiModelProvider';\n\ninterface GenerationOptions { temperature?: number; maxLength?: number; }\n\nexport async function generateFromPrompt(\n  modelId: string,\n  prompt: string,\n  options?: GenerationOptions\n): Promise<string> {\n  const model = AIModelProvider.get(modelId);\n  const result = await model.complete(prompt, options);\n  return result.text;\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Oxlint",
       "Node.js",
-      "Docker"
+      "Docker",
+      "Generative AI"
     ],
-    "desc": "This project delivers a sophisticated web-based studio for developing and interacting with AI applications, leveraging a modern React and TypeScript frontend. It establishes a robust and maintainable development environment through advanced tooling for code quality and efficient compilation.",
+    "desc": "OmniPulse AI Studio delivers a sophisticated web platform designed for seamless interaction and management of AI models, enhancing developer and user productivity. It showcases a modern full-stack architecture, combining a reactive TypeScript frontend with robust backend services, deployed via containerization and CI/CD workflows.",
     "features": [
-      "Interactive AI Development Environment",
-      "High-Performance Frontend Stack",
-      "Robust Code Quality Assurance",
-      "Containerized & Scalable Deployment",
-      "API-Driven Architecture"
+      "Component-driven frontend architecture with React and TypeScript for rich user experiences",
+      "Containerized application deployment using Docker, ensuring portability and consistent environments",
+      "Scalable API backend facilitating seamless integration with AI models and data processing",
+      "Automated CI/CD pipelines via Vercel and GitHub Actions for rapid, reliable deployments"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
