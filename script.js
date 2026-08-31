@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(dag_id='news_etl_lakehouse', start_date=datetime(2023, 1, 1), schedule_interval='@daily', catchup=False) as dag:\n    ingest_articles = BashOperator(task_id='scrape_news', bash_command='python /app/ingestion/scrape.py')\n    process_data = BashOperator(task_id='process_raw_data', bash_command='python /app/pipelines/transform.py')\n    load_to_dw = BashOperator(task_id='load_to_warehouse', bash_command='psql -f /app/warehouse/load.sql')\n    ingest_articles >> process_data >> load_to_dw",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_article_processing',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['news', 'data_lake'],\n) as dag:\n    scrape_task = BashOperator(\n        task_id='scrape_news_articles',\n        bash_command='python /opt/airflow/scrapers/run_scraper.py',\n    )\n    ingest_to_lake_task = BashOperator(\n        task_id='ingest_to_data_lake',\n        bash_command='python /opt/airflow/ingestion/ingest_minio.py',\n    )\n    process_data_task = BashOperator(\n        task_id='process_lake_data',\n        bash_command='python /opt/airflow/pipelines/process_articles.py',\n    )\n\n    scrape_task >> ingest_to_lake_task >> process_data_task",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Kafka",
       "Apache Airflow",
       "MinIO",
       "PostgreSQL",
       "Apache Superset",
-      "Docker"
+      "Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, addressing the challenge of ingesting, processing, and visualizing vast streams of news data. It leverages a modern big data stack to deliver automated ETL/ELT pipelines and interactive analytics for media insights.",
+    "desc": "This project develops an enterprise-grade lakehouse platform for real-time ingestion, processing, and visualization of news media intelligence. It leverages a distributed architecture to scrape, transform, and analyze vast datasets, providing critical insights through a robust data pipeline.",
     "features": [
-      "Developed a distributed enterprise lakehouse for real-time media intelligence.",
-      "Implemented automated ETL/ELT pipelines using Apache Airflow for data processing.",
-      "Integrated real-time data streaming with Apache Kafka for continuous ingestion.",
-      "Provided interactive dashboards via Apache Superset for comprehensive media analytics."
+      "Distributed Enterprise Lakehouse Architecture with MinIO and PostgreSQL",
+      "Real-time News Article Ingestion and Stream Processing with Kafka",
+      "Automated ETL/ELT Pipelines Orchestrated via Apache Airflow",
+      "Interactive Data Visualization and Monitoring with Superset and Grafana"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -343,25 +343,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import { Request, Response } from 'express';\nimport { aiService } from '../services/aiService';\n\nexport const processAIRequest = async (req: Request, res: Response) => {\n  try {\n    const { prompt, config } = req.body;\n    if (!prompt) return res.status(400).json({ error: \"Prompt is required.\" });\n\n    const result = await aiService.interactWithModel(prompt, config);\n    res.json({ success: true, data: result });\n  } catch (error: any) {\n    res.status(500).json({ error: error.message || \"Server error.\" });\n  }\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Oxlint"
-    ],
-    "desc": "A sophisticated full-stack AI studio platform engineered to streamline the development and deployment of intelligent applications. It provides a robust and scalable environment for AI model integration and intuitive user interaction.",
-    "features": [
-      "Modular full-stack architecture for scalable AI application development",
-      "Containerized deployment workflows utilizing Docker for environment consistency",
-      "Type-safe front-end engineered with React, TypeScript, and Vite tooling",
-      "Integrated code quality and linting enforced via Oxlint"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
