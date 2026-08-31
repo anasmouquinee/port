@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import task\nimport pandas as pd\nfrom datetime import datetime\n\n@task\ndef transform_news_to_bronze(raw_news_data: list) -> str:\n    df = pd.DataFrame(raw_news_data)\n    df['processed_text'] = df['text'].str.lower().str.strip()\n    df['ingestion_timestamp'] = datetime.now().isoformat()\n    # Assume s3_client.upload_dataframe is available for MinIO storage\n    # s3_client.upload_dataframe(df, bucket=\"bronze\", key=\"news_articles.parquet\")\n    return f\"Processed {len(df)} articles to bronze.\"",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_stream_etl',\n    start_date=datetime(2023, 1, 1),\n    catchup=False,\n    tags=['lakehouse', 'realtime']\n) as dag:\n    ingest_task = BashOperator(\n        task_id='scrape_news',\n        bash_command='python /app/scrapers/run_all.py'\n    )\n    process_task = BashOperator(\n        task_id='process_to_lakehouse',\n        bash_command='python /app/pipelines/transform_data.py'\n    )\n    ingest_task >> process_task",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (Data Lake)",
+      "MinIO",
+      "Kubernetes",
       "PostgreSQL",
-      "Apache Superset",
-      "Kubernetes"
+      "Apache Superset"
     ],
-    "desc": "This project develops a comprehensive, distributed enterprise platform for real-time media intelligence, leveraging a Lakehouse architecture to ingest, process, and visualize news article data. It achieves scalable data management and analytics through a robust ETL/ELT pipeline and modern data stack components for advanced media insights.",
+    "desc": "This distributed platform ingests, processes, and visualizes real-time news articles from various sources, delivering comprehensive media intelligence. It leverages a modern enterprise Lakehouse architecture with orchestrated ETL/ELT pipelines for scalable, high-performance data management.",
     "features": [
-      "Implemented a Medallion Lakehouse Architecture for structured, robust data management from raw to curated layers.",
-      "Developed real-time data ingestion pipelines using Apache Kafka for high-throughput news article streaming.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation, enrichment, and quality assurance.",
-      "Deployed a scalable, containerized infrastructure using Docker and Kubernetes for high availability and distributed processing."
+      "Designed and implemented a distributed Enterprise Lakehouse architecture (Medallion) for scalable data storage and processing.",
+      "Orchestrated real-time data ingestion and processing pipelines using Apache Airflow and Apache Kafka.",
+      "Enabled rich media intelligence through integrated data visualization and monitoring dashboards with Apache Superset and Grafana.",
+      "Deployed a containerized, highly available infrastructure utilizing Docker and Kubernetes for robust operational resilience."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,17 +339,29 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
+    "category": "AI & Autonomous Systems",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "export async function getAIGeneratedContent(\n  prompt: string, model: string = 'gpt-3.5-turbo'\n): Promise<string> {\n  const response = await fetch('/api/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, model }),\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  const data = await response.json();\n  return data.generatedText;\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Oxlint",
+      "Docker",
+      "Vercel"
+    ],
+    "desc": "Omnipulse AI Studio is a robust web-based platform designed to facilitate the development and interaction with advanced AI models. It leverages modern frontend technologies like React and TypeScript, integrated with performance optimizations and a structured API, to deliver a seamless user experience for AI architects.",
+    "features": [
+      "Modern React & TypeScript Frontend Architecture",
+      "Configurable Type-Aware Code Quality (Oxlint)",
+      "Containerized Development & Deployment Workflow (Docker)",
+      "Integrated API Structure for AI Model Interaction"
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
