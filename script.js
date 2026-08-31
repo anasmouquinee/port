@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_processing_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    scrape = BashOperator(task_id='scrape_articles', bash_command='python scrapers/run.py')\n    ingest = BashOperator(task_id='ingest_to_kafka', bash_command='python ingestion/producer.py')\n    process = BashOperator(task_id='process_lakehouse', bash_command='python pipelines/transform.py')\n    \n    scrape >> ingest >> process",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl', start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily', catchup=False\n) as dag:\n    ingest = BashOperator(task_id='ingest_raw', bash_command='python /app/ingestion.py')\n    bronze = BashOperator(task_id='to_bronze', bash_command='python /app/bronze_etl.py')\n    silver = BashOperator(task_id='to_silver', bash_command='python /app/silver_etl.py')\n    gold = BashOperator(task_id='to_gold', bash_command='python /app/gold_load.py')\n\n    ingest >> bronze >> silver >> gold",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
+      "Apache Kafka",
+      "Data Lakehouse",
       "Kubernetes",
-      "Apache Superset",
-      "Python"
+      "Docker",
+      "Apache Superset"
     ],
-    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from diverse sources. It leverages a distributed enterprise lakehouse architecture for scalable data management and advanced analytics.",
+    "desc": "This platform provides a comprehensive, distributed solution for real-time media intelligence, enabling robust ingestion, processing, and visualization of news article data. It leverages an enterprise lakehouse architecture with scalable ETL/ELT pipelines for efficient data management and advanced analytics.",
     "features": [
-      "Implemented a distributed Lakehouse architecture (MinIO, PostgreSQL) with a Medallion pattern for data quality.",
-      "Orchestrated real-time data ingestion and processing pipelines using Apache Kafka and Apache Airflow.",
-      "Developed modular web scrapers for diverse news sources, feeding a scalable, event-driven data pipeline.",
-      "Provided interactive media intelligence dashboards via Apache Superset and comprehensive monitoring with Prometheus/Grafana."
+      "End-to-end distributed platform for real-time media intelligence",
+      "Implemented Medallion Lakehouse Architecture for scalable data management",
+      "Automated data ingestion and ETL/ELT pipelines orchestrated by Apache Airflow",
+      "Real-time data visualization via Apache Superset and infrastructure monitoring with Prometheus/Grafana"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,28 +339,28 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import { generateCompletion } from './llmProvider';\n\ninterface LLMQueryParams {\n  model: string;\n  prompt: string;\n  [key: string]: any;\n}\n\nasync function executeLLMPrompt(queryParams: LLMQueryParams): Promise<string> {\n  const response = await generateCompletion(queryParams);\n  return response.text;\n}",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptResult {\n  id: string;\n  output: string;\n  tokensUsed: number;\n}\n\nexport async function submitAIPrompt(promptText: string): Promise<AIPromptResult> {\n  try {\n    const response = await axios.post<AIPromptResult>('/api/ai/generate', { prompt: promptText });\n    return response.data;\n  } catch (error) {\n    console.error('Error submitting AI prompt:', error);\n    throw new Error('Failed to generate AI response.');\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
-      "Vite",
       "Node.js",
+      "Vite",
       "Docker",
-      "Generative AI"
+      "AI/ML Integration"
     ],
-    "desc": "Engineered a sophisticated web-based studio environment designed for developing and managing AI prompts and applications. This platform leverages a modern full-stack architecture to provide a robust and scalable interface for AI model interaction and testing.",
+    "desc": "Developed a robust full-stack AI studio platform, leveraging modern web technologies to provide an interactive environment for AI model interaction and development. This platform showcases advanced front-end architecture with Vite, React, and TypeScript, integrated with backend APIs for seamless AI capabilities.",
     "features": [
-      "Modern Full-Stack Architecture for AI Application Development",
-      "Containerized Deployment for Consistent Environments",
-      "Integrated AI Prompt Design and Testing Capabilities",
-      "Advanced Code Quality with Oxlint for Maintainable Frontend"
+      "Modular full-stack architecture integrating dedicated API services for AI functionalities.",
+      "High-performance frontend developed with React, TypeScript, and Vite, optimized for developer experience and HMR.",
+      "Containerized deployment using Docker for consistent, portable, and scalable application environments.",
+      "Configured advanced code quality with Oxlint for strict type-aware linting and maintainability."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
