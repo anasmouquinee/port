@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl', start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily', catchup=False\n) as dag:\n    ingest = BashOperator(task_id='ingest_raw', bash_command='python /app/ingestion.py')\n    bronze = BashOperator(task_id='to_bronze', bash_command='python /app/bronze_etl.py')\n    silver = BashOperator(task_id='to_silver', bash_command='python /app/silver_etl.py')\n    gold = BashOperator(task_id='to_gold', bash_command='python /app/gold_load.py')\n\n    ingest >> bronze >> silver >> gold",
+    "codeSnippet": "import pandas as pd\nfrom io import StringIO\n\ndef transform_news_bronze_to_silver(bronze_csv_data: str) -> str:\n    df = pd.read_csv(StringIO(bronze_csv_data))\n    df['title_cleaned'] = df['title'].str.strip().str.lower()\n    df['published_date'] = pd.to_datetime(df['published_at'], errors='coerce')\n    df.drop(columns=['unnecessary_col'], errors='ignore', inplace=True)\n    silver_buffer = StringIO()\n    df.to_csv(silver_buffer, index=False)\n    return silver_buffer.getvalue()",
     "img": null,
     "gallery": [],
     "tech": [
+      "Python",
       "Apache Airflow",
-      "Apache Kafka",
-      "Data Lakehouse",
+      "Kafka",
+      "MinIO",
       "Kubernetes",
-      "Docker",
       "Apache Superset"
     ],
-    "desc": "This platform provides a comprehensive, distributed solution for real-time media intelligence, enabling robust ingestion, processing, and visualization of news article data. It leverages an enterprise lakehouse architecture with scalable ETL/ELT pipelines for efficient data management and advanced analytics.",
+    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse and real-time media intelligence platform for ingesting, processing, and visualizing news article data. It leverages a Medallion Architecture with ETL/ELT pipelines to deliver scalable data management and actionable insights from diverse news sources.",
     "features": [
-      "End-to-end distributed platform for real-time media intelligence",
-      "Implemented Medallion Lakehouse Architecture for scalable data management",
-      "Automated data ingestion and ETL/ELT pipelines orchestrated by Apache Airflow",
-      "Real-time data visualization via Apache Superset and infrastructure monitoring with Prometheus/Grafana"
+      "Real-time Data Ingestion & Processing with Kafka",
+      "Enterprise Lakehouse Architecture (MinIO, Medallion)",
+      "Automated Data Orchestration with Apache Airflow",
+      "Containerized & Cloud-Native Deployment (Docker, Kubernetes)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +344,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptResult {\n  id: string;\n  output: string;\n  tokensUsed: number;\n}\n\nexport async function submitAIPrompt(promptText: string): Promise<AIPromptResult> {\n  try {\n    const response = await axios.post<AIPromptResult>('/api/ai/generate', { prompt: promptText });\n    return response.data;\n  } catch (error) {\n    console.error('Error submitting AI prompt:', error);\n    throw new Error('Failed to generate AI response.');\n  }\n}",
+    "codeSnippet": "import type { AIPromptRequest, AIPromptResponse } from './types';\n\nexport async function submitAIPrompt(request: AIPromptRequest): Promise<AIPromptResponse> {\n  const response = await fetch('/api/ai/process-prompt', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(request)\n  });\n\n  if (!response.ok) {\n    const errorData = await response.json();\n    throw new Error(errorData.message || 'Failed to process AI prompt.');\n  }\n\n  return response.json();\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
-      "Node.js",
       "Vite",
+      "Node.js",
       "Docker",
-      "AI/ML Integration"
+      "Oxlint"
     ],
-    "desc": "Developed a robust full-stack AI studio platform, leveraging modern web technologies to provide an interactive environment for AI model interaction and development. This platform showcases advanced front-end architecture with Vite, React, and TypeScript, integrated with backend APIs for seamless AI capabilities.",
+    "desc": "Omnipulse AI Studio provides a robust web-based platform for developing and testing AI prompts and models. Leveraging a modern React, TypeScript, and Vite stack with a dedicated API, it ensures high performance, maintainability, and a streamlined development workflow for AI solutions.",
     "features": [
-      "Modular full-stack architecture integrating dedicated API services for AI functionalities.",
-      "High-performance frontend developed with React, TypeScript, and Vite, optimized for developer experience and HMR.",
-      "Containerized deployment using Docker for consistent, portable, and scalable application environments.",
-      "Configured advanced code quality with Oxlint for strict type-aware linting and maintainability."
+      "Modular architecture separating frontend UI from dedicated AI processing APIs.",
+      "Leverages React, TypeScript, and Vite for a highly performant and type-safe frontend experience.",
+      "Containerized deployment using Docker for consistent, scalable, and environment-agnostic operations.",
+      "Integrated linting and build tooling (Oxlint, Vite) ensuring code quality and rapid development cycles."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
