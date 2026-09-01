@@ -315,24 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\n\ndef process_news_article(raw_json_data: str) -> dict:\n    \"\"\"Transforms raw news JSON into a structured format for the Silver layer.\"\"\"\n    data = json.loads(raw_json_data)\n    \n    # Extract and clean key fields\n    processed = {\n        \"id\": data.get(\"id\"),\n        \"title\": data.get(\"title\", \"\").strip(),\n        \"url\": data.get(\"url\"),\n        \"source\": data.get(\"source\", {}).get(\"name\")\n    }\n    return processed",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_ingestion_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@hourly',\n    catchup=False,\n    tags=['news', 'data_lake']\n) as dag:\n    scrape_news_task = BashOperator(\n        task_id='scrape_news_articles',\n        bash_command='python /opt/airflow/dags/repo/scrapers/run_scraper.py'\n    )\n\n    process_raw_data_task = BashOperator(\n        task_id='process_raw_to_bronze',\n        bash_command='spark-submit /opt/airflow/dags/repo/pipelines/raw_to_bronze.py'\n    )\n\n    scrape_news_task >> process_raw_data_task",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO (S3)",
-      "PostgreSQL",
+      "Apache Airflow",
+      "Docker",
       "Apache Superset",
       "Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data, implementing an Enterprise Lakehouse architecture. It empowers users with advanced media intelligence through scalable ETL/ELT pipelines and robust monitoring, demonstrating expertise in full-stack data engineering and cloud-native deployments.",
+    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from various sources. It leverages a comprehensive, distributed enterprise lakehouse architecture to provide actionable insights from large-scale data streams.",
     "features": [
-      "Distributed real-time data ingestion and streaming from diverse news sources",
-      "Scalable Enterprise Lakehouse architecture with Medallion data layering (Bronze, Silver, Gold)",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation",
-      "Comprehensive real-time media intelligence with interactive dashboards (Superset) and operational monitoring (Grafana)"
+      "Distributed Enterprise Lakehouse leveraging MinIO for scalable data storage and Medallion Architecture for data governance.",
+      "Real-time data ingestion pipelines using custom scrapers and Apache Kafka for high-throughput message queuing.",
+      "Automated ETL/ELT workflows orchestrated by Apache Airflow, ensuring robust data transformation and loading.",
+      "Integrated media intelligence with Apache Superset for interactive dashboards and real-time monitoring via Prometheus & Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,25 +343,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "export interface AIPromptRequest {\n  prompt: string;\n  model: 'gpt-3.5-turbo' | 'claude-opus-20240229' | 'custom-model';\n  temperature?: number;\n  max_tokens?: number;\n  user_id?: string;\n}",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Oxlint",
-      "Node.js",
-      "Docker"
-    ],
-    "desc": "This project is an AI-powered studio leveraging modern web technologies to build and test AI applications. It features a robust frontend built with React, TypeScript, and Vite, complemented by a scalable API for integrating AI models and processing data.",
-    "features": [
-      "High-performance React frontend with Vite for rapid development and HMR.",
-      "Ensured code quality and consistency with strict TypeScript typing and Oxlint linting rules.",
-      "Modular backend API architecture for seamless integration with diverse AI models and data services.",
-      "Containerized application deployment using Docker for consistent and reproducible environments."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
