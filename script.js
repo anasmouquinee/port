@@ -315,24 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "def process_news_article(raw_data: dict) -> dict:\n    \"\"\"\n    Extracts and transforms key information from a raw news article.\n    \"\"\"\n    processed_article = {\n        \"id\": raw_data.get(\"id\"),\n        \"title\": raw_data.get(\"title\", \"\").strip(),\n        \"author\": raw_data.get(\"author\", \"Unknown\"),\n        \"published_date\": raw_data.get(\"published_at\"),\n        \"summary\": raw_data.get(\"content\", \"\")[:200] + \"...\",\n        \"source_url\": raw_data.get(\"url\"),\n        \"sentiment_score\": analyze_sentiment(raw_data.get(\"text\", \"\"))\n    }\n    return processed_article\n\ndef analyze_sentiment(text: str) -> float:\n    # Placeholder for actual sentiment analysis via NLP model\n    return 0.75 # Example positive sentiment",
+    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\nproducer = KafkaProducer(\n    bootstrap_servers=['kafka:9092'],\n    value_serializer=lambda v: json.dumps(v).encode('utf-8')\n)\n\nnews_article = {\n    'id': 'article_123',\n    'title': 'AI Transforms Industry',\n    'source': 'Tech Daily',\n    'content': 'AI is rapidly changing various sectors...'\n}\n\nproducer.send('raw_news_stream_topic', news_article)\nproducer.flush()",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO",
-      "PostgreSQL",
-      "Docker",
-      "Apache Superset"
+      "Apache Airflow",
+      "MinIO (Data Lake)",
+      "Apache Superset",
+      "Kubernetes"
     ],
-    "desc": "A comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It leverages an enterprise lakehouse architecture with scalable ETL/ELT pipelines and containerized microservices for advanced media intelligence.",
+    "desc": "Global NewsStream is a robust, distributed platform for real-time media intelligence, ingesting, processing, and visualizing data from news articles. It achieves this through a sophisticated enterprise lakehouse architecture, leveraging ETL/ELT pipelines and containerized services for scalable data management and analytics.",
     "features": [
-      "Real-time, distributed data ingestion from diverse media sources",
-      "Enterprise Lakehouse architecture for scalable data storage and analytics",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation",
-      "Full-stack observability with integrated monitoring (Prometheus, Grafana) and business intelligence (Superset)"
+      "Real-time data ingestion and streaming via Apache Kafka for dynamic media analysis.",
+      "Distributed Lakehouse architecture combining MinIO object storage and PostgreSQL for structured data.",
+      "Automated, scalable workflow orchestration with Apache Airflow for complex ETL/ELT pipelines.",
+      "Interactive business intelligence dashboards and reporting with Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -340,12 +339,12 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface PromptConfig {\n  model: string;\n  temperature: number;\n  maxTokens: number;\n}\n\nasync function generateAIPrompt(instruction: string, context: string, config: PromptConfig): Promise<string> {\n  const formattedPrompt = `Instruction: ${instruction}\\nContext: ${context}\\n\\nBased on the above, generate a detailed response.`;\n  // Simulate API call to an AI service\n  console.log(`Sending prompt to ${config.model} with temp ${config.temperature}...`);\n  // In a real scenario, this would involve an actual API call\n  return Promise.resolve(`Generated response for \"${formattedPrompt.substring(0, 50)}...\"`);\n}",
+    "codeSnippet": "interface AIResponse {\n  status: string;\n  output: string;\n  tokensUsed?: number;\n}\n\nasync function submitPrompt(prompt: string, model: string): Promise<AIResponse> {\n  const response = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, model }),\n  });\n  const data: AIResponse = await response.json();\n  return data;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,15 +352,15 @@ const EMBEDDED_PROJECTS = [
       "TypeScript",
       "Vite",
       "Node.js",
-      "Docker",
-      "Vercel"
+      "Express.js",
+      "LLM Prompt Engineering"
     ],
-    "desc": "This project delivers a modern web application acting as an AI Studio, built with React, TypeScript, and Vite, featuring a robust API backend. It provides a streamlined platform for interacting with, designing, and testing AI prompts, significantly accelerating the development and evaluation of AI-driven solutions.",
+    "desc": "OmniPulse AI Studio provides an intuitive web interface for developing and testing advanced AI prompts and models. It leverages a modern full-stack architecture to empower users with rapid AI experimentation and deployment, bridging intuitive UI with powerful backend AI capabilities.",
     "features": [
-      "Full-stack architecture with a dedicated API for seamless frontend-backend communication.",
-      "Containerized deployment using Docker for consistent environments and scalability.",
-      "Modern frontend development with React, TypeScript, and Vite, enhanced by Oxlint for code quality.",
-      "Advanced AI prompt engineering and testing capabilities for rapid iteration and evaluation of AI models."
+      "Interactive AI Prompt Development Environment",
+      "Scalable Full-Stack Architecture for AI Integration",
+      "Robust Type-Safe Frontend with React & TypeScript",
+      "Optimized Build & Runtime Performance via Vite & Oxc"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
