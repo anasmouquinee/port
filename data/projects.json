@@ -300,23 +300,24 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\n\ndef process_news_entry(raw_entry: str) -> dict:\n    data = json.loads(raw_entry)\n    return {\n        \"article_id\": data.get(\"id\"),\n        \"title_clean\": data.get(\"title\", \"\").strip().lower(),\n        \"source_name\": data.get(\"source\", \"unknown\").capitalize(),\n        \"publish_date\": data.get(\"publishedAt\"),\n        \"main_category\": data.get(\"category\", \"General News\")\n    }\n# Core Python transformation function for an Airflow ETL pipeline.",
+    "codeSnippet": "import json\n\ndef process_news_article(raw_json_data: str) -> dict:\n    \"\"\"Transforms raw news JSON into a structured format for the Silver layer.\"\"\"\n    data = json.loads(raw_json_data)\n    \n    # Extract and clean key fields\n    processed = {\n        \"id\": data.get(\"id\"),\n        \"title\": data.get(\"title\", \"\").strip(),\n        \"url\": data.get(\"url\"),\n        \"source\": data.get(\"source\", {}).get(\"name\")\n    }\n    return processed",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Python",
       "Apache Airflow",
-      "MinIO",
+      "Apache Kafka",
+      "MinIO (S3)",
+      "PostgreSQL",
       "Apache Superset",
-      "Docker",
       "Kubernetes"
     ],
-    "desc": "This project implements a comprehensive, distributed enterprise data platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages a modern lakehouse architecture with ETL/ELT pipelines to deliver actionable insights from a diverse set of media sources.",
+    "desc": "This project establishes a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data, implementing an Enterprise Lakehouse architecture. It empowers users with advanced media intelligence through scalable ETL/ELT pipelines and robust monitoring, demonstrating expertise in full-stack data engineering and cloud-native deployments.",
     "features": [
-      "End-to-end Lakehouse architecture for real-time media intelligence",
-      "Orchestrated ETL/ELT pipelines for data ingestion, processing, and transformation",
-      "Scalable microservices for event streaming (Kafka), data storage (MinIO), and visualization (Superset)",
-      "Distributed infrastructure management via Docker Compose and Kubernetes deployment"
+      "Distributed real-time data ingestion and streaming from diverse news sources",
+      "Scalable Enterprise Lakehouse architecture with Medallion data layering (Bronze, Silver, Gold)",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation",
+      "Comprehensive real-time media intelligence with interactive dashboards (Superset) and operational monitoring (Grafana)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,23 +330,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import React, { useState } from 'react';\n\nconst PromptInput: React.FC = () => {\n  const [prompt, setPrompt] = useState<string>('');\n  const [response, setResponse] = useState<string>('');\n\n  const handleSubmit = async () => {\n    try {\n      const res = await fetch('/api/generate', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ prompt }),\n      });\n      const data = await res.json();\n      setResponse(data.response || 'No response generated.');\n    } catch (error) {\n      console.error('Failed to send prompt:', error);\n      setResponse('Error generating response.');\n    }\n  };\n\n  return (\n    <div>\n      <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder=\"Enter your prompt...\" />\n      <button onClick={handleSubmit}>Generate AI Response</button>\n      <p>AI Response: {response}</p>\n    </div>\n  );\n};\n\nexport default PromptInput;",
+    "codeSnippet": "export interface AIPromptRequest {\n  prompt: string;\n  model: 'gpt-3.5-turbo' | 'claude-opus-20240229' | 'custom-model';\n  temperature?: number;\n  max_tokens?: number;\n  user_id?: string;\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
+      "Oxlint",
       "Node.js",
-      "Docker",
-      "AI Integration"
+      "Docker"
     ],
-    "desc": "This project delivers a full-stack AI-powered studio, designed to facilitate advanced prompt engineering and data interaction through a modern web interface. It leverages a robust React/TypeScript frontend and a backend API to support intelligent data processing and AI model integration.",
+    "desc": "This project is an AI-powered studio leveraging modern web technologies to build and test AI applications. It features a robust frontend built with React, TypeScript, and Vite, complemented by a scalable API for integrating AI models and processing data.",
     "features": [
-      "Full-stack architecture with dedicated API for AI services",
-      "Containerized deployment using Docker for scalability and portability",
-      "Modern frontend developed with React, TypeScript, and Vite for optimal performance",
-      "Advanced linting and type-aware development with Oxlint for code quality"
+      "High-performance React frontend with Vite for rapid development and HMR.",
+      "Ensured code quality and consistency with strict TypeScript typing and Oxlint linting rules.",
+      "Modular backend API architecture for seamless integration with diverse AI models and data services.",
+      "Containerized application deployment using Docker for consistent and reproducible environments."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
