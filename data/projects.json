@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_article_processing',\n    start_date=days_ago(1),\n    schedule_interval=None,\n    catchup=False,\n    tags=['news', 'data_lake'],\n) as dag:\n    scrape_task = BashOperator(\n        task_id='scrape_news_articles',\n        bash_command='python /opt/airflow/scrapers/run_scraper.py',\n    )\n    ingest_to_lake_task = BashOperator(\n        task_id='ingest_to_data_lake',\n        bash_command='python /opt/airflow/ingestion/ingest_minio.py',\n    )\n    process_data_task = BashOperator(\n        task_id='process_lake_data',\n        bash_command='python /opt/airflow/pipelines/process_articles.py',\n    )\n\n    scrape_task >> ingest_to_lake_task >> process_data_task",
+    "codeSnippet": "import json\n\ndef process_news_entry(raw_entry: str) -> dict:\n    data = json.loads(raw_entry)\n    return {\n        \"article_id\": data.get(\"id\"),\n        \"title_clean\": data.get(\"title\", \"\").strip().lower(),\n        \"source_name\": data.get(\"source\", \"unknown\").capitalize(),\n        \"publish_date\": data.get(\"publishedAt\"),\n        \"main_category\": data.get(\"category\", \"General News\")\n    }\n# Core Python transformation function for an Airflow ETL pipeline.",
     "img": null,
     "gallery": [],
     "tech": [
-      "Kafka",
+      "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "PostgreSQL",
       "Apache Superset",
+      "Docker",
       "Kubernetes"
     ],
-    "desc": "This project develops an enterprise-grade lakehouse platform for real-time ingestion, processing, and visualization of news media intelligence. It leverages a distributed architecture to scrape, transform, and analyze vast datasets, providing critical insights through a robust data pipeline.",
+    "desc": "This project implements a comprehensive, distributed enterprise data platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages a modern lakehouse architecture with ETL/ELT pipelines to deliver actionable insights from a diverse set of media sources.",
     "features": [
-      "Distributed Enterprise Lakehouse Architecture with MinIO and PostgreSQL",
-      "Real-time News Article Ingestion and Stream Processing with Kafka",
-      "Automated ETL/ELT Pipelines Orchestrated via Apache Airflow",
-      "Interactive Data Visualization and Monitoring with Superset and Grafana"
+      "End-to-end Lakehouse architecture for real-time media intelligence",
+      "Orchestrated ETL/ELT pipelines for data ingestion, processing, and transformation",
+      "Scalable microservices for event streaming (Kafka), data storage (MinIO), and visualization (Superset)",
+      "Distributed infrastructure management via Docker Compose and Kubernetes deployment"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,13 +328,25 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import React, { useState } from 'react';\n\nconst PromptInput: React.FC = () => {\n  const [prompt, setPrompt] = useState<string>('');\n  const [response, setResponse] = useState<string>('');\n\n  const handleSubmit = async () => {\n    try {\n      const res = await fetch('/api/generate', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ prompt }),\n      });\n      const data = await res.json();\n      setResponse(data.response || 'No response generated.');\n    } catch (error) {\n      console.error('Failed to send prompt:', error);\n      setResponse('Error generating response.');\n    }\n  };\n\n  return (\n    <div>\n      <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder=\"Enter your prompt...\" />\n      <button onClick={handleSubmit}>Generate AI Response</button>\n      <p>AI Response: {response}</p>\n    </div>\n  );\n};\n\nexport default PromptInput;",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Node.js",
+      "Docker",
+      "AI Integration"
+    ],
+    "desc": "This project delivers a full-stack AI-powered studio, designed to facilitate advanced prompt engineering and data interaction through a modern web interface. It leverages a robust React/TypeScript frontend and a backend API to support intelligent data processing and AI model integration.",
+    "features": [
+      "Full-stack architecture with dedicated API for AI services",
+      "Containerized deployment using Docker for scalability and portability",
+      "Modern frontend developed with React, TypeScript, and Vite for optimal performance",
+      "Advanced linting and type-aware development with Oxlint for code quality"
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
