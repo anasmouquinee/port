@@ -300,23 +300,24 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from datetime import datetime\n\ndef transform_news_to_silver(raw_news_data: dict) -> dict:\n    \"\"\"\n    Processes raw news articles into a structured 'Silver' layer format.\n    Applies basic cleansing and enrichment for analytical readiness.\n    \"\"\"\n    news_id = raw_news_data.get(\"id\")\n    title = raw_news_data.get(\"title\", \"No Title\")\n    content = raw_news_data.get(\"content\", \"\")\n\n    processed_entry = {\n        \"article_id\": news_id,\n        \"headline\": title.strip(),\n        \"summary\": content[:200].strip() + (\"...\" if len(content) > 200 else \"\"),\n        \"processed_timestamp\": datetime.now().isoformat(),\n        \"source_system\": \"Global-NewsStream\"\n    }\n    return processed_entry",
+    "codeSnippet": "def process_news_article(raw_data: dict) -> dict:\n    \"\"\"\n    Extracts and transforms key information from a raw news article.\n    \"\"\"\n    processed_article = {\n        \"id\": raw_data.get(\"id\"),\n        \"title\": raw_data.get(\"title\", \"\").strip(),\n        \"author\": raw_data.get(\"author\", \"Unknown\"),\n        \"published_date\": raw_data.get(\"published_at\"),\n        \"summary\": raw_data.get(\"content\", \"\")[:200] + \"...\",\n        \"source_url\": raw_data.get(\"url\"),\n        \"sentiment_score\": analyze_sentiment(raw_data.get(\"text\", \"\"))\n    }\n    return processed_article\n\ndef analyze_sentiment(text: str) -> float:\n    # Placeholder for actual sentiment analysis via NLP model\n    return 0.75 # Example positive sentiment",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
-      "Apache Kafka",
       "Apache Airflow",
+      "Apache Kafka",
       "MinIO",
+      "PostgreSQL",
       "Docker",
-      "Kubernetes"
+      "Apache Superset"
     ],
-    "desc": "This project delivers a distributed enterprise lakehouse and real-time media intelligence platform, enabling comprehensive ingestion, processing, and visualization of news data. It leverages a robust medallion architecture and advanced ETL/ELT pipelines to provide actionable insights from large-scale media streams.",
+    "desc": "A comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It leverages an enterprise lakehouse architecture with scalable ETL/ELT pipelines and containerized microservices for advanced media intelligence.",
     "features": [
-      "Real-time enterprise lakehouse for comprehensive media intelligence",
-      "Medallion architecture (Bronze, Silver, Gold layers) for robust data quality and governance",
-      "Distributed data processing & orchestration with Apache Kafka and Apache Airflow",
-      "Containerized deployment via Docker and scalable orchestration with Kubernetes"
+      "Real-time, distributed data ingestion from diverse media sources",
+      "Enterprise Lakehouse architecture for scalable data storage and analytics",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation",
+      "Full-stack observability with integrated monitoring (Prometheus, Grafana) and business intelligence (Superset)"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,13 +329,25 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "interface PromptConfig {\n  model: string;\n  temperature: number;\n  maxTokens: number;\n}\n\nasync function generateAIPrompt(instruction: string, context: string, config: PromptConfig): Promise<string> {\n  const formattedPrompt = `Instruction: ${instruction}\\nContext: ${context}\\n\\nBased on the above, generate a detailed response.`;\n  // Simulate API call to an AI service\n  console.log(`Sending prompt to ${config.model} with temp ${config.temperature}...`);\n  // In a real scenario, this would involve an actual API call\n  return Promise.resolve(`Generated response for \"${formattedPrompt.substring(0, 50)}...\"`);\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Node.js",
+      "Docker",
+      "Vercel"
+    ],
+    "desc": "This project delivers a modern web application acting as an AI Studio, built with React, TypeScript, and Vite, featuring a robust API backend. It provides a streamlined platform for interacting with, designing, and testing AI prompts, significantly accelerating the development and evaluation of AI-driven solutions.",
+    "features": [
+      "Full-stack architecture with a dedicated API for seamless frontend-backend communication.",
+      "Containerized deployment using Docker for consistent environments and scalability.",
+      "Modern frontend development with React, TypeScript, and Vite, enhanced by Oxlint for code quality.",
+      "Advanced AI prompt engineering and testing capabilities for rapid iteration and evaluation of AI models."
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
