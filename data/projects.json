@@ -300,7 +300,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(start_date=datetime(2023, 1, 1), schedule_interval=None, catchup=False)\ndef news_intelligence_pipeline():\n    @task\n    def ingest_articles_to_kafka():\n        # Simulate fetching and publishing news articles to Kafka topic\n        print(\"Fetching latest news and sending to Kafka...\")\n        return {\"articles_count\": 500}\n\n    @task\n    def process_raw_to_datalake(ingestion_status):\n        # Read from Kafka, clean, and store in MinIO Data Lake (Bronze)\n        print(f\"Processing {ingestion_status['articles_count']} articles to Data Lake.\")\n        return {\"processed_count\": ingestion_status['articles_count']}\n\n    ingestion_result = ingest_articles_to_kafka()\n    process_raw_to_datalake(ingestion_result)",
+    "codeSnippet": "import pandas as pd\n\ndef transform_news_data(df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Applies cleaning and enrichment for Silver layer.\"\"\"\n    df['title_clean'] = df['title'].str.lower().str.strip()\n    df['source_domain'] = df['url'].apply(lambda x: pd.NA if not x else x.split('/')[2])\n    df['publish_dt'] = pd.to_datetime(df['published_at'], errors='coerce')\n    # Entity extraction placeholder\n    df['keywords'] = df['text_content'].apply(\n        lambda x: ['AI', 'ML'] if 'AI' in str(x) else []\n    )\n    df.drop(columns=['raw_data', 'url'], errors='ignore', inplace=True)\n    return df",
     "img": null,
     "gallery": [],
     "tech": [
@@ -309,14 +309,14 @@
       "MinIO",
       "Apache Superset",
       "Kubernetes",
-      "Docker"
+      "Python"
     ],
-    "desc": "This distributed enterprise lakehouse platform ingests, processes, and visualizes real-time news articles from diverse sources, providing dynamic media intelligence. It leverages a modern data architecture to ensure scalable data management, robust ETL/ELT pipelines, and advanced analytics for business insights.",
+    "desc": "Global NewsStream is a comprehensive, distributed enterprise platform designed for real-time media intelligence, addressing the challenge of ingesting, processing, and visualizing vast volumes of news article data. It leverages a modern lakehouse architecture with robust ETL/ELT pipelines, enabling scalable data scraping, storage, and advanced analytics for media insights.",
     "features": [
-      "Enterprise Lakehouse Architecture (Medallion Zone)",
-      "Real-time News Article Ingestion & Processing Pipelines",
-      "Distributed Orchestration & Workflow Management with Apache Airflow",
-      "Integrated Monitoring, Visualization, and Analytics Dashboards"
+      "Implemented a scalable, distributed lakehouse architecture for real-time ingestion, processing, and analysis of media data.",
+      "Orchestrated complex ETL/ELT pipelines with Apache Airflow, adhering to a Medallion Architecture for data quality and governance.",
+      "Leveraged Apache Kafka for real-time stream processing and MinIO as a robust, S3-compatible data lake.",
+      "Deployed a fully containerized infrastructure using Docker and Kubernetes, ensuring high availability and seamless scalability."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,28 +324,28 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
+    "category": "AI & Autonomous Systems",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import React, { useState } from 'react';\nimport { api } from '@/lib/apiClient'; // Centralized API client\n\ninterface PromptResult {\n  id: string;\n  output: string;\n}\n\nconst PromptEngine: React.FC = () => {\n  const [input, setInput] = useState<string>('');\n  const [output, setOutput] = useState<PromptResult | null>(null);\n\n  const runPrompt = async () => {\n    try {\n      const { data } = await api.post<PromptResult>('/ai/generate', { prompt: input });\n      setOutput(data);\n    } catch (error) {\n      console.error(\"Failed to run prompt:\", error);\n    }\n  };\n\n  return (\n    <section>\n      <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder=\"Enter AI prompt...\" />\n      <button onClick={runPrompt}>Execute</button>\n      {output && <pre>{JSON.stringify(output, null, 2)}</pre>}\n    </section>\n  );\n};\n\nexport default PromptEngine;",
+    "codeSnippet": "import { OpenAI } from 'openai';\n\nconst openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });\n\nexport async function getAICompletion(prompt: string): Promise<string> {\n  const completion = await openai.chat.completions.create({\n    messages: [{ role: 'user', content: prompt }],\n    model: 'gpt-3.5-turbo'\n  });\n  return completion.choices[0]?.message?.content || 'No response';\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Docker",
       "Node.js",
-      "Oxlint"
+      "Docker",
+      "Vercel"
     ],
-    "desc": "An AI-powered web studio leveraging React, TypeScript, and Vite for a dynamic and type-safe frontend, designed to enable rapid development and deployment of intelligent applications. This full-stack solution integrates robust API services and containerized deployments, providing a scalable platform for AI experimentation and production.",
+    "desc": "OmniPulse AI Studio is a robust web application built on React and Vite, designed to provide a comprehensive platform for AI development and interaction. It leverages a modern frontend stack with server-side API integration, showcasing a scalable architecture for AI-driven services.",
     "features": [
-      "Modern Web Architecture: Utilizes React, TypeScript, and Vite for a highly performant, type-safe, and modular frontend experience.",
-      "Containerized Deployment: Leverages Docker for consistent, scalable, and environment-agnostic application deployment across various stages.",
-      "AI-Integrated API Layer: Developed a robust API structure to interface with advanced AI models and services, supporting dynamic prompt execution.",
-      "Automated Code Quality & Standards: Implements Oxlint for rigorous linting and code quality checks, ensuring maintainability and best practices."
+      "Modular React/TypeScript frontend with Vite for optimized performance",
+      "Robust API layer for seamless interaction with AI services",
+      "Automated code quality and type safety enforced via Oxlint and TypeScript",
+      "Containerized deployment using Docker for environment consistency and scalability"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
