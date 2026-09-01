@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef ingest_data_to_lake():\n    print(\"Ingesting raw news data to MinIO data lake.\")\n\nwith DAG(\n    dag_id='raw_data_ingestion',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@hourly'\n) as dag:\n    ingest_task = PythonOperator(\n        task_id='ingest_to_minio',\n        python_callable=ingest_data_to_lake\n    )",
+    "codeSnippet": "from datetime import datetime, timezone\n\ndef transform_raw_news_data(raw_data: dict) -> dict:\n    \"\"\"Transforms raw news article data into a curated format.\"\"\"\n    transformed = {\n        \"article_id\": raw_data.get(\"id\"),\n        \"headline\": raw_data.get(\"title\"),\n        \"source_name\": raw_data.get(\"source_name\"),\n        \"publication_date\": raw_data.get(\"published_at\").split('T')[0],\n        \"content_hash\": hash(raw_data.get(\"content\")),\n        \"processing_timestamp\": datetime.now(timezone.utc).isoformat()\n    }\n    return transformed",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
-      "Apache Superset",
-      "Docker/Kubernetes"
+      "MinIO",
+      "Kubernetes",
+      "Apache Superset"
     ],
-    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from various sources. It leverages a distributed lakehouse architecture for scalable data management and provides end-to-end data pipelines for actionable insights.",
+    "desc": "Developed a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news media data. This enterprise-grade lakehouse leverages a medallion architecture to deliver actionable media intelligence and insights.",
     "features": [
-      "Distributed Lakehouse Architecture for scalable data storage and processing.",
-      "Real-time media intelligence pipeline with Kafka for high-throughput data streaming.",
-      "Automated ETL/ELT workflows orchestrated by Apache Airflow.",
-      "Integrated monitoring with Prometheus/Grafana and data visualization with Apache Superset."
+      "Implemented an enterprise-grade data lakehouse with a medallion architecture (Bronze, Silver, Gold layers).",
+      "Orchestrated real-time data ingestion and ETL/ELT pipelines using Apache Airflow for media intelligence.",
+      "Leveraged Apache Kafka for high-throughput, fault-tolerant real-time data streaming and event processing.",
+      "Deployed a robust, scalable infrastructure using Docker and Kubernetes for distributed microservices."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -325,27 +325,27 @@
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
     "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nexport async function getAiCompletion(prompt: string): Promise<string> {\n  try {\n    const response = await axios.post<{ generatedText: string }>('/api/completions', {\n      prompt,\n      settings: { temperature: 0.7 }\n    });\n    return response.data.generatedText;\n  } catch (error) {\n    console.error(\"AI completion error:\", error);\n    throw new Error(\"Could not process AI request.\");\n  }\n}",
+    "codeSnippet": "interface AIPromptResponse {\n  output: string;\n  tokensUsed: number;\n}\n\nasync function generateAIResponse(prompt: string): Promise<AIPromptResponse> {\n  const response = await fetch('/api/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt }),\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  return response.json();\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Docker",
       "Node.js",
-      "Oxlint"
+      "Docker",
+      "AI/LLM Integration"
     ],
-    "desc": "Developed a robust web-based AI studio leveraging modern frontend technologies to provide an intuitive interface for AI model interaction and prompt engineering. This platform streamlines the process of experimenting with AI capabilities, ensuring a responsive and high-performance user experience for complex tasks.",
+    "desc": "Anas developed a robust AI Studio, leveraging React and Vite, designed to provide an interactive web-based environment for AI development and experimentation. This project demonstrates strong full-stack capabilities in integrating modern front-end architecture with backend AI services for enhanced user interaction.",
     "features": [
-      "Interactive AI Prompt Management System",
-      "Containerized Deployment with Docker",
-      "Type-Safe & Performant Frontend Architecture",
-      "Scalable API-driven AI Interaction"
+      "Modern UI/UX with React & Vite for responsive AI interactions",
+      "Robust type-safe development using TypeScript for enhanced maintainability",
+      "Containerized deployment via Docker for scalable infrastructure",
+      "Integrated API structure for seamless AI model interaction and prompt testing"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
