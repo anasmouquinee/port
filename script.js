@@ -315,7 +315,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef extract_raw_data():\n    \"\"\"Scrape news and stream to Kafka.\"\"\"\n    # Actual scraping and Kafka producer logic\n    pass\n\ndef transform_to_bronze_layer():\n    \"\"\"Consume Kafka, transform, and store in MinIO.\"\"\"\n    # Actual processing and MinIO client logic\n    pass\n\nwith DAG('news_stream_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@daily') as dag:\n    extract = PythonOperator(task_id='extract_news', python_callable=extract_raw_data)\n    transform = PythonOperator(task_id='transform_bronze', python_callable=transform_to_bronze_layer)\n    extract >> transform",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n) as dag:\n    scrape_articles = BashOperator(task_id='scrape_news', bash_command='python /app/scrapers/run.py')\n    ingest_to_bronze = BashOperator(task_id='ingest_bronze', bash_command='spark-submit /app/pipelines/ingest.py')\n    refine_to_silver = BashOperator(task_id='refine_silver', bash_command='spark-submit /app/pipelines/refine.py')\n    \n    scrape_articles >> ingest_to_bronze >> refine_to_silver",
     "img": null,
     "gallery": [],
     "tech": [
@@ -326,12 +326,12 @@ const EMBEDDED_PROJECTS = [
       "Kubernetes",
       "Python"
     ],
-    "desc": "Developed a comprehensive enterprise lakehouse and real-time media intelligence platform for ingesting, processing, and visualizing news articles. This distributed system leverages a Medallion Architecture for data quality and provides actionable insights through automated ETL/ELT pipelines and robust BI.",
+    "desc": "This platform offers an end-to-end distributed solution for real-time media intelligence, ingesting, processing, and visualizing news articles. It leverages a modern enterprise lakehouse architecture, implementing medallion layers for robust data quality and accessibility.",
     "features": [
-      "Real-time, distributed data ingestion and streaming from news articles using Apache Kafka.",
-      "Implemented a scalable Enterprise Lakehouse (MinIO) and Data Warehouse (PostgreSQL) following a Medallion Architecture.",
-      "Automated and orchestrated complex ETL/ELT pipelines using Apache Airflow for data processing and transformation.",
-      "Provided comprehensive data visualization via Apache Superset and robust infrastructure monitoring with Prometheus and Grafana."
+      "Real-time ingestion and processing of news data using Apache Kafka.",
+      "Distributed Enterprise Lakehouse Architecture with MinIO and Medallion Layers.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
+      "Comprehensive data visualization and monitoring with Superset, Prometheus, and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
