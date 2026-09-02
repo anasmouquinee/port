@@ -300,23 +300,25 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\n\ndef transform_article_for_warehouse(raw_payload: str) -> dict:\n    \"\"\"\n    Transforms a raw news article JSON payload into a structured format\n    suitable for a data warehouse, standardizing fields and extracting key info.\n    \"\"\"\n    article = json.loads(raw_payload)\n    return {\n        \"article_id\": article.get(\"id\"),\n        \"title_cleaned\": article.get(\"title\", \"\").strip(),\n        \"source_name\": article.get(\"source\", {}).get(\"name\"),\n        \"publish_date\": article.get(\"publishedAt\").split(\"T\")[0] if article.get(\"publishedAt\") else None,\n        \"content_hash\": hash(article.get(\"content\", \"\"))\n    }",
+    "codeSnippet": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(start_date=datetime(2023, 1, 1), schedule_interval=None, catchup=False)\ndef news_ingestion_pipeline():\n    @task\n    def extract_news_data():\n        return {\"article_id\": \"123\", \"title\": \"Example News\"}\n\n    @task\n    def load_to_datalake(data):\n        print(f\"Loading article {data['article_id']} to data lake...\")\n\n    extract_task = extract_news_data()\n    load_to_datalake(extract_task)\n\nnews_ingestion_pipeline()",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
+      "Docker",
+      "Kubernetes",
       "MinIO",
       "Apache Superset",
-      "Docker",
-      "Kubernetes"
+      "Python"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse platform designed for real-time media intelligence. It orchestrates the ingestion, processing, and visualization of news article data, leveraging a medallion architecture for scalable ETL/ELT.",
+    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news article data.\nIt implements a robust enterprise lakehouse architecture, leveraging real-time streaming, ETL/ELT pipelines, and advanced analytics for media intelligence.",
     "features": [
-      "Real-time news article scraping and ingestion pipeline via Apache Kafka.",
-      "Robust Enterprise Lakehouse architecture (Data Lake & Data Warehouse) with MinIO and PostgreSQL.",
-      "Automated ETL/ELT workflows orchestrated by Apache Airflow following a Medallion Architecture.",
-      "Interactive media intelligence dashboards and monitoring with Apache Superset, Prometheus, and Grafana."
+      "Real-time data ingestion and streaming via Apache Kafka.",
+      "Automated, scalable ETL/ELT pipeline orchestration using Apache Airflow.",
+      "Enterprise Data Lakehouse architecture with Medallion Pattern (MinIO, PostgreSQL).",
+      "Containerized deployment and infrastructure management with Docker & Kubernetes.",
+      "Integrated media intelligence dashboards and monitoring with Superset, Prometheus & Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,13 +330,25 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import axios from 'axios';\n\ninterface PromptResponse {\n  output: string;\n  tokensUsed: number;\n}\n\nasync function executeAiPrompt(promptText: string, modelId: string): Promise<PromptResponse> {\n  const response = await axios.post('/api/ai/execute', {\n    prompt: promptText,\n    model: modelId\n  });\n  return response.data;\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Node.js",
+      "Docker",
+      "Vercel"
+    ],
+    "desc": "This project is a full-stack AI development studio built with React, TypeScript, and Vite, designed to streamline the creation and testing of AI prompts and models. It features a robust API backend for AI inference and a dynamic frontend for interactive development and deployment.",
+    "features": [
+      "Interactive AI Prompt Development Environment",
+      "Modular API Design for Scalable AI Inference",
+      "Type-Safe Frontend Architecture with React & TypeScript",
+      "Optimized Full-Stack Development Workflow with Vite & Oxlint"
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
