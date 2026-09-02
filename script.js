@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom airflow.models.dag import DAG\nfrom datetime import datetime\n\ndef process_news_data(source: str, data_lake_path: str):\n    \"\"\"Fetches news, processes it, and stores in data lake.\"\"\"\n    # Simulate API call or data scraping\n    raw_data = f\"Fetched data from {source}\"\n    # Simulate data processing and loading to MinIO/Data Lake\n    print(f\"Processed '{raw_data}' and uploaded to {data_lake_path}\")\n\nwith DAG(dag_id='news_ingestion_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@daily', catchup=False) as dag:\n    ingest_task = PythonOperator(\n        task_id='ingest_news_from_source_a',\n        python_callable=process_news_data,\n        op_kwargs={'source': 'news_outlet_A', 'data_lake_path': 's3://raw-news/sourceA/'}\n    )",
+    "codeSnippet": "import json\n\ndef transform_article_data(raw_article_json: str) -> dict:\n    \"\"\"Transforms raw news article JSON into a structured format.\"\"\"\n    article = json.loads(raw_article_json)\n    \n    processed = {\n        \"id\": article.get(\"id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"source\": article.get(\"source\", {}).get(\"name\"),\n        \"publish_date\": article.get(\"publishedAt\"),\n        \"sentiment\": \"positive\" if \"good news\" in article.get(\"description\", \"\").lower() else \"neutral\",\n        \"entities\": [entity for entity in [\"AI\", \"Tech\"] if entity in article.get(\"title\", \"\")]\n    }\n    return processed",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Kafka",
       "Apache Airflow",
-      "MinIO (Data Lake)",
+      "Apache Kafka",
+      "MinIO",
       "Kubernetes",
-      "Apache Superset"
+      "Apache Superset",
+      "Python"
     ],
-    "desc": "Global NewsStream is a comprehensive, distributed platform designed for real-time media intelligence, ingesting and processing news articles to provide actionable insights. It leverages a modern lakehouse architecture to unify data storage and analytics, enabling robust ETL/ELT pipelines and advanced data visualization.",
+    "desc": "This platform provides a comprehensive and distributed solution for real-time media intelligence by ingesting, processing, and visualizing news article data. It leverages an enterprise lakehouse architecture with a medallion approach, integrating scraping, ETL/ELT processes, and a data warehouse for advanced analytics.",
     "features": [
-      "Distributed real-time data ingestion and scraping for media intelligence.",
-      "Enterprise Lakehouse architecture (MinIO & PostgreSQL) with Medallion approach for data quality.",
-      "Automated and scalable ETL/ELT pipelines orchestrated by Apache Airflow.",
-      "Integrated real-time monitoring (Prometheus, Grafana) and interactive visualization (Apache Superset)."
+      "Real-time ingestion and processing of news articles using Apache Kafka.",
+      "Scalable enterprise lakehouse architecture with MinIO for raw data storage and a Medallion approach.",
+      "Automated ETL/ELT data pipelines orchestrated by Apache Airflow for data transformation.",
+      "Comprehensive data visualization and monitoring using Apache Superset, Grafana, and Prometheus."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -340,11 +340,11 @@ const EMBEDDED_PROJECTS = [
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
     "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "{\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
+    "codeSnippet": "export const submitPrompt = async (prompt: string): Promise<string> => {\n  try {\n    const response = await fetch('/api/ai/generate', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt })\n    });\n    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n    const data = await response.json();\n    return data.result;\n  } catch (error) {\n    console.error(\"Failed to submit prompt:\", error);\n    return \"Error generating response.\";\n  }\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,14 +353,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "AI Integration"
+      "Vercel"
     ],
-    "desc": "Developed a high-performance AI studio platform, enabling intuitive interaction and management of AI models and prompts through a modern web interface. It leverages React, TypeScript, Vite, and containerization for a robust, scalable, and type-safe full-stack solution with advanced linting and deployment practices.",
+    "desc": "Developed a robust web-based AI studio, Omnipulse, leveraging modern React with TypeScript and Vite for a highly interactive user experience. This platform integrates advanced AI functionalities, enabling efficient prompt engineering and comprehensive data management within a scalable full-stack architecture.",
     "features": [
-      "High-performance React/TypeScript frontend with Vite",
-      "Robust API architecture for AI model interaction",
-      "Containerized deployment using Docker for scalability",
-      "Enhanced code quality through type-aware Oxlint and static analysis"
+      "Interactive AI studio interface built with React, TypeScript, and Vite",
+      "Containerized deployment strategy using Docker for environmental consistency",
+      "Robust full-stack architecture supporting API services and data management",
+      "Enhanced code quality and maintainability through type-aware linting with Oxlint"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
