@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_raw_article(raw_data: str) -> dict:\n    \"\"\"Transforms raw JSON article data into a structured format for the bronze layer.\"\"\"\n    article = json.loads(raw_data)\n    processed_article = {\n        \"id\": article.get(\"id\"),\n        \"title\": article.get(\"title\"),\n        \"content_hash\": hash(article.get(\"content\", \"\")), # Simple content hash\n        \"source\": article.get(\"source\"),\n        \"processed_timestamp\": datetime.now().isoformat()\n    }\n    return processed_article",
+    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom airflow.models.dag import DAG\nfrom datetime import datetime\n\ndef process_news_data(source: str, data_lake_path: str):\n    \"\"\"Fetches news, processes it, and stores in data lake.\"\"\"\n    # Simulate API call or data scraping\n    raw_data = f\"Fetched data from {source}\"\n    # Simulate data processing and loading to MinIO/Data Lake\n    print(f\"Processed '{raw_data}' and uploaded to {data_lake_path}\")\n\nwith DAG(dag_id='news_ingestion_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@daily', catchup=False) as dag:\n    ingest_task = PythonOperator(\n        task_id='ingest_news_from_source_a',\n        python_callable=process_news_data,\n        op_kwargs={'source': 'news_outlet_A', 'data_lake_path': 's3://raw-news/sourceA/'}\n    )",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "MinIO",
+      "Apache Airflow",
+      "MinIO (Data Lake)",
       "Kubernetes",
       "Apache Superset"
     ],
-    "desc": "Developed a comprehensive, distributed platform for real-time media intelligence, integrating data ingestion, processing, and visualization from news articles. It leverages a modern lakehouse architecture to provide scalable data management and analytics capabilities.",
+    "desc": "Global NewsStream is a comprehensive, distributed platform designed for real-time media intelligence, ingesting and processing news articles to provide actionable insights. It leverages a modern lakehouse architecture to unify data storage and analytics, enabling robust ETL/ELT pipelines and advanced data visualization.",
     "features": [
-      "Implemented a distributed Lakehouse architecture for scalable ingestion and processing of news data.",
-      "Orchestrated complex ETL/ELT pipelines using Apache Airflow for data flow automation.",
-      "Integrated real-time streaming with Apache Kafka for dynamic media intelligence updates.",
-      "Enabled comprehensive monitoring and visualization through Prometheus, Grafana, and Apache Superset."
+      "Distributed real-time data ingestion and scraping for media intelligence.",
+      "Enterprise Lakehouse architecture (MinIO & PostgreSQL) with Medallion approach for data quality.",
+      "Automated and scalable ETL/ELT pipelines orchestrated by Apache Airflow.",
+      "Integrated real-time monitoring (Prometheus, Grafana) and interactive visualization (Apache Superset)."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,12 +324,12 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface PromptResponse {\n  generatedText: string;\n}\n\nexport async function submitAIPrompt(prompt: string, model: string): Promise<PromptResponse> {\n  try {\n    const response = await axios.post<PromptResponse>('/api/ai/generate', { prompt, model });\n    return response.data;\n  } catch (error) {\n    console.error('Error submitting AI prompt:', error);\n    throw new Error('Failed to get AI generation.');\n  }\n}",
+    "codeSnippet": "{\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "Oxlint"
+      "AI Integration"
     ],
-    "desc": "This project delivers a sophisticated AI studio platform, featuring a high-performance React and TypeScript frontend built with Vite and Oxlint for exceptional developer experience. It facilitates seamless interaction with underlying AI services through a robust API, enabling users to create and manage AI-driven content and workflows.",
+    "desc": "Developed a high-performance AI studio platform, enabling intuitive interaction and management of AI models and prompts through a modern web interface. It leverages React, TypeScript, Vite, and containerization for a robust, scalable, and type-safe full-stack solution with advanced linting and deployment practices.",
     "features": [
-      "High-performance, type-safe frontend with React, TypeScript, and Vite",
-      "Robust API for integrating and managing AI services",
-      "Enhanced code quality and developer experience via Oxlint linting rules",
-      "Containerized deployment strategy using Docker for consistency"
+      "High-performance React/TypeScript frontend with Vite",
+      "Robust API architecture for AI model interaction",
+      "Containerized deployment using Docker for scalability",
+      "Enhanced code quality through type-aware Oxlint and static analysis"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
