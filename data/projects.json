@@ -300,7 +300,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom minio import Minio\nfrom datetime import datetime\n\ndef upload_to_data_lake(df: pd.DataFrame, bucket_name: str, object_prefix: str):\n    \"\"\"Uploads a DataFrame to MinIO as a Parquet file.\"\"\"\n    client = Minio(\"minio:9000\", access_key=\"minio_admin\", secret_key=\"anaskaelar\", secure=False)\n    timestamp = datetime.now().strftime(\"%Y%m%d%H%M%S\")\n    object_name = f\"{object_prefix}/data_{timestamp}.parquet\"\n    \n    with pd.io.common.BytesIO() as buffer:\n        df.to_parquet(buffer, index=False)\n        buffer.seek(0)\n        client.put_object(bucket_name, object_name, buffer, len(buffer.getvalue()))\n        print(f\"Uploaded {object_name} to MinIO bucket {bucket_name}\")",
+    "codeSnippet": "import json\n\ndef transform_article_for_warehouse(raw_payload: str) -> dict:\n    \"\"\"\n    Transforms a raw news article JSON payload into a structured format\n    suitable for a data warehouse, standardizing fields and extracting key info.\n    \"\"\"\n    article = json.loads(raw_payload)\n    return {\n        \"article_id\": article.get(\"id\"),\n        \"title_cleaned\": article.get(\"title\", \"\").strip(),\n        \"source_name\": article.get(\"source\", {}).get(\"name\"),\n        \"publish_date\": article.get(\"publishedAt\").split(\"T\")[0] if article.get(\"publishedAt\") else None,\n        \"content_hash\": hash(article.get(\"content\", \"\"))\n    }",
     "img": null,
     "gallery": [],
     "tech": [
@@ -308,15 +308,15 @@
       "Apache Airflow",
       "MinIO",
       "Apache Superset",
-      "Kubernetes",
-      "Docker"
+      "Docker",
+      "Kubernetes"
     ],
-    "desc": "Developed a comprehensive enterprise lakehouse platform for real-time media intelligence, leveraging a distributed architecture for news article ingestion, processing, and visualization. This system integrates advanced data engineering patterns, including Medallion Architecture and container orchestration, to deliver scalable and insightful analytics.",
+    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse platform designed for real-time media intelligence. It orchestrates the ingestion, processing, and visualization of news article data, leveraging a medallion architecture for scalable ETL/ELT.",
     "features": [
-      "Implemented a distributed lakehouse for real-time media intelligence, handling ingestion, processing, and visualization of news data.",
-      "Orchestrated complex data pipelines with Apache Airflow, leveraging a Medallion Architecture for data quality and transformation.",
-      "Utilized Apache Kafka for high-throughput, real-time event streaming and MinIO as a scalable object storage data lake.",
-      "Deployed a containerized infrastructure using Docker Compose and prepared for Kubernetes, ensuring scalability and robust service integration."
+      "Real-time news article scraping and ingestion pipeline via Apache Kafka.",
+      "Robust Enterprise Lakehouse architecture (Data Lake & Data Warehouse) with MinIO and PostgreSQL.",
+      "Automated ETL/ELT workflows orchestrated by Apache Airflow following a Medallion Architecture.",
+      "Interactive media intelligence dashboards and monitoring with Apache Superset, Prometheus, and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,25 +328,13 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nexport async function processAIPrompt(promptText: string): Promise<string> {\n  try {\n    const response = await axios.post('/api/ai-inference', { prompt: promptText });\n    return response.data.generatedText; // Assuming a structured response\n  } catch (error) {\n    console.error(\"Error processing AI prompt:\", error);\n    return \"Failed to get AI response.\";\n  }\n}",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Oxlint"
-    ],
-    "desc": "OmniPulse AI Studio is a robust web application designed for interactive AI development and testing, providing a streamlined environment for experimenting with AI prompts and APIs. Built with React, TypeScript, and Vite, it leverages modern frontend tooling and a modular backend architecture to ensure high performance and developer efficiency.",
-    "features": [
-      "Interactive AI Prompting & API Integration",
-      "High-Performance Frontend Architecture with React, TypeScript, and Vite",
-      "Automated Code Quality and Linting using Oxlint",
-      "Containerized Deployment Strategy via Docker"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
