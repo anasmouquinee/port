@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import requests\nfrom bs4 import BeautifulSoup\n\ndef scrape_news_article(url):\n    try:\n        response = requests.get(url, timeout=10)\n        response.raise_for_status()\n        soup = BeautifulSoup(response.text, 'html.parser')\n        title = soup.find('h1').get_text(strip=True) if soup.find('h1') else \"No Title\"\n        content = ' '.join(p.get_text(strip=True) for p in soup.find_all('p'))\n        return {\"url\": url, \"title\": title, \"content\": content}\n    except requests.RequestException as e:\n        return None",
+    "codeSnippet": "from pyspark.sql import SparkSession\nfrom pyspark.sql.functions import col, current_timestamp\n\n# Initialize Spark Session for data processing\nspark = SparkSession.builder.appName(\"NewsDataProcessing\").getOrCreate()\n\n# Load raw data from the Bronze layer (e.g., MinIO S3 bucket)\nbronze_df = spark.read.json(\"s3a://bronze-layer/raw_news/*.json\")\n\n# Apply transformations for Silver layer: clean, enrich, standardize\nsilver_df = bronze_df.select(\n    col(\"title\"), col(\"content\"), col(\"source\").alias(\"publisher\"),\n    current_timestamp().alias(\"processed_at\")\n).filter(col(\"content\").isNotNull())\n\n# Write processed data to the Silver layer (e.g., Delta Lake table)\nsilver_df.write.format(\"delta\").mode(\"append\").save(\"s3a://silver-layer/processed_news\")",
     "img": null,
     "gallery": [],
     "tech": [
       "Python",
-      "Apache Airflow",
       "Apache Kafka",
-      "Kubernetes",
+      "Apache Airflow",
       "MinIO",
-      "Apache Superset"
+      "Apache Superset",
+      "Kubernetes"
     ],
-    "desc": "This platform establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, ingesting, processing, and visualizing news article data at scale. It leverages a modern data architecture to transform raw information into actionable insights, enabling dynamic analysis and reporting on global media streams.",
+    "desc": "An enterprise-grade, distributed lakehouse platform designed for real-time media intelligence, ingesting, processing, and analyzing news articles from diverse sources. It achieves end-to-end data flow automation and scalable analytics through a robust medallion architecture and microservices deployment.",
     "features": [
-      "Designed and implemented a distributed Medallion Architecture data lakehouse using MinIO for scalable storage.",
-      "Orchestrated complex real-time ETL/ELT pipelines using Apache Airflow for data ingestion and transformation.",
-      "Leveraged Apache Kafka for high-throughput, fault-tolerant real-time data streaming and event processing.",
-      "Containerized the entire infrastructure with Docker and Kubernetes for scalable and resilient deployment."
+      "Real-time News Article Ingestion & Stream Processing with Apache Kafka",
+      "Distributed Data Lakehouse with Medallion Architecture (Bronze-Silver-Gold)",
+      "Automated ETL/ELT Orchestration and Workflow Management with Apache Airflow",
+      "Scalable Microservices Deployment & Monitoring with Kubernetes, Prometheus, and Grafana"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,28 +324,28 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptRequest {\n  model: string;\n  input: string;\n}\n\ninterface AIResponse {\n  generatedText: string;\n}\n\nexport async function processPromptWithAI(request: AIPromptRequest): Promise<AIResponse> {\n  const response = await axios.post<AIResponse>('https://ai-backend.omnipulse.dev/api/v1/generate', {\n    model: request.model,\n    prompt: request.input\n  });\n  return response.data;\n}",
+    "codeSnippet": "import { useState } from 'react';\n\nconst AIPromptInput: React.FC = () => {\n  const [prompt, setPrompt] = useState<string>('');\n  const [response, setResponse] = useState<string>('');\n  const [loading, setLoading] = useState<boolean>(false);\n\n  const handleSubmit = async () => {\n    setLoading(true);\n    // Assume 'api/aiService' handles the actual AI model interaction\n    // const aiResponse = await fetch('/api/generate', { method: 'POST', body: JSON.stringify({ prompt }) });\n    // setResponse(await aiResponse.json());\n    setResponse(`Response for: ${prompt}`); // Placeholder\n    setLoading(false);\n  };\n\n  return (\n    <div>\n      <input type=\"text\" value={prompt} onChange={(e) => setPrompt(e.target.value)} disabled={loading} />\n      <button onClick={handleSubmit} disabled={loading}>Generate</button>\n      {loading && <p>Loading...</p>}\n      {response && <p>AI Output: {response}</p>}\n    </div>\n  );\n};",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Node.js",
       "Docker",
-      "Oxlint"
+      "Node.js",
+      "Vercel"
     ],
-    "desc": "This project powers a robust AI studio frontend using React, TypeScript, and Vite, complemented by a backend API for advanced functionalities. It provides a highly optimized development environment and a scalable architecture for deploying AI-driven web applications.",
+    "desc": "Omnipulse AI Studio is a robust web-based platform designed for interactive AI model development and experimentation. It provides a modern frontend experience for managing AI workflows and integrating with advanced AI services.",
     "features": [
-      "Scalable frontend architecture with React and Vite for optimal performance.",
-      "Containerized deployment strategy using Docker for environmental consistency.",
-      "Integrated API services for AI model interaction and data processing.",
-      "Enhanced code quality and maintainability through Oxlint and TypeScript."
+      "Modular React/TypeScript frontend architecture for intuitive UI",
+      "Optimized developer experience with Vite, HMR, and Oxlint for code quality",
+      "Containerized deployment strategy using Docker for consistent environments",
+      "Scalable API integration (implied) for seamless AI model interaction"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
