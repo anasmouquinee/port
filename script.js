@@ -310,17 +310,29 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "import requests\nfrom bs4 import BeautifulSoup\n\ndef scrape_news_article(url):\n    try:\n        response = requests.get(url, timeout=10)\n        response.raise_for_status()\n        soup = BeautifulSoup(response.text, 'html.parser')\n        title = soup.find('h1').get_text(strip=True) if soup.find('h1') else \"No Title\"\n        content = ' '.join(p.get_text(strip=True) for p in soup.find_all('p'))\n        return {\"url\": url, \"title\": title, \"content\": content}\n    except requests.RequestException as e:\n        return None",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Python",
+      "Apache Airflow",
+      "Apache Kafka",
+      "Kubernetes",
+      "MinIO",
+      "Apache Superset"
+    ],
+    "desc": "This platform establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, ingesting, processing, and visualizing news article data at scale. It leverages a modern data architecture to transform raw information into actionable insights, enabling dynamic analysis and reporting on global media streams.",
+    "features": [
+      "Designed and implemented a distributed Medallion Architecture data lakehouse using MinIO for scalable storage.",
+      "Orchestrated complex real-time ETL/ELT pipelines using Apache Airflow for data ingestion and transformation.",
+      "Leveraged Apache Kafka for high-throughput, fault-tolerant real-time data streaming and event processing.",
+      "Containerized the entire infrastructure with Docker and Kubernetes for scalable and resilient deployment."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -331,13 +343,25 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptRequest {\n  model: string;\n  input: string;\n}\n\ninterface AIResponse {\n  generatedText: string;\n}\n\nexport async function processPromptWithAI(request: AIPromptRequest): Promise<AIResponse> {\n  const response = await axios.post<AIResponse>('https://ai-backend.omnipulse.dev/api/v1/generate', {\n    model: request.model,\n    prompt: request.input\n  });\n  return response.data;\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Node.js",
+      "Docker",
+      "Oxlint"
+    ],
+    "desc": "This project powers a robust AI studio frontend using React, TypeScript, and Vite, complemented by a backend API for advanced functionalities. It provides a highly optimized development environment and a scalable architecture for deploying AI-driven web applications.",
+    "features": [
+      "Scalable frontend architecture with React and Vite for optimal performance.",
+      "Containerized deployment strategy using Docker for environmental consistency.",
+      "Integrated API services for AI model interaction and data processing.",
+      "Enhanced code quality and maintainability through Oxlint and TypeScript."
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
