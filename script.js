@@ -315,23 +315,25 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from pyspark.sql import SparkSession\nfrom pyspark.sql.functions import col, current_timestamp\n\n# Initialize Spark Session for data processing\nspark = SparkSession.builder.appName(\"NewsDataProcessing\").getOrCreate()\n\n# Load raw data from the Bronze layer (e.g., MinIO S3 bucket)\nbronze_df = spark.read.json(\"s3a://bronze-layer/raw_news/*.json\")\n\n# Apply transformations for Silver layer: clean, enrich, standardize\nsilver_df = bronze_df.select(\n    col(\"title\"), col(\"content\"), col(\"source\").alias(\"publisher\"),\n    current_timestamp().alias(\"processed_at\")\n).filter(col(\"content\").isNotNull())\n\n# Write processed data to the Silver layer (e.g., Delta Lake table)\nsilver_df.write.format(\"delta\").mode(\"append\").save(\"s3a://silver-layer/processed_news\")",
+    "codeSnippet": "from airflow.providers.amazon.aws.hooks.s3 import S3Hook\nfrom kafka import KafkaProducer\nimport json\n\ndef process_and_stage_article(article_path: str):\n    s3 = S3Hook(aws_conn_id='minio_s3_conn')\n    raw_content = s3.read_key(article_path, 'raw-news-data')\n    article_data = json.loads(raw_content)\n\n    article_data.update({\"status\": \"processed\", \"processed_by\": \"etl_pipeline\"})\n    s3.load_string(json.dumps(article_data), f\"bronze/{article_path}\", 'news-lakehouse')\n\n    producer = KafkaProducer(bootstrap_servers=['kafka:9092'])\n    producer.send('processed_articles_stream', json.dumps(article_data).encode('utf-8'))",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
-      "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
+      "Kafka",
+      "MinIO (S3)",
       "Apache Superset",
+      "Docker & Docker Compose",
       "Kubernetes"
     ],
-    "desc": "An enterprise-grade, distributed lakehouse platform designed for real-time media intelligence, ingesting, processing, and analyzing news articles from diverse sources. It achieves end-to-end data flow automation and scalable analytics through a robust medallion architecture and microservices deployment.",
+    "desc": "This project establishes a comprehensive, distributed platform for real-time media intelligence, integrating ingestion, processing, and visualization of news articles. It leverages an enterprise Lakehouse architecture to enable scalable ETL/ELT workflows and robust data analytics for dynamic media insights.",
     "features": [
-      "Real-time News Article Ingestion & Stream Processing with Apache Kafka",
-      "Distributed Data Lakehouse with Medallion Architecture (Bronze-Silver-Gold)",
-      "Automated ETL/ELT Orchestration and Workflow Management with Apache Airflow",
-      "Scalable Microservices Deployment & Monitoring with Kubernetes, Prometheus, and Grafana"
+      "Real-time news article scraping and ingestion pipeline",
+      "Enterprise Lakehouse architecture with Medallion approach (Raw, Bronze, Silver layers)",
+      "Automated data orchestration and workflow management with Apache Airflow",
+      "Distributed streaming with Apache Kafka for real-time events",
+      "Comprehensive data visualization and monitoring with Superset, Prometheus & Grafana",
+      "Containerized deployment for scalability and portability using Docker and Kubernetes"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,29 +341,17 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import { useState } from 'react';\n\nconst AIPromptInput: React.FC = () => {\n  const [prompt, setPrompt] = useState<string>('');\n  const [response, setResponse] = useState<string>('');\n  const [loading, setLoading] = useState<boolean>(false);\n\n  const handleSubmit = async () => {\n    setLoading(true);\n    // Assume 'api/aiService' handles the actual AI model interaction\n    // const aiResponse = await fetch('/api/generate', { method: 'POST', body: JSON.stringify({ prompt }) });\n    // setResponse(await aiResponse.json());\n    setResponse(`Response for: ${prompt}`); // Placeholder\n    setLoading(false);\n  };\n\n  return (\n    <div>\n      <input type=\"text\" value={prompt} onChange={(e) => setPrompt(e.target.value)} disabled={loading} />\n      <button onClick={handleSubmit} disabled={loading}>Generate</button>\n      {loading && <p>Loading...</p>}\n      {response && <p>AI Output: {response}</p>}\n    </div>\n  );\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Docker",
-      "Node.js",
-      "Vercel"
-    ],
-    "desc": "Omnipulse AI Studio is a robust web-based platform designed for interactive AI model development and experimentation. It provides a modern frontend experience for managing AI workflows and integrating with advanced AI services.",
-    "features": [
-      "Modular React/TypeScript frontend architecture for intuitive UI",
-      "Optimized developer experience with Vite, HMR, and Oxlint for code quality",
-      "Containerized deployment strategy using Docker for consistent environments",
-      "Scalable API integration (implied) for seamless AI model interaction"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
