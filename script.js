@@ -315,23 +315,24 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef transform_article(raw_article_json: str) -> dict:\n    \"\"\"Transforms raw article data for the Bronze layer.\"\"\"\n    article = json.loads(raw_article_json)\n    transformed = {\n        \"id\": article.get(\"article_id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"url\": article.get(\"url\"),\n        \"publish_date\": article.get(\"publishedAt\")\n    }\n    transformed[\"processed_at\"] = datetime.now().isoformat()\n    return transformed",
+    "codeSnippet": "from kafka import KafkaConsumer\nfrom minio import Minio\nimport json\n\n# Initialize Kafka consumer for raw news articles\nconsumer = KafkaConsumer('news-articles-raw', bootstrap_servers='kafka:9092')\n# Initialize MinIO client for data lake storage\nminio_client = Minio('minio:9000', access_key='minio_admin', secret_key='anaskaelar', secure=False)\n\n# Ingest messages from Kafka to the Bronze layer of the Lakehouse\nfor msg in consumer:\n    article = json.loads(msg.value.decode('utf-8'))\n    file_name = f\"raw_articles/{article['id']}.json\"\n    minio_client.put_object('bronze-layer', file_name, json.dumps(article).encode('utf-8'))",
     "img": null,
     "gallery": [],
     "tech": [
-      "Python",
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
       "Apache Superset",
-      "Docker"
+      "Docker",
+      "Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse platform designed for real-time media intelligence. It automates the end-to-end ingestion, processing, and visualization of news article data, leveraging a medallion architecture for scalable data management and analysis.",
+    "desc": "This project develops a comprehensive, distributed enterprise lakehouse for real-time media intelligence, integrating ingestion, processing, and visualization of news article data. It leverages a medallion architecture and advanced ETL/ELT pipelines to deliver actionable insights from high-volume, dynamic data streams.",
     "features": [
-      "Real-time distributed data ingestion and streaming via Apache Kafka.",
-      "Enterprise Lakehouse architecture with MinIO (Data Lake) and PostgreSQL (Data Warehouse).",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
-      "Interactive data visualization and real-time monitoring with Apache Superset, Grafana & Prometheus."
+      "Real-time distributed data ingestion and stream processing from diverse news sources.",
+      "Enterprise Lakehouse architecture (Bronze, Silver, Gold layers) for scalable data management and analytics.",
+      "Orchestration of complex ETL/ELT workflows using Apache Airflow for robust data pipelines.",
+      "Comprehensive real-time monitoring and visualization with Grafana, Prometheus, and Apache Superset.",
+      "Containerized deployment with Docker and scalable orchestration via Kubernetes."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +345,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface PromptResult {\n  id: string;\n  output: string;\n}\n\nexport const processPrompt = async (promptText: string): Promise<PromptResult> => {\n  const response = await axios.post('/api/ai/process', { prompt: promptText });\n  return response.data;\n};",
+    "codeSnippet": "// src/types/ai.d.ts\nexport interface AIServiceConfig {\n  endpoint: string;\n  model: 'GPT-3.5' | 'GPT-4' | 'Gemini';\n  temperature: number;\n}\n\nexport type AIProcessingResult = {\n  id: string;\n  status: 'success' | 'failed' | 'processing';\n  output?: string;\n  error?: string;\n};",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
+      "Node.js",
       "Oxlint",
-      "Docker",
-      "AI/ML Concepts"
+      "Docker"
     ],
-    "desc": "This project establishes a robust React and TypeScript application framework for an 'AI Studio', leveraging Vite for optimized development and build performance. It's designed to provide a modern, scalable frontend infrastructure likely intended for managing AI-driven functionalities or data.",
+    "desc": "OmniPulse AI Studio establishes a high-performance web development environment leveraging React, TypeScript, and Vite for rapid application development. It integrates advanced tooling like Oxlint for type-aware linting and a modular API structure, optimizing code quality and maintainability in a full-stack context.",
     "features": [
-      "Modern Frontend Architecture with React and Vite",
-      "Robust Type-Checking and Linting with TypeScript and Oxlint",
-      "Containerization for Deployment via Docker",
-      "Optimized Development Workflow with Hot Module Replacement (HMR)"
+      "High-Performance Frontend with React, TypeScript, and Vite HMR",
+      "Integrated Advanced Code Quality via Oxlint with Type-Aware Linting",
+      "Modular Full-Stack Architecture with Dedicated API Services",
+      "Containerized Deployment Ready with Docker and Vercel Integration"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
