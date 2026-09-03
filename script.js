@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef transform_news_to_silver(raw_df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Cleans and structures raw news data for the lakehouse silver layer.\"\"\"\n    silver_df = raw_df[[\n        'id', 'title', 'description', 'url', 'publishedAt', 'source.name'\n    ]].copy()\n    silver_df.columns = [\n        'article_id', 'headline', 'summary', 'url', 'published_date', 'source'\n    ]\n    silver_df['published_date'] = pd.to_datetime(silver_df['published_date'], errors='coerce')\n    silver_df.drop_duplicates(subset=['headline', 'source'], inplace=True)\n    silver_df = silver_df[silver_df['published_date'].notna()]\n    return silver_df[['article_id', 'headline', 'published_date', 'source']]",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1)\n) as dag:\n    ingest_task = BashOperator(task_id='scrape_ingest', bash_command='python scrapers/ingest.py')\n    process_task = BashOperator(task_id='process_data', bash_command='python pipelines/transform.py')\n    load_task = BashOperator(task_id='load_dw', bash_command='python warehouse/load.py')\n    ingest_task >> process_task >> load_task",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
       "Apache Airflow",
+      "Kafka",
       "MinIO",
-      "PostgreSQL",
       "Apache Superset",
-      "Kubernetes"
+      "Docker",
+      "Python"
     ],
-    "desc": "An enterprise-grade, real-time media intelligence platform leveraging a lakehouse architecture to ingest, process, and visualize news data from diverse sources. It integrates a distributed stack for end-to-end data lifecycle management, from scraping to analytics, ensuring timely insights.",
+    "desc": "This project implements a comprehensive, distributed platform for real-time media intelligence, ingesting and processing news articles through a Lakehouse architecture. It leverages advanced ETL/ELT patterns, orchestration, and robust data visualization to provide actionable insights from vast journalistic datasets.",
     "features": [
-      "End-to-end real-time media intelligence platform with distributed data ingestion, processing, and visualization.",
-      "Implemented a robust Enterprise Lakehouse architecture (Data Lake & Data Warehouse) following the Medallion pattern.",
-      "Automated and orchestrated complex ETL/ELT data pipelines using Apache Airflow for data transformation and loading.",
-      "Leveraged containerization with Docker and Kubernetes for scalable, highly available deployment of microservices."
+      "End-to-end Real-time Data Pipeline: Ingestion, processing, and visualization of news articles using Kafka and Airflow.",
+      "Hybrid Lakehouse Architecture: Implementation of a Medallion architecture across a Data Lake (MinIO) and Data Warehouse (PostgreSQL).",
+      "Automated ETL/ELT Workflows: Orchestration of complex data transformations and loading processes using Apache Airflow.",
+      "Integrated Observability Stack: Real-time monitoring of system health and performance through Prometheus and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -343,25 +343,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "interface AIResult {\n  output: string;\n  tokensUsed: number;\n}\n\nexport async function processPrompt(prompt: string): Promise<AIResult> {\n  if (!prompt || prompt.trim() === '') {\n    throw new Error('Prompt cannot be empty');\n  }\n\n  // In a real application, this would call an external AI model API\n  const processedOutput = `AI generated text based on: \"${prompt.substring(0, 50)}...\"`;\n  const calculatedTokens = Math.ceil(prompt.length / 3);\n\n  return { output: processedOutput, tokensUsed: calculatedTokens };\n}",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Oxlint"
-    ],
-    "desc": "Omnipulse AI Studio is a robust web application providing an interactive platform for AI model development and management. It leverages a modern Full-Stack architecture with React, TypeScript, and Vite, enhanced by advanced tooling for performance and code quality.",
-    "features": [
-      "Interactive AI Studio Interface: Built with React and TypeScript for dynamic user experiences.",
-      "Robust Backend Integration: Features a dedicated API layer for managing AI functionalities and data.",
-      "Optimized Development Workflow: Utilizes Vite for fast builds and hot module replacement, coupled with advanced Oxlint configuration for code quality.",
-      "Containerized & Serverless Deployment: Implements Docker for consistent environments and Vercel for scalable, serverless hosting."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
