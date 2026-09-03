@@ -295,29 +295,17 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1)\n) as dag:\n    ingest_task = BashOperator(task_id='scrape_ingest', bash_command='python scrapers/ingest.py')\n    process_task = BashOperator(task_id='process_data', bash_command='python pipelines/transform.py')\n    load_task = BashOperator(task_id='load_dw', bash_command='python warehouse/load.py')\n    ingest_task >> process_task >> load_task",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Apache Airflow",
-      "Kafka",
-      "MinIO",
-      "Apache Superset",
-      "Docker",
-      "Python"
-    ],
-    "desc": "This project implements a comprehensive, distributed platform for real-time media intelligence, ingesting and processing news articles through a Lakehouse architecture. It leverages advanced ETL/ELT patterns, orchestration, and robust data visualization to provide actionable insights from vast journalistic datasets.",
-    "features": [
-      "End-to-end Real-time Data Pipeline: Ingestion, processing, and visualization of news articles using Kafka and Airflow.",
-      "Hybrid Lakehouse Architecture: Implementation of a Medallion architecture across a Data Lake (MinIO) and Data Warehouse (PostgreSQL).",
-      "Automated ETL/ELT Workflows: Orchestration of complex data transformations and loading processes using Apache Airflow.",
-      "Integrated Observability Stack: Real-time monitoring of system health and performance through Prometheus and Grafana."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
