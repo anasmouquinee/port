@@ -310,17 +310,29 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "from bs4 import BeautifulSoup\nimport json\n\ndef process_news_article(raw_article_payload: str) -> dict:\n    \"\"\"Extracts main content and metadata from a raw news HTML article payload.\"\"\"\n    article_data = json.loads(raw_article_payload)\n    html_content = article_data.get('content_html', '')\n    soup = BeautifulSoup(html_content, 'html.parser')\n\n    main_text = ' '.join(p.get_text() for p in soup.find_all('p'))\n    article_data['processed_text_length'] = len(main_text)\n    article_data['cleaned_snippet'] = main_text[:500] \n\n    return article_data",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Python",
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "Kubernetes",
+      "Apache Superset"
+    ],
+    "desc": "Developed a comprehensive, distributed platform for real-time media intelligence, ingesting, processing, and visualizing news articles from diverse sources. This project implements a scalable enterprise lakehouse architecture with robust ETL/ELT pipelines, leveraging modern data engineering tools for end-to-end data management and analytics.",
+    "features": [
+      "Implemented a comprehensive Enterprise Lakehouse architecture with Bronze, Silver, and Gold layers for robust data management.",
+      "Enabled real-time data ingestion and streaming from diverse news sources using Apache Kafka for high-throughput processing.",
+      "Orchestrated complex ETL/ELT pipelines with Apache Airflow, automating data scraping, cleansing, and transformation.",
+      "Deployed a distributed, scalable platform using Docker and Kubernetes, ensuring high availability and seamless horizontal scaling."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -332,7 +344,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface AIResponse {\n  output: string;\n}\n\nasync function generateAIContent(prompt: string): Promise<AIResponse> {\n  const response = await fetch('/api/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt })\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  return await response.json();\n}",
+    "codeSnippet": "export const getAIResponse = async (prompt: string): Promise<string> => {\n  const res = await fetch('/api/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt })\n  });\n  if (!res.ok) {\n    throw new Error(`API error: ${res.status}`);\n  }\n  const data = await res.json();\n  return data.generatedText;\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -341,14 +353,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "RESTful APIs"
+      "Oxlint"
     ],
-    "desc": "This project provides a robust AI studio interface built with modern web technologies, enabling users to interact with and manage AI functionalities. It showcases a highly optimized front-end architecture using React, TypeScript, and Vite, with strict code quality enforced by Oxlint.",
+    "desc": "Anas developed OmniPulse AI Studio, a modern web application designed for interacting with AI models and managing prompts, leveraging a robust full-stack architecture. This project showcases proficiency in scalable frontend development, API integration, and containerized deployment for AI-driven services.",
     "features": [
-      "Scalable front-end architecture leveraging React, TypeScript, and Vite for optimal performance.",
-      "Robust code quality and maintainability enforced through comprehensive Oxlint configurations.",
-      "Containerized deployment strategy using Docker for consistent development and production environments.",
-      "Seamless integration with AI-powered backend services via a well-defined API layer."
+      "Developed a responsive and interactive user interface for AI interaction using React and Vite.",
+      "Implemented robust API endpoints (Node.js) for seamless communication with AI models.",
+      "Ensured high code quality and consistency through integrated Oxlint rules and TypeScript.",
+      "Configured containerized deployment with Docker and Vercel for scalable application delivery."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
