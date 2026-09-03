@@ -315,25 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.providers.amazon.aws.hooks.s3 import S3Hook\nfrom kafka import KafkaProducer\nimport json\n\ndef process_and_stage_article(article_path: str):\n    s3 = S3Hook(aws_conn_id='minio_s3_conn')\n    raw_content = s3.read_key(article_path, 'raw-news-data')\n    article_data = json.loads(raw_content)\n\n    article_data.update({\"status\": \"processed\", \"processed_by\": \"etl_pipeline\"})\n    s3.load_string(json.dumps(article_data), f\"bronze/{article_path}\", 'news-lakehouse')\n\n    producer = KafkaProducer(bootstrap_servers=['kafka:9092'])\n    producer.send('processed_articles_stream', json.dumps(article_data).encode('utf-8'))",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef transform_article(raw_article_json: str) -> dict:\n    \"\"\"Transforms raw article data for the Bronze layer.\"\"\"\n    article = json.loads(raw_article_json)\n    transformed = {\n        \"id\": article.get(\"article_id\"),\n        \"title\": article.get(\"title\", \"\").strip(),\n        \"url\": article.get(\"url\"),\n        \"publish_date\": article.get(\"publishedAt\")\n    }\n    transformed[\"processed_at\"] = datetime.now().isoformat()\n    return transformed",
     "img": null,
     "gallery": [],
     "tech": [
+      "Python",
+      "Apache Kafka",
       "Apache Airflow",
-      "Kafka",
-      "MinIO (S3)",
+      "MinIO",
       "Apache Superset",
-      "Docker & Docker Compose",
-      "Kubernetes"
+      "Docker"
     ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time media intelligence, integrating ingestion, processing, and visualization of news articles. It leverages an enterprise Lakehouse architecture to enable scalable ETL/ELT workflows and robust data analytics for dynamic media insights.",
+    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse platform designed for real-time media intelligence. It automates the end-to-end ingestion, processing, and visualization of news article data, leveraging a medallion architecture for scalable data management and analysis.",
     "features": [
-      "Real-time news article scraping and ingestion pipeline",
-      "Enterprise Lakehouse architecture with Medallion approach (Raw, Bronze, Silver layers)",
-      "Automated data orchestration and workflow management with Apache Airflow",
-      "Distributed streaming with Apache Kafka for real-time events",
-      "Comprehensive data visualization and monitoring with Superset, Prometheus & Grafana",
-      "Containerized deployment for scalability and portability using Docker and Kubernetes"
+      "Real-time distributed data ingestion and streaming via Apache Kafka.",
+      "Enterprise Lakehouse architecture with MinIO (Data Lake) and PostgreSQL (Data Warehouse).",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
+      "Interactive data visualization and real-time monitoring with Apache Superset, Grafana & Prometheus."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -345,13 +343,25 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "import axios from 'axios';\n\ninterface PromptResult {\n  id: string;\n  output: string;\n}\n\nexport const processPrompt = async (promptText: string): Promise<PromptResult> => {\n  const response = await axios.post('/api/ai/process', { prompt: promptText });\n  return response.data;\n};",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Oxlint",
+      "Docker",
+      "AI/ML Concepts"
+    ],
+    "desc": "This project establishes a robust React and TypeScript application framework for an 'AI Studio', leveraging Vite for optimized development and build performance. It's designed to provide a modern, scalable frontend infrastructure likely intended for managing AI-driven functionalities or data.",
+    "features": [
+      "Modern Frontend Architecture with React and Vite",
+      "Robust Type-Checking and Linting with TypeScript and Oxlint",
+      "Containerization for Deployment via Docker",
+      "Optimized Development Workflow with Hot Module Replacement (HMR)"
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
