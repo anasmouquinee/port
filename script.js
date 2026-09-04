@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef process_news_article_data(raw_df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Applies transformations for a Medallion Architecture Silver layer.\"\"\"\n    processed_df = raw_df.copy()\n    processed_df['title'] = processed_df['title'].str.strip().str.title()\n    processed_df['published_at'] = pd.to_datetime(processed_df['published_at'], errors='coerce')\n    # Example: Simple sentiment score placeholder\n    processed_df['sentiment_score'] = processed_df['content'].apply(\n        lambda x: 0.5 if 'positive' in str(x).lower() else 0.2\n    )\n    return processed_df",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_news_record(raw_json):\n    data = json.loads(raw_json)\n    processed = {\n        \"id\": data.get(\"article_id\"),\n        \"title\": data.get(\"headline\", \"\").strip() or \"Untitled\",\n        \"source\": data.get(\"origin_site\"),\n        \"published\": data.get(\"publish_date\"),\n        \"processed_at\": datetime.utcnow().isoformat()\n    }\n    return json.dumps(processed)",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "Docker",
       "Kubernetes",
-      "PostgreSQL"
+      "PostgreSQL",
+      "Apache Superset"
     ],
-    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It implements an enterprise Lakehouse architecture with a medallion approach, enabling robust media intelligence and scalable data governance.",
+    "desc": "Global NewsStream is an enterprise-grade, real-time media intelligence platform designed to ingest, process, and visualize data from news articles. It implements a distributed lakehouse architecture (Data Lake, Data Warehouse, Medallion Architecture, ETL/ELT) for comprehensive data management and actionable insights.",
     "features": [
-      "Enterprise Lakehouse Architecture with Medallion Zones (Bronze, Silver, Gold)",
-      "Real-Time Data Ingestion & Streaming Processing with Apache Kafka",
-      "Automated ELT Pipelines and Workflow Orchestration with Apache Airflow",
-      "Scalable Distributed Deployment leveraging Docker and Kubernetes"
+      "Distributed Lakehouse Architecture (Data Lake, Data Warehouse, Medallion Layers) for comprehensive data management.",
+      "Real-time data ingestion and processing with Apache Kafka for high-velocity news streams.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data transformation.",
+      "Integrated monitoring (Prometheus, Grafana) and interactive visualization (Apache Superset) for media intelligence."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,28 +339,28 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
+    "category": "Full-Stack & Web",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "interface PromptConfig {\n  model: string;\n  temperature: number;\n}\n\nasync function sendPromptToAI(text: string, config: PromptConfig): Promise<string> {\n  const response = await fetch('/api/ai/process', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt: text, ...config })\n  });\n  if (!response.ok) throw new Error('AI processing failed.');\n  const data = await response.json();\n  return data.result;\n}",
+    "codeSnippet": "export async function sendPromptToAI(prompt: string): Promise<string> {\n  try {\n    const response = await fetch('/api/ai-process', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ promptText: prompt })\n    });\n    const data = await response.json();\n    if (!response.ok) throw new Error(data.error || 'AI request failed');\n    return data.generatedOutput;\n  } catch (error: any) {\n    console.error(\"AI service error:\", error.message);\n    throw new Error('Could not process AI prompt.');\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
+      "Oxlint",
       "Docker",
-      "Vercel",
-      "Oxlint"
+      "Node.js"
     ],
-    "desc": "OmniPulse AI Studio provides a sophisticated web-based environment for developing and managing AI applications, built with a modern React and TypeScript stack. This platform facilitates intuitive prompt engineering and AI model interaction, underpinned by robust code quality tooling and a containerized deployment strategy.",
+    "desc": "This project establishes a modern full-stack development environment using React, TypeScript, and Vite, featuring advanced linting with Oxlint for code quality. It serves as the foundation for an \"omnipulse AI studio,\" indicating capabilities for AI prompt testing and data integration.",
     "features": [
-      "Interactive Web Interface for AI Development",
-      "Containerized Deployment Pipeline with Docker",
-      "Type-Safe Frontend Architecture using React & TypeScript",
-      "Automated Code Quality and Linting with Oxlint"
+      "High-Performance Frontend Architecture: Utilizing React, TypeScript, and Vite for a highly optimized and performant user interface with Hot Module Replacement.",
+      "Robust Code Quality Assurance: Implemented comprehensive code quality checks using Oxlint, including type-aware linting, to ensure maintainable and error-free code.",
+      "Containerized & Serverless Deployment: Streamlined deployment process using Docker for environment consistency and Vercel for scalable serverless hosting.",
+      "Integrated AI Prompt Management: Features an API layer and dedicated scripts for testing and managing AI prompts, hinting at generative AI integration."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
