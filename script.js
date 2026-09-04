@@ -315,23 +315,24 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef process_news_record(raw_json):\n    data = json.loads(raw_json)\n    processed = {\n        \"id\": data.get(\"article_id\"),\n        \"title\": data.get(\"headline\", \"\").strip() or \"Untitled\",\n        \"source\": data.get(\"origin_site\"),\n        \"published\": data.get(\"publish_date\"),\n        \"processed_at\": datetime.utcnow().isoformat()\n    }\n    return json.dumps(processed)",
+    "codeSnippet": "def process_news_article(raw_data: dict) -> dict:\n    \"\"\"\n    Transforms raw news article data for the 'silver' layer,\n    enriching it with metadata and sentiment analysis.\n    \"\"\"\n    transformed = {\n        \"article_id\": raw_data.get(\"id\"),\n        \"title\": raw_data.get(\"title\", \"N/A\").strip(),\n        \"source\": raw_data.get(\"source\", \"Unknown\"),\n        \"published_utc\": raw_data.get(\"date\"),\n        \"summary\": raw_data.get(\"content\", \"\")[:250] + \"...\",\n        \"sentiment_score\": analyze_text_sentiment(raw_data.get(\"content\", \"\"))\n    }\n    return transformed\n\ndef analyze_text_sentiment(text: str) -> float:\n    return 0.65",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
       "Apache Airflow",
+      "Kafka",
       "MinIO",
-      "Kubernetes",
-      "PostgreSQL",
-      "Apache Superset"
+      "Apache Superset",
+      "Docker",
+      "Kubernetes"
     ],
-    "desc": "Global NewsStream is an enterprise-grade, real-time media intelligence platform designed to ingest, process, and visualize data from news articles. It implements a distributed lakehouse architecture (Data Lake, Data Warehouse, Medallion Architecture, ETL/ELT) for comprehensive data management and actionable insights.",
+    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse for real-time media intelligence, integrating data ingestion, processing, and visualization from news articles. It showcases expertise in building scalable data platforms with a medallion architecture, leveraging modern big data technologies for actionable insights.",
     "features": [
-      "Distributed Lakehouse Architecture (Data Lake, Data Warehouse, Medallion Layers) for comprehensive data management.",
-      "Real-time data ingestion and processing with Apache Kafka for high-velocity news streams.",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data transformation.",
-      "Integrated monitoring (Prometheus, Grafana) and interactive visualization (Apache Superset) for media intelligence."
+      "Implemented a distributed enterprise lakehouse with a Medallion architecture for scalable data processing.",
+      "Developed real-time data ingestion pipelines using custom scrapers and Kafka for media intelligence.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation and loading.",
+      "Integrated Apache Superset for interactive data visualization and MinIO for object storage (Data Lake).",
+      "Deployed and managed containerized services with Docker Compose, with readiness for Kubernetes."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +345,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "export async function sendPromptToAI(prompt: string): Promise<string> {\n  try {\n    const response = await fetch('/api/ai-process', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ promptText: prompt })\n    });\n    const data = await response.json();\n    if (!response.ok) throw new Error(data.error || 'AI request failed');\n    return data.generatedOutput;\n  } catch (error: any) {\n    console.error(\"AI service error:\", error.message);\n    throw new Error('Could not process AI prompt.');\n  }\n}",
+    "codeSnippet": "{\n  \"$schema\": \"./node_modules/oxlint/configuration_schema.json\",\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
+      "Node.js",
       "Oxlint",
-      "Docker",
-      "Node.js"
+      "Docker"
     ],
-    "desc": "This project establishes a modern full-stack development environment using React, TypeScript, and Vite, featuring advanced linting with Oxlint for code quality. It serves as the foundation for an \"omnipulse AI studio,\" indicating capabilities for AI prompt testing and data integration.",
+    "desc": "This project develops a full-stack web application designed as an AI studio, providing an interactive platform for leveraging and testing AI capabilities. It integrates a robust React/TypeScript frontend with backend services and ensures high code quality through advanced tooling like Oxlint, all containerized for consistent deployment.",
     "features": [
-      "High-Performance Frontend Architecture: Utilizing React, TypeScript, and Vite for a highly optimized and performant user interface with Hot Module Replacement.",
-      "Robust Code Quality Assurance: Implemented comprehensive code quality checks using Oxlint, including type-aware linting, to ensure maintainable and error-free code.",
-      "Containerized & Serverless Deployment: Streamlined deployment process using Docker for environment consistency and Vercel for scalable serverless hosting.",
-      "Integrated AI Prompt Management: Features an API layer and dedicated scripts for testing and managing AI prompts, hinting at generative AI integration."
+      "Interactive AI Studio Frontend with React",
+      "Robust Type-Safe Architecture with TypeScript",
+      "Advanced Linting and Code Quality Enforcement",
+      "Containerized Development and Deployment"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
