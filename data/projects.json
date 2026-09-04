@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    extract_task = BashOperator(task_id='extract_news_data', bash_command='python /app/scrapers/run.py')\n    load_raw_task = BashOperator(task_id='load_to_raw_s3', bash_command='s3 put raw_data')\n    transform_silver_task = BashOperator(task_id='transform_to_silver', bash_command='spark-submit silver.py')\n    load_gold_task = BashOperator(task_id='load_to_gold_dw', bash_command='psql -c \"COPY gold\"')\n\n    extract_task >> load_raw_task >> transform_silver_task >> load_gold_task",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom airflow.utils.dates import days_ago\n\nwith DAG(\n    dag_id='news_stream_ingestion_dag',\n    start_date=days_ago(1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'data_lakehouse'],\n) as dag:\n    ingest_articles = BashOperator(\n        task_id='start_scraper_ingestion',\n        bash_command='python /app/scrapers/run_scraper.py',\n    )\n    process_raw_to_bronze = BashOperator(\n        task_id='process_raw_data_to_bronze',\n        bash_command='python /app/pipelines/raw_to_bronze.py',\n    )\n    ingest_articles >> process_raw_to_bronze",
     "img": null,
     "gallery": [],
     "tech": [
-      "Kafka",
+      "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "PostgreSQL",
       "Apache Superset",
-      "Docker / Kubernetes"
+      "PostgreSQL",
+      "Kubernetes"
     ],
-    "desc": "This project is a comprehensive enterprise lakehouse and real-time media intelligence platform designed to ingest, process, and visualize news article data from various sources. It leverages a distributed architecture, including scraping, data lake, data warehouse, and a Medallion architecture, to deliver actionable insights.",
+    "desc": "This project develops a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It establishes an enterprise-grade data lakehouse with a medallion architecture, enabling scalable media intelligence and analytics.",
     "features": [
-      "Real-time media intelligence with scalable data ingestion from diverse news sources.",
-      "Distributed Lakehouse architecture implementing the Medallion pattern for structured data management.",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data processing.",
-      "Integrated monitoring (Prometheus/Grafana) and interactive visualization (Apache Superset) for operational insights."
+      "Real-time news article ingestion and stream processing using Apache Kafka.",
+      "Distributed enterprise data lakehouse with MinIO and Medallion Architecture.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
+      "Integrated real-time analytics and monitoring with Apache Superset and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,29 +324,17 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
+    "category": "Full-Stack & Web",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import { Request, Response } from 'express';\nimport { aiService } from '../services/aiService'; // Assume this handles AI model interaction\n\nexport const processPrompt = async (req: Request, res: Response) => {\n  try {\n    const { prompt, modelId } = req.body;\n    if (!prompt || !modelId) {\n      return res.status(400).json({ message: 'Prompt and modelId are required.' });\n    }\n    const aiResponse = await aiService.generateResponse(prompt, modelId);\n    res.status(200).json({ success: true, data: aiResponse });\n  } catch (error) {\n    console.error('Error processing AI prompt:', error);\n    res.status(500).json({ success: false, message: 'Internal server error.' });\n  }\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Vercel"
-    ],
-    "desc": "Omnipulse AI Studio is a robust full-stack platform engineered for the efficient development and deployment of AI-powered applications. It delivers an intuitive environment for AI architects, seamlessly integrating modern web interfaces with scalable backend AI services.",
-    "features": [
-      "Full-stack architecture integrating a reactive front-end with a dedicated AI services API.",
-      "Streamlined development workflow leveraging Vite for performance and TypeScript for type safety.",
-      "Robust code quality and maintainability enforced through Oxlint configuration and GitHub Actions.",
-      "Production-ready deployment facilitated by Docker containerization and Vercel for scalable hosting."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
