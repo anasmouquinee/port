@@ -315,24 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "def process_news_article(raw_data: dict) -> dict:\n    \"\"\"\n    Transforms raw news article data for the 'silver' layer,\n    enriching it with metadata and sentiment analysis.\n    \"\"\"\n    transformed = {\n        \"article_id\": raw_data.get(\"id\"),\n        \"title\": raw_data.get(\"title\", \"N/A\").strip(),\n        \"source\": raw_data.get(\"source\", \"Unknown\"),\n        \"published_utc\": raw_data.get(\"date\"),\n        \"summary\": raw_data.get(\"content\", \"\")[:250] + \"...\",\n        \"sentiment_score\": analyze_text_sentiment(raw_data.get(\"content\", \"\"))\n    }\n    return transformed\n\ndef analyze_text_sentiment(text: str) -> float:\n    return 0.65",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_bronze_layer(): print(\"Ingesting raw news data to MinIO (Bronze).\")\ndef process_silver_layer(): print(\"Cleansing & standardizing Bronze data to Silver.\")\ndef process_gold_layer(): print(\"Aggregating Silver data for analytics in Gold.\")\n\nwith DAG(\n    dag_id='news_lakehouse_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    bronze_task = PythonOperator(task_id='process_bronze', python_callable=process_bronze_layer)\n    silver_task = PythonOperator(task_id='process_silver', python_callable=process_silver_layer)\n    gold_task = PythonOperator(task_id='process_gold', python_callable=process_gold_layer)\n\n    bronze_task >> silver_task >> gold_task",
     "img": null,
     "gallery": [],
     "tech": [
+      "Docker",
       "Apache Airflow",
-      "Kafka",
+      "Apache Kafka",
       "MinIO",
       "Apache Superset",
-      "Docker",
       "Kubernetes"
     ],
-    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse for real-time media intelligence, integrating data ingestion, processing, and visualization from news articles. It showcases expertise in building scalable data platforms with a medallion architecture, leveraging modern big data technologies for actionable insights.",
+    "desc": "This distributed platform enables real-time ingestion, processing, and visualization of news data from various sources. It leverages an enterprise lakehouse architecture (Data Lake, Data Warehouse, Medallion Architecture) to deliver comprehensive media intelligence.",
     "features": [
-      "Implemented a distributed enterprise lakehouse with a Medallion architecture for scalable data processing.",
-      "Developed real-time data ingestion pipelines using custom scrapers and Kafka for media intelligence.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow for data transformation and loading.",
-      "Integrated Apache Superset for interactive data visualization and MinIO for object storage (Data Lake).",
-      "Deployed and managed containerized services with Docker Compose, with readiness for Kubernetes."
+      "Implemented a distributed, real-time data ingestion and processing pipeline for news articles.",
+      "Designed and built an Enterprise Lakehouse with Medallion Architecture (Raw, Bronze, Silver, Gold layers).",
+      "Orchestrated complex ETL/ELT workflows using Apache Airflow for data transformation and enrichment.",
+      "Integrated real-time streaming with Apache Kafka and provided robust monitoring (Prometheus, Grafana) and visualization (Apache Superset)."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -345,7 +344,7 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "{\n  \"$schema\": \"./node_modules/oxlint/configuration_schema.json\",\n  \"plugins\": [\"react\", \"typescript\", \"oxc\"],\n  \"options\": {\n    \"typeAware\": true\n  },\n  \"rules\": {\n    \"react/rules-of-hooks\": \"error\",\n    \"react/only-export-components\": [\"warn\", { \"allowConstantExport\": true }]\n  }\n}",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIRequest { prompt: string; }\ninterface AIResponse { text: string; tokens: number; }\n\nexport async function queryAI(request: AIRequest): Promise<AIResponse> {\n  const { prompt } = request;\n  const response = await axios.post<AIResponse>(\n    process.env.AI_ENDPOINT || 'http://localhost:8080/generate',\n    { prompt }\n  );\n  return response.data;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,15 +352,15 @@ const EMBEDDED_PROJECTS = [
       "TypeScript",
       "Vite",
       "Node.js",
-      "Oxlint",
-      "Docker"
+      "Docker",
+      "AI/ML Integrations"
     ],
-    "desc": "This project develops a full-stack web application designed as an AI studio, providing an interactive platform for leveraging and testing AI capabilities. It integrates a robust React/TypeScript frontend with backend services and ensures high code quality through advanced tooling like Oxlint, all containerized for consistent deployment.",
+    "desc": "OmniPulse AI Studio is a robust full-stack platform designed for developing and managing AI-driven applications, leveraging modern web technologies for a responsive user experience. It achieves high performance and maintainability through a TypeScript-first approach, Vite-powered frontend, and an optimized API backend.",
     "features": [
-      "Interactive AI Studio Frontend with React",
-      "Robust Type-Safe Architecture with TypeScript",
-      "Advanced Linting and Code Quality Enforcement",
-      "Containerized Development and Deployment"
+      "Modular Full-Stack Architecture with dedicated API Layer",
+      "Scalable Containerization with Docker for consistent deployments",
+      "Enhanced Development Experience with TypeScript and Vite",
+      "Integrated AI Prompting and Management Capabilities"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
