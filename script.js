@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import requests\nimport json\nfrom datetime import datetime\n\ndef fetch_and_prepare_articles(api_endpoint: str) -> list[dict]:\n    \"\"\"Fetches news articles from an API and structures them for ingestion.\"\"\"\n    response = requests.get(api_endpoint)\n    response.raise_for_status()\n    raw_articles = response.json().get(\"articles\", [])\n    \n    processed_articles = [\n        {\"id\": idx, \"title\": art.get(\"title\"), \"url\": art.get(\"url\"), \"ingest_ts\": datetime.utcnow().isoformat()}\n        for idx, art in enumerate(raw_articles)\n    ]\n    \n    return processed_articles",
+    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\ndef publish_article_data(article_data: dict):\n    \"\"\"Publishes processed article data to a Kafka topic.\"\"\"\n    producer = KafkaProducer(\n        bootstrap_servers=['kafka:9092'],\n        value_serializer=lambda v: json.dumps(v).encode('utf-8')\n    )\n    try:\n        producer.send('news_articles_processed', article_data).get(timeout=30)\n        print(f\"Published article: {article_data['title'][:50]}...\")\n    except Exception as e:\n        print(f\"Failed to publish article data: {e}\")\n    finally:\n        producer.close()",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
+      "PostgreSQL",
       "Apache Superset",
-      "Docker",
       "Kubernetes"
     ],
-    "desc": "Developed a comprehensive, distributed Enterprise Lakehouse platform for real-time media intelligence, ingesting and processing news articles from various sources. This robust architecture enables scalable data warehousing, analytical reporting, and media monitoring through advanced ETL/ELT pipelines and containerized infrastructure.",
+    "desc": "Engineered a distributed enterprise lakehouse platform for real-time media intelligence, capable of ingesting, processing, and visualizing vast streams of news articles. Leverages a robust medallion architecture to transform raw data into actionable insights for comprehensive media monitoring and analysis.",
     "features": [
-      "Real-time media intelligence platform with scalable data ingestion from diverse sources.",
-      "Enterprise Lakehouse architecture (Medallion Layer) ensuring data quality and accessibility.",
-      "Distributed data orchestration and ETL/ELT pipelines powered by Apache Airflow.",
-      "Containerized deployment using Docker and Kubernetes for resilient and scalable operations."
+      "Implemented a scalable, real-time data ingestion pipeline for diverse news sources using Python scrapers and Apache Kafka.",
+      "Designed and deployed an Enterprise Data Lakehouse (MinIO, PostgreSQL) with a Medallion Architecture for structured data transformation.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow for automated data processing, quality checks, and warehouse population.",
+      "Provided interactive real-time media intelligence dashboards and visualizations via Apache Superset and monitored infrastructure with Prometheus/Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +344,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "async function processAIPrompt(promptText: string, modelId: string): Promise<string | null> {\n  try {\n    const response = await fetch('/api/ai/process', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt: promptText, model: modelId })\n    });\n    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n    const data = await response.json() as { result: string };\n    return data.result;\n  } catch (error) {\n    console.error(\"Failed to process AI prompt:\", error);\n    return null;\n  }\n}",
+    "codeSnippet": "export async function getAiResponse(prompt: string, model: string) {\n  const response = await fetch('/api/generate-response', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, model }),\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  const data = await response.json();\n  return data.result;\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
+      "Node.js",
       "Vite",
-      "Oxlint",
       "Docker",
       "Vercel"
     ],
-    "desc": "This project is a high-performance web-based AI studio designed to streamline AI development and interaction within a robust, modern frontend environment. It leverages cutting-edge web technologies like React, TypeScript, and Vite to deliver an efficient and maintainable platform for AI-driven applications.",
+    "desc": "Developed a robust full-stack AI studio platform designed to streamline the creation and management of AI-powered applications. This project provides a scalable and intuitive environment, leveraging modern web technologies and a well-defined API for efficient AI development workflows.",
     "features": [
-      "High-performance frontend architecture with React, TypeScript, and Vite.",
-      "Ensures code quality and consistency using Oxlint with type-aware linting.",
-      "Containerized application deployment strategy via Docker.",
-      "Integrated CI/CD workflows and automated testing practices."
+      "Modular full-stack architecture for AI service integration",
+      "Containerized deployment strategy using Docker for consistent environments",
+      "Type-safe and performant frontend built with React and TypeScript",
+      "Robust API facilitating AI model interaction and data orchestration"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
