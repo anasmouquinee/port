@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "def transform_raw_to_silver_layer(raw_data: dict) -> dict:\n    \"\"\"Transforms raw news article data to a refined 'silver' layer format.\"\"\"\n    silver_data = {\n        \"article_id\": raw_data.get(\"id\"),\n        \"title\": raw_data.get(\"title\", \"\").strip(),\n        \"source\": raw_data.get(\"source\", {}).get(\"name\", \"Unknown\"),\n        \"published_at\": raw_data.get(\"published_at\"),\n        \"keywords\": raw_data.get(\"tags\", []),\n        \"content_hash\": hash(raw_data.get(\"content\", \"\"))\n    }\n    return silver_data",
+    "codeSnippet": "import pandas as pd\n\ndef process_news_article_data(raw_df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Applies transformations for a Medallion Architecture Silver layer.\"\"\"\n    processed_df = raw_df.copy()\n    processed_df['title'] = processed_df['title'].str.strip().str.title()\n    processed_df['published_at'] = pd.to_datetime(processed_df['published_at'], errors='coerce')\n    # Example: Simple sentiment score placeholder\n    processed_df['sentiment_score'] = processed_df['content'].apply(\n        lambda x: 0.5 if 'positive' in str(x).lower() else 0.2\n    )\n    return processed_df",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
       "MinIO",
       "Docker",
       "Kubernetes",
-      "Apache Superset"
+      "PostgreSQL"
     ],
-    "desc": "A comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize news article data. It leverages an enterprise lakehouse architecture with real-time streaming, ETL/ELT pipelines, and robust data warehousing for advanced media analytics.",
+    "desc": "This project delivers a comprehensive, distributed platform for real-time ingestion, processing, and visualization of news articles. It implements an enterprise Lakehouse architecture with a medallion approach, enabling robust media intelligence and scalable data governance.",
     "features": [
-      "Distributed architecture for real-time news article ingestion, processing, and analysis",
-      "Enterprise Data Lakehouse with Medallion Architecture (Bronze, Silver, Gold layers)",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for data transformation",
-      "Scalable, containerized deployment using Docker and Kubernetes with integrated monitoring and visualization"
+      "Enterprise Lakehouse Architecture with Medallion Zones (Bronze, Silver, Gold)",
+      "Real-Time Data Ingestion & Streaming Processing with Apache Kafka",
+      "Automated ELT Pipelines and Workflow Orchestration with Apache Airflow",
+      "Scalable Distributed Deployment leveraging Docker and Kubernetes"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -324,17 +324,29 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
+    "category": "AI & Autonomous Systems",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "interface PromptConfig {\n  model: string;\n  temperature: number;\n}\n\nasync function sendPromptToAI(text: string, config: PromptConfig): Promise<string> {\n  const response = await fetch('/api/ai/process', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt: text, ...config })\n  });\n  if (!response.ok) throw new Error('AI processing failed.');\n  const data = await response.json();\n  return data.result;\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Docker",
+      "Vercel",
+      "Oxlint"
+    ],
+    "desc": "OmniPulse AI Studio provides a sophisticated web-based environment for developing and managing AI applications, built with a modern React and TypeScript stack. This platform facilitates intuitive prompt engineering and AI model interaction, underpinned by robust code quality tooling and a containerized deployment strategy.",
+    "features": [
+      "Interactive Web Interface for AI Development",
+      "Containerized Deployment Pipeline with Docker",
+      "Type-Safe Frontend Architecture using React & TypeScript",
+      "Automated Code Quality and Linting with Oxlint"
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
