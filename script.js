@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\ndef publish_article_data(article_data: dict):\n    \"\"\"Publishes processed article data to a Kafka topic.\"\"\"\n    producer = KafkaProducer(\n        bootstrap_servers=['kafka:9092'],\n        value_serializer=lambda v: json.dumps(v).encode('utf-8')\n    )\n    try:\n        producer.send('news_articles_processed', article_data).get(timeout=30)\n        print(f\"Published article: {article_data['title'][:50]}...\")\n    except Exception as e:\n        print(f\"Failed to publish article data: {e}\")\n    finally:\n        producer.close()",
+    "codeSnippet": "from airflow.decorators import task\nimport json\n\n@task\ndef process_news_article(article_payload: dict):\n    \"\"\"Processes a single news article for media intelligence.\"\"\"\n    article_id = article_payload.get(\"id\")\n    source = article_payload.get(\"source\")\n    # sentiment_score = analyze_sentiment(article_payload[\"text\"])\n    # category = classify_topic(article_payload[\"title\"])\n    print(f\"Processed article {article_id} from {source}.\")\n    # return {\"id\": article_id, \"sentiment\": sentiment_score, \"category\": category}",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "PostgreSQL",
+      "Kubernetes",
       "Apache Superset",
-      "Kubernetes"
+      "Python"
     ],
-    "desc": "Engineered a distributed enterprise lakehouse platform for real-time media intelligence, capable of ingesting, processing, and visualizing vast streams of news articles. Leverages a robust medallion architecture to transform raw data into actionable insights for comprehensive media monitoring and analysis.",
+    "desc": "Global NewsStream is a robust, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It leverages an enterprise lakehouse architecture to provide scalable data management and advanced analytics for media monitoring.",
     "features": [
-      "Implemented a scalable, real-time data ingestion pipeline for diverse news sources using Python scrapers and Apache Kafka.",
-      "Designed and deployed an Enterprise Data Lakehouse (MinIO, PostgreSQL) with a Medallion Architecture for structured data transformation.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow for automated data processing, quality checks, and warehouse population.",
-      "Provided interactive real-time media intelligence dashboards and visualizations via Apache Superset and monitored infrastructure with Prometheus/Grafana."
+      "End-to-end distributed data ingestion and real-time processing with Apache Kafka & Airflow.",
+      "Scalable enterprise lakehouse architecture leveraging MinIO for raw data and medallion zones.",
+      "Automated ETL/ELT pipelines for transforming raw news data into actionable media intelligence.",
+      "Containerized and orchestratable deployment with Docker and Kubernetes for robust scalability."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,28 +339,28 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "export async function getAiResponse(prompt: string, model: string) {\n  const response = await fetch('/api/generate-response', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, model }),\n  });\n  if (!response.ok) {\n    throw new Error(`API error: ${response.statusText}`);\n  }\n  const data = await response.json();\n  return data.result;\n}",
+    "codeSnippet": "export async function processAIRequest<T>(prompt: string, data: T): Promise<any> {\n  const response = await fetch('/api/v1/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, data }),\n  });\n\n  if (!response.ok) {\n    throw new Error(`AI API error: ${response.statusText}`);\n  }\n\n  return await response.json();\n}",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
-      "Node.js",
       "Vite",
+      "Node.js",
       "Docker",
-      "Vercel"
+      "Oxc/Oxlint"
     ],
-    "desc": "Developed a robust full-stack AI studio platform designed to streamline the creation and management of AI-powered applications. This project provides a scalable and intuitive environment, leveraging modern web technologies and a well-defined API for efficient AI development workflows.",
+    "desc": "Developed a cutting-edge AI Studio web application, OmniPulse, providing an intuitive interface for interacting with and managing AI functionalities. This project showcases full-stack expertise by integrating a modern React/TypeScript frontend with backend API services, facilitating robust AI model experimentation and deployment capabilities.",
     "features": [
-      "Modular full-stack architecture for AI service integration",
-      "Containerized deployment strategy using Docker for consistent environments",
-      "Type-safe and performant frontend built with React and TypeScript",
-      "Robust API facilitating AI model interaction and data orchestration"
+      "Interactive AI Model Management Interface: Implemented with React and TypeScript, offering a responsive UI for AI interaction.",
+      "Containerized Deployment via Docker: Ensures consistent, scalable, and portable environment for both development and production.",
+      "Optimized Development Workflow with Vite & HMR: Utilizes Vite for lightning-fast build times and Hot Module Replacement, enhancing developer productivity.",
+      "Enforced Code Quality with Oxlint: Leverages advanced linting to maintain high code standards and catch potential issues early."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
