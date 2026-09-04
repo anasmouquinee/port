@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id=\"news_data_processing\",\n    start_date=datetime(2023, 1, 1),\n    schedule_interval=\"@daily\",\n    catchup=False\n) as dag:\n    raw_to_bronze = KubernetesPodOperator(\n        task_id=\"transform_raw_to_bronze\",\n        name=\"raw-to-bronze-pod\",\n        namespace=\"default\",\n        image=\"my-data-processor:latest\",\n        cmds=[\"python\", \"process_data.py\"],\n        arguments=[\"--source\", \"minio://raw-zone\", \"--target\", \"minio://bronze-zone\"],\n        get_logs=True\n    )",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='news_lakehouse_etl',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False\n) as dag:\n    extract_task = BashOperator(task_id='extract_news_data', bash_command='python /app/scrapers/run.py')\n    load_raw_task = BashOperator(task_id='load_to_raw_s3', bash_command='s3 put raw_data')\n    transform_silver_task = BashOperator(task_id='transform_to_silver', bash_command='spark-submit silver.py')\n    load_gold_task = BashOperator(task_id='load_to_gold_dw', bash_command='psql -c \"COPY gold\"')\n\n    extract_task >> load_raw_task >> transform_silver_task >> load_gold_task",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
+      "Kafka",
       "Apache Airflow",
-      "Docker",
-      "Kubernetes",
+      "MinIO",
+      "PostgreSQL",
       "Apache Superset",
-      "MinIO"
+      "Docker / Kubernetes"
     ],
-    "desc": "This project establishes a comprehensive, distributed platform for real-time media intelligence, enabling the ingestion, processing, and visualization of news article data from various sources. It leverages an enterprise Lakehouse architecture to manage large-scale data, providing scalable data pipelines for robust analytics and operational insights.",
+    "desc": "This project is a comprehensive enterprise lakehouse and real-time media intelligence platform designed to ingest, process, and visualize news article data from various sources. It leverages a distributed architecture, including scraping, data lake, data warehouse, and a Medallion architecture, to deliver actionable insights.",
     "features": [
-      "Implemented a distributed Lakehouse architecture for scalable data management with a Medallion approach.",
-      "Engineered real-time data ingestion and stream processing pipelines using Apache Kafka.",
-      "Automated complex ETL/ELT workflows and data orchestration with Apache Airflow.",
-      "Deployed a fully containerized infrastructure using Docker and Kubernetes for high availability and scalability."
+      "Real-time media intelligence with scalable data ingestion from diverse news sources.",
+      "Distributed Lakehouse architecture implementing the Medallion pattern for structured data management.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow for robust data processing.",
+      "Integrated monitoring (Prometheus/Grafana) and interactive visualization (Apache Superset) for operational insights."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,12 +339,12 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
+    "category": "AI & Autonomous Systems",
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import type { VercelRequest, VercelResponse } from '@vercel/node';\n\nexport default async function handler(req: VercelRequest, res: VercelResponse) {\n  if (req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });\n  const { prompt } = req.body;\n  if (!prompt) return res.status(400).json({ message: 'Prompt is required' });\n\n  try {\n    // In a real app, this calls an AI service or model\n    const aiResponse = `Generated output for: \"${prompt.substring(0, 40)}...\"`;\n    res.status(200).json({ output: aiResponse, model: 'OmniPulse-AI-v2' });\n  } catch (error) {\n    res.status(500).json({ message: 'AI processing failed' });\n  }\n}",
+    "codeSnippet": "import { Request, Response } from 'express';\nimport { aiService } from '../services/aiService'; // Assume this handles AI model interaction\n\nexport const processPrompt = async (req: Request, res: Response) => {\n  try {\n    const { prompt, modelId } = req.body;\n    if (!prompt || !modelId) {\n      return res.status(400).json({ message: 'Prompt and modelId are required.' });\n    }\n    const aiResponse = await aiService.generateResponse(prompt, modelId);\n    res.status(200).json({ success: true, data: aiResponse });\n  } catch (error) {\n    console.error('Error processing AI prompt:', error);\n    res.status(500).json({ success: false, message: 'Internal server error.' });\n  }\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -355,12 +355,12 @@ const EMBEDDED_PROJECTS = [
       "Docker",
       "Vercel"
     ],
-    "desc": "Omnipulse AI Studio is a modern web platform designed to facilitate AI development and interaction, offering a robust user interface for managing AI-driven workflows. Leveraging React, TypeScript, and Vite, it provides a performant and type-safe environment for building and deploying AI applications, ensuring high development velocity and maintainability.",
+    "desc": "Omnipulse AI Studio is a robust full-stack platform engineered for the efficient development and deployment of AI-powered applications. It delivers an intuitive environment for AI architects, seamlessly integrating modern web interfaces with scalable backend AI services.",
     "features": [
-      "Interactive AI Workflow Management",
-      "High-Performance Frontend",
-      "Robust Backend API Integration",
-      "Containerized & Cloud-Native Deployment"
+      "Full-stack architecture integrating a reactive front-end with a dedicated AI services API.",
+      "Streamlined development workflow leveraging Vite for performance and TypeScript for type safety.",
+      "Robust code quality and maintainability enforced through Oxlint configuration and GitHub Actions.",
+      "Production-ready deployment facilitated by Docker containerization and Vercel for scalable hosting."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
