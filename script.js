@@ -315,23 +315,24 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\n\ndef process_news_data(raw_data_path: str, refined_data_path: str):\n    \"\"\"Ingests raw news articles, cleans text, and enriches with metadata.\"\"\"\n    try:\n        df_raw = pd.read_csv(raw_data_path) # Data from Data Lake\n\n        # Core transformation: standardize text, add processing timestamp\n        df_refined = df_raw.copy()\n        df_refined['processed_timestamp'] = pd.Timestamp.now()\n        df_refined['cleaned_title'] = df_refined['title'].str.lower().str.strip()\n\n        df_refined.to_parquet(refined_data_path, index=False) # Store in Data Warehouse/Lake\n        print(f\"Data transformed and saved to {refined_data_path}\")\n    except Exception as e:\n        print(f\"Error during data processing: {e}\")",
+    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\ndef publish_news_event(topic: str, article_data: dict):\n    \"\"\"Publishes a news article event to a Kafka topic.\"\"\"\n    producer = KafkaProducer(\n        bootstrap_servers=['localhost:9092'],\n        value_serializer=lambda v: json.dumps(v).encode('utf-8')\n    )\n    producer.send(topic, article_data)\n    producer.flush()\n    print(f\"Published article: {article_data.get('title', 'N/A')}\")",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Airflow",
       "Apache Kafka",
+      "Apache Airflow",
       "MinIO",
-      "Docker",
       "Apache Superset",
-      "PostgreSQL"
+      "Kubernetes",
+      "Python"
     ],
-    "desc": "Developed a distributed, real-time media intelligence platform using a lakehouse architecture for end-to-end ingestion, processing, and visualization of news articles. This project demonstrates expertise in building scalable data pipelines, medallion architecture, and integrating diverse Big Data technologies for actionable insights.",
+    "desc": "A comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It implements a robust enterprise lakehouse architecture, leveraging real-time streaming and a medallion data strategy for advanced analytics.",
     "features": [
-      "Enterprise Lakehouse & Medallion Architecture for scalable data management.",
-      "Real-time data ingestion and streaming pipelines with Apache Kafka.",
-      "Automated distributed workflow orchestration via Apache Airflow.",
-      "Comprehensive real-time monitoring & visualization with Prometheus, Grafana, and Superset."
+      "End-to-end Real-Time Media Intelligence Platform with automated scraping.",
+      "Scalable Enterprise Lakehouse Architecture leveraging a Medallion Layer strategy.",
+      "Distributed Data Ingestion & Orchestration using Kafka and Apache Airflow.",
+      "Comprehensive Monitoring & Visualization with Prometheus, Grafana, and Apache Superset.",
+      "Cloud-native deployment readiness with Docker and Kubernetes infrastructure."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,12 +340,12 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nexport const getAIPromptResponse = async (prompt: string) => {\n  try {\n    const { data } = await axios.post('/api/prompt', { prompt });\n    return data.response;\n  } catch (error) {\n    console.error(\"Failed to get AI response:\", error);\n    throw new Error(\"AI service unavailable.\");\n  }\n};",
+    "codeSnippet": "async function getAIResponse(prompt: string, model: string = 'omnipulse-v1'): Promise<string | null> {\n    const res = await fetch('/api/generate', {\n        method: 'POST', headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ prompt, model })\n    });\n    if (!res.ok) {\n        console.error(`AI API error: ${res.status} - ${await res.text()}`);\n        return null;\n    }\n    const data: { generatedContent: string } = await res.json();\n    return data.generatedContent;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,14 +354,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "Vercel"
+      "LLM Integration"
     ],
-    "desc": "Architected omnipulse-ai-studio, a cutting-edge full-stack web platform built with React, TypeScript, and Vite, designed to provide an interactive environment for AI-driven applications. It features robust API integration and efficient data management, showcasing expertise in modern web development and performance optimization through advanced tooling like Oxlint.",
+    "desc": "An advanced web-based AI studio built with React, TypeScript, and Vite, designed to facilitate interactive AI model development and prompt engineering. It provides a robust full-stack environment for deploying and testing AI services, leveraging modern frontend tooling and containerization for scalable operations.",
     "features": [
-      "Interactive AI Studio Frontend with React, TypeScript, and Vite for dynamic user experiences.",
-      "Robust, scalable API backend designed for AI integration and data processing.",
-      "Optimized development workflow leveraging Oxlint for superior code quality and performance.",
-      "Streamlined continuous deployment to Vercel, ensuring rapid iteration and global availability."
+      "Interactive AI Model Prototyping and Prompt Engineering capabilities.",
+      "Robust Full-Stack API Architecture with seamless containerization.",
+      "Modern, Responsive Frontend crafted with React, TypeScript, and Vite.",
+      "Optimized Developer Workflow, integrating Oxlint and Vercel for CI/CD."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
