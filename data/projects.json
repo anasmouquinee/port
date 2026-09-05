@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from airflow.decorators import task\nimport json\n\n@task\ndef process_news_article(article_payload: dict):\n    \"\"\"Processes a single news article for media intelligence.\"\"\"\n    article_id = article_payload.get(\"id\")\n    source = article_payload.get(\"source\")\n    # sentiment_score = analyze_sentiment(article_payload[\"text\"])\n    # category = classify_topic(article_payload[\"title\"])\n    print(f\"Processed article {article_id} from {source}.\")\n    # return {\"id\": article_id, \"sentiment\": sentiment_score, \"category\": category}",
+    "codeSnippet": "import pandas as pd\n\ndef process_news_data(raw_data_path: str, refined_data_path: str):\n    \"\"\"Ingests raw news articles, cleans text, and enriches with metadata.\"\"\"\n    try:\n        df_raw = pd.read_csv(raw_data_path) # Data from Data Lake\n\n        # Core transformation: standardize text, add processing timestamp\n        df_refined = df_raw.copy()\n        df_refined['processed_timestamp'] = pd.Timestamp.now()\n        df_refined['cleaned_title'] = df_refined['title'].str.lower().str.strip()\n\n        df_refined.to_parquet(refined_data_path, index=False) # Store in Data Warehouse/Lake\n        print(f\"Data transformed and saved to {refined_data_path}\")\n    except Exception as e:\n        print(f\"Error during data processing: {e}\")",
     "img": null,
     "gallery": [],
     "tech": [
-      "Apache Kafka",
       "Apache Airflow",
+      "Apache Kafka",
       "MinIO",
-      "Kubernetes",
+      "Docker",
       "Apache Superset",
-      "Python"
+      "PostgreSQL"
     ],
-    "desc": "Global NewsStream is a robust, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It leverages an enterprise lakehouse architecture to provide scalable data management and advanced analytics for media monitoring.",
+    "desc": "Developed a distributed, real-time media intelligence platform using a lakehouse architecture for end-to-end ingestion, processing, and visualization of news articles. This project demonstrates expertise in building scalable data pipelines, medallion architecture, and integrating diverse Big Data technologies for actionable insights.",
     "features": [
-      "End-to-end distributed data ingestion and real-time processing with Apache Kafka & Airflow.",
-      "Scalable enterprise lakehouse architecture leveraging MinIO for raw data and medallion zones.",
-      "Automated ETL/ELT pipelines for transforming raw news data into actionable media intelligence.",
-      "Containerized and orchestratable deployment with Docker and Kubernetes for robust scalability."
+      "Enterprise Lakehouse & Medallion Architecture for scalable data management.",
+      "Real-time data ingestion and streaming pipelines with Apache Kafka.",
+      "Automated distributed workflow orchestration via Apache Airflow.",
+      "Comprehensive real-time monitoring & visualization with Prometheus, Grafana, and Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -329,7 +329,7 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "export async function processAIRequest<T>(prompt: string, data: T): Promise<any> {\n  const response = await fetch('/api/v1/ai/generate', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ prompt, data }),\n  });\n\n  if (!response.ok) {\n    throw new Error(`AI API error: ${response.statusText}`);\n  }\n\n  return await response.json();\n}",
+    "codeSnippet": "import axios from 'axios';\n\nexport const getAIPromptResponse = async (prompt: string) => {\n  try {\n    const { data } = await axios.post('/api/prompt', { prompt });\n    return data.response;\n  } catch (error) {\n    console.error(\"Failed to get AI response:\", error);\n    throw new Error(\"AI service unavailable.\");\n  }\n};",
     "img": null,
     "gallery": [],
     "tech": [
@@ -338,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "Oxc/Oxlint"
+      "Vercel"
     ],
-    "desc": "Developed a cutting-edge AI Studio web application, OmniPulse, providing an intuitive interface for interacting with and managing AI functionalities. This project showcases full-stack expertise by integrating a modern React/TypeScript frontend with backend API services, facilitating robust AI model experimentation and deployment capabilities.",
+    "desc": "Architected omnipulse-ai-studio, a cutting-edge full-stack web platform built with React, TypeScript, and Vite, designed to provide an interactive environment for AI-driven applications. It features robust API integration and efficient data management, showcasing expertise in modern web development and performance optimization through advanced tooling like Oxlint.",
     "features": [
-      "Interactive AI Model Management Interface: Implemented with React and TypeScript, offering a responsive UI for AI interaction.",
-      "Containerized Deployment via Docker: Ensures consistent, scalable, and portable environment for both development and production.",
-      "Optimized Development Workflow with Vite & HMR: Utilizes Vite for lightning-fast build times and Hot Module Replacement, enhancing developer productivity.",
-      "Enforced Code Quality with Oxlint: Leverages advanced linting to maintain high code standards and catch potential issues early."
+      "Interactive AI Studio Frontend with React, TypeScript, and Vite for dynamic user experiences.",
+      "Robust, scalable API backend designed for AI integration and data processing.",
+      "Optimized development workflow leveraging Oxlint for superior code quality and performance.",
+      "Streamlined continuous deployment to Vercel, ensuring rapid iteration and global availability."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
