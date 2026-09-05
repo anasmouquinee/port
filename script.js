@@ -310,29 +310,41 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "import pandas as pd\nfrom datetime import datetime\n\ndef transform_and_load_news_data(raw_data_path, target_table):\n    \"\"\"Transforms raw news articles and loads them into the data warehouse.\"\"\"\n    df = pd.read_json(raw_data_path)\n    df['processing_timestamp'] = datetime.utcnow()\n    df['article_length'] = df['content'].apply(len)\n    # Example advanced transformation (e.g., NLP, sentiment analysis)\n    # df['sentiment_score'] = df['content'].apply(analyze_sentiment)\n    # Data is then loaded to PostgreSQL via SQLAlchemy engine\n    # df.to_sql(target_table, postgres_engine, if_exists='append', index=False)\n    print(f\"Transformed {len(df)} records for '{target_table}'.\")",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "PostgreSQL",
+      "Apache Superset",
+      "Docker/Kubernetes"
+    ],
+    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, designed to ingest, process, and visualize news data from various sources. It leverages a modern data stack with event streaming, orchestrated pipelines, and scalable storage to deliver actionable insights into media trends.",
+    "features": [
+      "Implemented a distributed enterprise lakehouse architecture for scalable data storage and processing.",
+      "Developed real-time data ingestion pipelines using Apache Kafka for high-throughput event streaming.",
+      "Orchestrated complex ETL/ELT workflows with Apache Airflow for robust data transformation and quality.",
+      "Integrated comprehensive monitoring (Prometheus/Grafana) and interactive visualization (Apache Superset) for media intelligence."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "AI & Autonomous Systems",
+    "filter": "ai",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AIPromptResponse {\n  output: string;\n  tokensUsed: number;\n}\n\nexport async function getAIPromptResponse(prompt: string): Promise<AIPromptResponse> {\n  try {\n    const response = await axios.post('/api/ai/prompt', { prompt });\n    return response.data;\n  } catch (error) {\n    console.error('Error fetching AI response:', error);\n    throw new Error('Failed to get AI response');\n  }\n}",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AiResponse {\n  output: string;\n  tokens: number;\n}\n\nasync function generateAiContent(prompt: string, model: string = 'gpt-3.5-turbo'): Promise<AiResponse> {\n  try {\n    const response = await axios.post('/api/generate', { prompt, model });\n    return response.data;\n  } catch (error) {\n    console.error(\"AI generation failed:\", error);\n    throw new Error(\"Failed to generate AI content.\");\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -343,12 +355,12 @@ const EMBEDDED_PROJECTS = [
       "Docker",
       "Vercel"
     ],
-    "desc": "Developed a full-stack AI studio leveraging React, TypeScript, and Vite for a modern, responsive user experience. This platform streamlines AI project development and management, featuring robust API interactions and containerized deployment.",
+    "desc": "OmniPulse AI Studio provides a robust web interface for developing and testing AI prompts and models, leveraging a modern React and TypeScript frontend. This project demonstrates a scalable full-stack approach to AI application development, integrating advanced tooling for code quality and efficient deployment.",
     "features": [
-      "Modern Full-Stack Architecture: Built with React, TypeScript, and Vite for high performance and maintainability.",
-      "Robust Code Quality: Implemented advanced Oxlint configurations with type-aware rules for superior code integrity.",
-      "Containerized Deployment: Utilizes Docker for consistent, scalable, and isolated application environments.",
-      "AI Interaction Backend: Features an API layer designed for seamless integration and testing of AI prompts and models."
+      "Interactive AI Prompt Development Interface",
+      "Modern Full-Stack Architecture with React & TypeScript",
+      "Automated Code Quality and Linting with Oxlint",
+      "Containerized Deployment Strategy via Docker & Vercel"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
