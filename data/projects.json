@@ -295,17 +295,29 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "import json\nfrom datetime import datetime\n\ndef transform_raw_to_silver(raw_data: dict) -> dict:\n    \"\"\"\n    Transforms raw news data (Bronze layer) to a refined format (Silver layer).\n    \"\"\"\n    article = {\n        \"title\": raw_data.get(\"title\", \"\").strip(),\n        \"body_summary\": raw_data.get(\"body\", \"\")[:200].replace(\"\\n\", \" \").strip(),\n        \"source_domain\": raw_data.get(\"url\", \"\").split('/')[2] if raw_data.get(\"url\") else None,\n        \"ingestion_timestamp\": raw_data.get(\"ingestion_ts\"),\n        \"processing_timestamp\": datetime.utcnow().isoformat() + \"Z\"\n    }\n    return article",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Python",
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "Apache Superset",
+      "Docker/Kubernetes"
+    ],
+    "desc": "This project delivers a comprehensive, distributed platform for ingesting, processing, and visualizing real-time news article data, addressing the need for scalable media intelligence. It achieves this by implementing a robust Enterprise Lakehouse with a Medallion Architecture, ensuring data quality and enabling powerful analytics.",
+    "features": [
+      "Implemented a scalable Enterprise Lakehouse architecture for comprehensive media data management.",
+      "Developed real-time media intelligence capabilities with distributed ingestion and processing pipelines.",
+      "Enforced data quality and governance through a Medallion Architecture (Bronze, Silver, Gold layers).",
+      "Integrated full-stack observability and analytics using Apache Superset, Prometheus, and Grafana."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -316,13 +328,25 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "typescript",
+    "codeSnippet": "export interface AIStudioPrompt {\n  id: string;\n  title: string;\n  description: string;\n  template: string; // The actual prompt template\n  createdAt: Date;\n}\n\nexport interface AIStudioResponse {\n  promptId: string;\n  generatedText: string;\n  modelUsed: string;\n  timestamp: Date;\n}",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Node.js",
+      "Docker",
+      "Vercel"
+    ],
+    "desc": "Omnipulse AI Studio is a full-stack web application designed for building and managing AI-powered tools, leveraging a modern React and TypeScript frontend. It integrates robust API services and data management capabilities, enabling rapid development and deployment of intelligent systems.",
+    "features": [
+      "Modern frontend architecture with React, TypeScript, and Vite for optimal performance.",
+      "Robust backend API integration facilitating complex AI model interactions.",
+      "Containerized deployment using Docker for consistent multi-environment operation.",
+      "Integrated AI prompting and testing capabilities for rapid development of intelligent agents."
+    ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
