@@ -300,24 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\ndef publish_news_event(topic: str, article_data: dict):\n    \"\"\"Publishes a news article event to a Kafka topic.\"\"\"\n    producer = KafkaProducer(\n        bootstrap_servers=['localhost:9092'],\n        value_serializer=lambda v: json.dumps(v).encode('utf-8')\n    )\n    producer.send(topic, article_data)\n    producer.flush()\n    print(f\"Published article: {article_data.get('title', 'N/A')}\")",
+    "codeSnippet": "from datetime import datetime\n\ndef clean_and_enrich_article(raw_article: dict) -> dict:\n    \"\"\"Cleans and enriches a single news article dictionary.\"\"\"\n    cleaned_article = {\n        \"id\": raw_article.get(\"id\"),\n        \"title\": raw_article.get(\"title\", \"\").strip(),\n        \"author\": raw_article.get(\"author\", \"Unknown\").strip(),\n        \"publish_date\": datetime.fromisoformat(\n            raw_article[\"publishedAt\"].replace(\"Z\", \"+00:00\")\n        ).strftime(\"%Y-%m-%d %H:%M:%S\")\n        if \"publishedAt\" in raw_article else None,\n        \"source\": raw_article.get(\"source\", {}).get(\"name\", \"N/A\"),\n        \"content_summary\": raw_article.get(\"description\", \"\").strip()[:200],\n        \"language\": \"en\" # Placeholder for actual detection\n    }\n    return cleaned_article",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
+      "MinIO (S3)",
       "Apache Superset",
-      "Kubernetes",
-      "Python"
+      "Docker",
+      "Kubernetes"
     ],
-    "desc": "A comprehensive, distributed platform for real-time media intelligence, designed to ingest, process, and visualize data from news articles. It implements a robust enterprise lakehouse architecture, leveraging real-time streaming and a medallion data strategy for advanced analytics.",
+    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from various sources. It leverages a distributed enterprise lakehouse architecture, enabling scalable data management and analytics for comprehensive media insights.",
     "features": [
-      "End-to-end Real-Time Media Intelligence Platform with automated scraping.",
-      "Scalable Enterprise Lakehouse Architecture leveraging a Medallion Layer strategy.",
-      "Distributed Data Ingestion & Orchestration using Kafka and Apache Airflow.",
-      "Comprehensive Monitoring & Visualization with Prometheus, Grafana, and Apache Superset.",
-      "Cloud-native deployment readiness with Docker and Kubernetes infrastructure."
+      "Distributed Enterprise Lakehouse architecture for scalable data ingestion and storage",
+      "Real-time data pipelines orchestrated by Apache Airflow for media intelligence",
+      "Comprehensive monitoring (Prometheus, Grafana) and interactive visualization (Superset) dashboards",
+      "Containerized deployment using Docker Compose and Kubernetes for resilient infrastructure"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -325,12 +324,12 @@
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "async function getAIResponse(prompt: string, model: string = 'omnipulse-v1'): Promise<string | null> {\n    const res = await fetch('/api/generate', {\n        method: 'POST', headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ prompt, model })\n    });\n    if (!res.ok) {\n        console.error(`AI API error: ${res.status} - ${await res.text()}`);\n        return null;\n    }\n    const data: { generatedContent: string } = await res.json();\n    return data.generatedContent;\n}",
+    "codeSnippet": "async function generateAIContent(prompt: string, model: string = \"omnipulse-v1\"): Promise<{ output: string; tokensUsed: number }> {\n  try {\n    const response = await fetch('/api/ai/generate', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt, model }),\n    });\n    if (!response.ok) throw new Error(`AI generation failed: ${response.statusText}`);\n    return await response.json();\n  } catch (error) {\n    console.error(\"AI content error:\", error);\n    throw error;\n  }\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -339,14 +338,14 @@
       "Vite",
       "Node.js",
       "Docker",
-      "LLM Integration"
+      "Vercel"
     ],
-    "desc": "An advanced web-based AI studio built with React, TypeScript, and Vite, designed to facilitate interactive AI model development and prompt engineering. It provides a robust full-stack environment for deploying and testing AI services, leveraging modern frontend tooling and containerization for scalable operations.",
+    "desc": "This project delivers a comprehensive full-stack AI studio built with modern React, TypeScript, and Vite, providing a robust environment for AI application development. It integrates advanced front-end tooling with a structured API and data layer to facilitate the creation and management of AI-driven solutions.",
     "features": [
-      "Interactive AI Model Prototyping and Prompt Engineering capabilities.",
-      "Robust Full-Stack API Architecture with seamless containerization.",
-      "Modern, Responsive Frontend crafted with React, TypeScript, and Vite.",
-      "Optimized Developer Workflow, integrating Oxlint and Vercel for CI/CD."
+      "Leverages modern React, TypeScript, and Vite for a high-performance, type-safe frontend experience.",
+      "Integrates Oxlint with type-aware linting for superior code quality, consistency, and maintainability.",
+      "Employs Docker for streamlined, environment-agnostic deployment and consistent development workflows.",
+      "Features a structured API and data architecture to support scalable, AI-driven application development."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
