@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom datetime import datetime\n\ndef transform_and_load_news_data(raw_data_path, target_table):\n    \"\"\"Transforms raw news articles and loads them into the data warehouse.\"\"\"\n    df = pd.read_json(raw_data_path)\n    df['processing_timestamp'] = datetime.utcnow()\n    df['article_length'] = df['content'].apply(len)\n    # Example advanced transformation (e.g., NLP, sentiment analysis)\n    # df['sentiment_score'] = df['content'].apply(analyze_sentiment)\n    # Data is then loaded to PostgreSQL via SQLAlchemy engine\n    # df.to_sql(target_table, postgres_engine, if_exists='append', index=False)\n    print(f\"Transformed {len(df)} records for '{target_table}'.\")",
+    "codeSnippet": "import pandas as pd\nfrom minio import Minio\n\ndef transform_data_to_silver(minio_client: Minio, bucket: str, object_name: str):\n    # Read raw JSON data from MinIO (bronze layer)\n    response = minio_client.get_object(bucket, object_name)\n    raw_data = pd.read_json(response.data)\n\n    # Apply transformations (e.g., sentiment analysis, entity recognition)\n    processed_data = raw_data[['title', 'url', 'publish_date']].copy()\n    processed_data['sentiment_score'] = processed_data['title'].apply(lambda x: len(x)) # Placeholder\n\n    # Store transformed data back to MinIO (silver layer)\n    silver_object_name = object_name.replace(\"bronze\", \"silver\").replace(\".json\", \".parquet\")\n    processed_data.to_parquet(\"/tmp/temp_silver.parquet\", index=False)\n    minio_client.fput_object(\"silver-layer\", silver_object_name, \"/tmp/temp_silver.parquet\")\n    print(f\"Transformed and stored {silver_object_name}\")",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO",
+      "MinIO (Data Lake)",
       "PostgreSQL",
-      "Apache Superset",
-      "Docker/Kubernetes"
+      "Docker",
+      "Apache Superset"
     ],
-    "desc": "This project establishes a comprehensive, distributed enterprise lakehouse for real-time media intelligence, designed to ingest, process, and visualize news data from various sources. It leverages a modern data stack with event streaming, orchestrated pipelines, and scalable storage to deliver actionable insights into media trends.",
+    "desc": "This platform provides real-time media intelligence by ingesting, processing, and visualizing news article data from various sources. It leverages a distributed Lakehouse architecture (Medallion pattern) with advanced ETL/ELT pipelines to deliver comprehensive data management and actionable insights.",
     "features": [
-      "Implemented a distributed enterprise lakehouse architecture for scalable data storage and processing.",
-      "Developed real-time data ingestion pipelines using Apache Kafka for high-throughput event streaming.",
-      "Orchestrated complex ETL/ELT workflows with Apache Airflow for robust data transformation and quality.",
-      "Integrated comprehensive monitoring (Prometheus/Grafana) and interactive visualization (Apache Superset) for media intelligence."
+      "Distributed Lakehouse architecture applying a Medallion pattern for structured data management.",
+      "Real-time data ingestion and stream processing enabled by Apache Kafka and custom scrapers.",
+      "Automated end-to-end ETL/ELT pipelines orchestrated with Apache Airflow for data transformation.",
+      "Integrated monitoring, analytics, and business intelligence dashboards with Prometheus, Grafana, and Apache Superset."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -339,12 +339,12 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "omnipulse-ai-studio",
     "title": "omnipulse-ai-studio",
-    "category": "AI & Autonomous Systems",
-    "filter": "ai",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AiResponse {\n  output: string;\n  tokens: number;\n}\n\nasync function generateAiContent(prompt: string, model: string = 'gpt-3.5-turbo'): Promise<AiResponse> {\n  try {\n    const response = await axios.post('/api/generate', { prompt, model });\n    return response.data;\n  } catch (error) {\n    console.error(\"AI generation failed:\", error);\n    throw new Error(\"Failed to generate AI content.\");\n  }\n}",
+    "codeSnippet": "export async function executeAiPrompt(prompt: string, model: string): Promise<string> {\n  const res = await fetch(\"/api/generate\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ prompt, model }),\n  });\n  if (!res.ok) {\n    throw new Error(`AI API failed: ${res.statusText}`);\n  }\n  const data: { output: string } = await res.json();\n  return data.output;\n}",
     "img": null,
     "gallery": [],
     "tech": [
@@ -353,14 +353,14 @@ const EMBEDDED_PROJECTS = [
       "Vite",
       "Node.js",
       "Docker",
-      "Vercel"
+      "Oxlint"
     ],
-    "desc": "OmniPulse AI Studio provides a robust web interface for developing and testing AI prompts and models, leveraging a modern React and TypeScript frontend. This project demonstrates a scalable full-stack approach to AI application development, integrating advanced tooling for code quality and efficient deployment.",
+    "desc": "Developed the OmniPulse AI Studio, a cutting-edge web application designed for seamless AI model interaction and content generation. This platform provides developers with robust tools and a high-performance interface for exploring and deploying AI capabilities.",
     "features": [
-      "Interactive AI Prompt Development Interface",
-      "Modern Full-Stack Architecture with React & TypeScript",
-      "Automated Code Quality and Linting with Oxlint",
-      "Containerized Deployment Strategy via Docker & Vercel"
+      "High-performance frontend built with React and Vite",
+      "Type-safe development with TypeScript and Oxlint for code quality",
+      "Modular API integration for diverse AI model interaction",
+      "Containerized deployment using Docker for scalable operations"
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
