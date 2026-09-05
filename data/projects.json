@@ -300,23 +300,23 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from datetime import datetime\n\ndef clean_and_enrich_article(raw_article: dict) -> dict:\n    \"\"\"Cleans and enriches a single news article dictionary.\"\"\"\n    cleaned_article = {\n        \"id\": raw_article.get(\"id\"),\n        \"title\": raw_article.get(\"title\", \"\").strip(),\n        \"author\": raw_article.get(\"author\", \"Unknown\").strip(),\n        \"publish_date\": datetime.fromisoformat(\n            raw_article[\"publishedAt\"].replace(\"Z\", \"+00:00\")\n        ).strftime(\"%Y-%m-%d %H:%M:%S\")\n        if \"publishedAt\" in raw_article else None,\n        \"source\": raw_article.get(\"source\", {}).get(\"name\", \"N/A\"),\n        \"content_summary\": raw_article.get(\"description\", \"\").strip()[:200],\n        \"language\": \"en\" # Placeholder for actual detection\n    }\n    return cleaned_article",
+    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='newsstream_etl_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'etl'],\n) as dag:\n    scrape_task = BashOperator(task_id='scrape_news', bash_command='python /app/scrapers/run.py')\n    process_task = BashOperator(task_id='process_lake', bash_command='spark-submit /app/pipelines/transform.py')\n    load_task = BashOperator(task_id='load_warehouse', bash_command='python /app/warehouse/load.py')\n\n    scrape_task >> process_task >> load_task",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (S3)",
+      "MinIO",
       "Apache Superset",
       "Docker",
       "Kubernetes"
     ],
-    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles from various sources. It leverages a distributed enterprise lakehouse architecture, enabling scalable data management and analytics for comprehensive media insights.",
+    "desc": "This project builds a comprehensive, distributed platform for real-time media intelligence, leveraging a data lakehouse architecture to ingest, process, and visualize news article data. It integrates scraping, ETL/ELT pipelines, and advanced analytics for enterprise-grade media monitoring and insights.",
     "features": [
-      "Distributed Enterprise Lakehouse architecture for scalable data ingestion and storage",
-      "Real-time data pipelines orchestrated by Apache Airflow for media intelligence",
-      "Comprehensive monitoring (Prometheus, Grafana) and interactive visualization (Superset) dashboards",
-      "Containerized deployment using Docker Compose and Kubernetes for resilient infrastructure"
+      "Real-time data ingestion and stream processing with Apache Kafka for immediate insights.",
+      "Orchestrated data pipelines (ETL/ELT) using Apache Airflow for robust data transformation.",
+      "Scalable Data Lakehouse architecture combining MinIO and PostgreSQL for diverse data storage.",
+      "Interactive media intelligence dashboards and monitoring with Apache Superset and Grafana."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,25 +328,13 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "async function generateAIContent(prompt: string, model: string = \"omnipulse-v1\"): Promise<{ output: string; tokensUsed: number }> {\n  try {\n    const response = await fetch('/api/ai/generate', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ prompt, model }),\n    });\n    if (!response.ok) throw new Error(`AI generation failed: ${response.statusText}`);\n    return await response.json();\n  } catch (error) {\n    console.error(\"AI content error:\", error);\n    throw error;\n  }\n}",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Vercel"
-    ],
-    "desc": "This project delivers a comprehensive full-stack AI studio built with modern React, TypeScript, and Vite, providing a robust environment for AI application development. It integrates advanced front-end tooling with a structured API and data layer to facilitate the creation and management of AI-driven solutions.",
-    "features": [
-      "Leverages modern React, TypeScript, and Vite for a high-performance, type-safe frontend experience.",
-      "Integrates Oxlint with type-aware linting for superior code quality, consistency, and maintainability.",
-      "Employs Docker for streamlined, environment-agnostic deployment and consistent development workflows.",
-      "Features a structured API and data architecture to support scalable, AI-driven application development."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
