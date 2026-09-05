@@ -295,29 +295,17 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG(\n    dag_id='newsstream_etl_pipeline',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['news', 'etl'],\n) as dag:\n    scrape_task = BashOperator(task_id='scrape_news', bash_command='python /app/scrapers/run.py')\n    process_task = BashOperator(task_id='process_lake', bash_command='spark-submit /app/pipelines/transform.py')\n    load_task = BashOperator(task_id='load_warehouse', bash_command='python /app/warehouse/load.py')\n\n    scrape_task >> process_task >> load_task",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Apache Kafka",
-      "Apache Airflow",
-      "MinIO",
-      "Apache Superset",
-      "Docker",
-      "Kubernetes"
-    ],
-    "desc": "This project builds a comprehensive, distributed platform for real-time media intelligence, leveraging a data lakehouse architecture to ingest, process, and visualize news article data. It integrates scraping, ETL/ELT pipelines, and advanced analytics for enterprise-grade media monitoring and insights.",
-    "features": [
-      "Real-time data ingestion and stream processing with Apache Kafka for immediate insights.",
-      "Orchestrated data pipelines (ETL/ELT) using Apache Airflow for robust data transformation.",
-      "Scalable Data Lakehouse architecture combining MinIO and PostgreSQL for diverse data storage.",
-      "Interactive media intelligence dashboards and monitoring with Apache Superset and Grafana."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
