@@ -315,23 +315,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "import pandas as pd\nfrom minio import Minio\n\ndef transform_data_to_silver(minio_client: Minio, bucket: str, object_name: str):\n    # Read raw JSON data from MinIO (bronze layer)\n    response = minio_client.get_object(bucket, object_name)\n    raw_data = pd.read_json(response.data)\n\n    # Apply transformations (e.g., sentiment analysis, entity recognition)\n    processed_data = raw_data[['title', 'url', 'publish_date']].copy()\n    processed_data['sentiment_score'] = processed_data['title'].apply(lambda x: len(x)) # Placeholder\n\n    # Store transformed data back to MinIO (silver layer)\n    silver_object_name = object_name.replace(\"bronze\", \"silver\").replace(\".json\", \".parquet\")\n    processed_data.to_parquet(\"/tmp/temp_silver.parquet\", index=False)\n    minio_client.fput_object(\"silver-layer\", silver_object_name, \"/tmp/temp_silver.parquet\")\n    print(f\"Transformed and stored {silver_object_name}\")",
+    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\nproducer = KafkaProducer(\n    bootstrap_servers=['kafka:9092'],\n    value_serializer=lambda v: json.dumps(v).encode('utf-8')\n)\n\ndef send_news_article(article_data):\n    topic = 'raw_news_articles'\n    producer.send(topic, article_data)\n    producer.flush()\n    print(f\"Sent article to Kafka topic '{topic}'\")",
     "img": null,
     "gallery": [],
     "tech": [
       "Apache Kafka",
       "Apache Airflow",
-      "MinIO (Data Lake)",
-      "PostgreSQL",
-      "Docker",
-      "Apache Superset"
+      "MinIO",
+      "Kubernetes",
+      "Apache Superset",
+      "Python"
     ],
-    "desc": "This platform provides real-time media intelligence by ingesting, processing, and visualizing news article data from various sources. It leverages a distributed Lakehouse architecture (Medallion pattern) with advanced ETL/ELT pipelines to deliver comprehensive data management and actionable insights.",
+    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse platform for real-time media intelligence, enabling the ingestion, processing, and visualization of news article data. It leverages a modern data architecture, including a Medallion Lakehouse pattern and stream processing, to provide scalable and actionable insights.",
     "features": [
-      "Distributed Lakehouse architecture applying a Medallion pattern for structured data management.",
-      "Real-time data ingestion and stream processing enabled by Apache Kafka and custom scrapers.",
-      "Automated end-to-end ETL/ELT pipelines orchestrated with Apache Airflow for data transformation.",
-      "Integrated monitoring, analytics, and business intelligence dashboards with Prometheus, Grafana, and Apache Superset."
+      "Real-time data ingestion and stream processing with Apache Kafka.",
+      "Distributed Medallion Lakehouse architecture for scalable data storage and transformation.",
+      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
+      "Containerized deployment using Docker and Kubernetes for high availability and scalability."
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -344,23 +344,23 @@ const EMBEDDED_PROJECTS = [
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "typescript",
-    "codeSnippet": "export async function executeAiPrompt(prompt: string, model: string): Promise<string> {\n  const res = await fetch(\"/api/generate\", {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ prompt, model }),\n  });\n  if (!res.ok) {\n    throw new Error(`AI API failed: ${res.statusText}`);\n  }\n  const data: { output: string } = await res.json();\n  return data.output;\n}",
+    "codeSnippet": "import axios from 'axios';\n\ninterface AIRequest {\n  model: string;\n  prompt: string;\n  temperature?: number;\n}\n\ninterface AIResponse {\n  id: string;\n  text: string;\n  usage: any;\n}\n\nexport const callAIGenerateAPI = async (request: AIRequest): Promise<AIResponse> => {\n  try {\n    const response = await fetch('/api/ai/generate', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify(request),\n    });\n    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n    return await response.json();\n  } catch (error) {\n    console.error('Failed to call AI generate API:', error);\n    throw error;\n  }\n};",
     "img": null,
     "gallery": [],
     "tech": [
       "React",
       "TypeScript",
       "Vite",
-      "Node.js",
+      "Oxlint",
       "Docker",
-      "Oxlint"
+      "Vercel"
     ],
-    "desc": "Developed the OmniPulse AI Studio, a cutting-edge web application designed for seamless AI model interaction and content generation. This platform provides developers with robust tools and a high-performance interface for exploring and deploying AI capabilities.",
+    "desc": "Anas developed omnipulse-ai-studio, a modern AI studio platform leveraging React, TypeScript, and Vite for a highly interactive and performant user experience. This project demonstrates a robust frontend architecture, integrating advanced linting and a modular API structure for scalable AI-driven functionalities.",
     "features": [
-      "High-performance frontend built with React and Vite",
-      "Type-safe development with TypeScript and Oxlint for code quality",
-      "Modular API integration for diverse AI model interaction",
-      "Containerized deployment using Docker for scalable operations"
+      "Engineered a high-performance, dynamic user interface for AI interaction using React and Vite.",
+      "Implemented robust type safety and code quality standards with TypeScript and an advanced Oxlint configuration.",
+      "Designed a modular API integration layer for seamless communication with backend AI services and data.",
+      "Ensured consistent deployment and development environments through Docker containerization."
     ],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
