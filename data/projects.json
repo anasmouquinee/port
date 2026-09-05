@@ -300,23 +300,24 @@
     "featured": false,
     "hasCodeSnippet": true,
     "codeLanguage": "python",
-    "codeSnippet": "from kafka import KafkaProducer\nimport json\n\nproducer = KafkaProducer(\n    bootstrap_servers=['kafka:9092'],\n    value_serializer=lambda v: json.dumps(v).encode('utf-8')\n)\n\ndef send_news_article(article_data):\n    topic = 'raw_news_articles'\n    producer.send(topic, article_data)\n    producer.flush()\n    print(f\"Sent article to Kafka topic '{topic}'\")",
+    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_silver_layer_data():\n    \"\"\"Simulates processing data from Silver to Gold layer.\"\"\"\n    print(f\"[{datetime.now()}] Starting Silver to Gold layer processing...\")\n    # Logic to read from MinIO Silver bucket, apply business rules,\n    # and write enriched data to MinIO Gold bucket\n    print(\"Data processed and moved to Gold layer successfully.\")\n\nprocess_silver_task = PythonOperator(\n    task_id='process_silver_to_gold',\n    python_callable=process_silver_layer_data,\n)",
     "img": null,
     "gallery": [],
     "tech": [
+      "Python",
       "Apache Kafka",
       "Apache Airflow",
       "MinIO",
-      "Kubernetes",
       "Apache Superset",
-      "Python"
+      "Kubernetes"
     ],
-    "desc": "This project delivers a comprehensive, distributed enterprise lakehouse platform for real-time media intelligence, enabling the ingestion, processing, and visualization of news article data. It leverages a modern data architecture, including a Medallion Lakehouse pattern and stream processing, to provide scalable and actionable insights.",
+    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles using an Enterprise Lakehouse architecture. It leverages a distributed infrastructure to provide comprehensive data management and insights for media monitoring.",
     "features": [
-      "Real-time data ingestion and stream processing with Apache Kafka.",
-      "Distributed Medallion Lakehouse architecture for scalable data storage and transformation.",
-      "Automated ETL/ELT pipelines orchestrated by Apache Airflow.",
-      "Containerized deployment using Docker and Kubernetes for high availability and scalability."
+      "Real-time ingestion and processing of news data streams",
+      "Enterprise Lakehouse architecture with Medallion zones (Raw, Bronze, Silver, Gold)",
+      "Orchestrated data pipelines for ETL/ELT with Apache Airflow",
+      "Distributed and scalable deployment using Docker and Kubernetes",
+      "Integrated monitoring and interactive data visualization capabilities"
     ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
@@ -328,25 +329,13 @@
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\ninterface AIRequest {\n  model: string;\n  prompt: string;\n  temperature?: number;\n}\n\ninterface AIResponse {\n  id: string;\n  text: string;\n  usage: any;\n}\n\nexport const callAIGenerateAPI = async (request: AIRequest): Promise<AIResponse> => {\n  try {\n    const response = await fetch('/api/ai/generate', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify(request),\n    });\n    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n    return await response.json();\n  } catch (error) {\n    console.error('Failed to call AI generate API:', error);\n    throw error;\n  }\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Oxlint",
-      "Docker",
-      "Vercel"
-    ],
-    "desc": "Anas developed omnipulse-ai-studio, a modern AI studio platform leveraging React, TypeScript, and Vite for a highly interactive and performant user experience. This project demonstrates a robust frontend architecture, integrating advanced linting and a modular API structure for scalable AI-driven functionalities.",
-    "features": [
-      "Engineered a high-performance, dynamic user interface for AI interaction using React and Vite.",
-      "Implemented robust type safety and code quality standards with TypeScript and an advanced Oxlint configuration.",
-      "Designed a modular API integration layer for seamless communication with backend AI services and data.",
-      "Ensured consistent deployment and development environments through Docker containerization."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
