@@ -295,17 +295,29 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Full-Stack & Web",
-    "filter": "web",
+    "category": "Big Data & Architecture",
+    "filter": "cloud",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "javascript",
-    "codeSnippet": "",
+    "codeLanguage": "python",
+    "codeSnippet": "import pandas as pd\nfrom minio import Minio\n\ndef process_bronze_to_silver(file_path: str):\n    client = Minio(\"localhost:9000\", access_key=\"minio_admin\", secret_key=\"anaskaelar\", secure=False)\n    data = client.get_object(\"bronze\", file_path).read()\n    df = pd.read_json(data)\n    \n    df_silver = df[['title', 'author', 'publish_date']].drop_duplicates()\n    \n    client.put_object(\"silver\", file_path.replace(\"raw\", \"processed\"), df_silver.to_json().encode('utf-8'))\n    print(f\"Processed {file_path} from Bronze to Silver layer.\")",
     "img": null,
     "gallery": [],
-    "tech": [],
-    "desc": "",
-    "features": [],
+    "tech": [
+      "Apache Kafka",
+      "Apache Airflow",
+      "MinIO",
+      "Kubernetes",
+      "Apache Superset",
+      "Python"
+    ],
+    "desc": "An enterprise-grade, distributed lakehouse platform designed for real-time media intelligence, enabling comprehensive ingestion, processing, and visualization of news articles. This solution leverages a medallion architecture and modern data tooling to deliver actionable insights from high-volume, dynamic data streams.",
+    "features": [
+      "End-to-end real-time media intelligence platform built on a distributed lakehouse architecture.",
+      "Orchestrated data ingestion, processing, and transformation workflows using Apache Airflow and Kafka.",
+      "Scalable data lake and data warehouse implementation supporting Medallion Architecture principles.",
+      "Comprehensive monitoring and business intelligence dashboards with Grafana, Prometheus, and Apache Superset."
+    ],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
