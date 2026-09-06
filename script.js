@@ -310,30 +310,17 @@ const EMBEDDED_PROJECTS = [
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef transform_to_silver(**kwargs):\n    # Simulate fetching data from Bronze layer (MinIO/S3)\n    # Perform cleaning, standardization, and schema enforcement\n    print(\"Transforming raw news data from Bronze to Silver layer...\")\n    # Simulate writing processed data to Silver layer\n    print(\"Data successfully processed and stored in Silver layer.\")\n\nwith DAG(\n    dag_id='news_lakehouse_silver_processing',\n    start_date=datetime(2023, 1, 1),\n    schedule_interval='@daily',\n    catchup=False,\n    tags=['lakehouse', 'silver']\n) as dag:\n    silver_transformation_task = PythonOperator(\n        task_id='bronze_to_silver_transform',\n        python_callable=transform_to_silver,\n    )",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Python",
-      "Apache Airflow",
-      "Apache Kafka",
-      "MinIO",
-      "PostgreSQL",
-      "Kubernetes",
-      "Apache Superset"
-    ],
-    "desc": "This distributed platform ingests, processes, and visualizes real-time news articles from various sources to provide comprehensive media intelligence. It leverages a robust enterprise data lakehouse architecture, featuring Medallion layers and stream processing, for advanced data management and analytics.",
-    "features": [
-      "Real-time media intelligence through distributed ingestion and stream processing.",
-      "Enterprise Data Lakehouse architecture with Medallion layers (Bronze, Silver, Gold).",
-      "Automated, scalable ETL/ELT pipelines orchestrated by Apache Airflow.",
-      "Containerized deployment and orchestration using Docker and Kubernetes."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
@@ -344,25 +331,13 @@ const EMBEDDED_PROJECTS = [
     "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "typescript",
-    "codeSnippet": "import axios from 'axios';\n\nconst API_BASE_URL = '/api/ai'; \n\nexport const sendPromptToAI = async (promptText: string, model: string) => {\n  try {\n    const response = await axios.post(`${API_BASE_URL}/generate`, {\n      prompt: promptText,\n      model: model,\n    });\n    return response.data;\n  } catch (error) {\n    console.error(\"Error sending prompt to AI:\", error);\n    throw error;\n  }\n};",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Node.js",
-      "Docker",
-      "Vercel"
-    ],
-    "desc": "OmniPulse AI Studio is a robust full-stack application leveraging React, TypeScript, and Vite to deliver an interactive AI development and interaction environment. It features a modern frontend built for performance and scalability, seamlessly integrating with backend AI services through a dedicated API.",
-    "features": [
-      "Modular Full-Stack Architecture: Employs a clear separation between frontend (React/Vite) and backend (API services).",
-      "High-Performance & Type-Safe Frontend: Developed with React, TypeScript, and Vite for an efficient, robust, and scalable user interface.",
-      "Automated Code Quality & Development Standards: Integrates Oxlint for static analysis, ensuring high code quality and maintainability.",
-      "Streamlined Deployment & Containerization: Features a Dockerized environment for consistent builds and Vercel for continuous deployment."
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
   }
