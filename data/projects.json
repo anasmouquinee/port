@@ -295,30 +295,17 @@
   {
     "id": "global-newsstream-enterprise-lakehouse-real-time-media-intelligence-platform",
     "title": "Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
-    "category": "Big Data & Architecture",
-    "filter": "cloud",
+    "category": "Full-Stack & Web",
+    "filter": "web",
     "featured": false,
     "hasCodeSnippet": true,
-    "codeLanguage": "python",
-    "codeSnippet": "from airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\ndef process_silver_layer_data():\n    \"\"\"Simulates processing data from Silver to Gold layer.\"\"\"\n    print(f\"[{datetime.now()}] Starting Silver to Gold layer processing...\")\n    # Logic to read from MinIO Silver bucket, apply business rules,\n    # and write enriched data to MinIO Gold bucket\n    print(\"Data processed and moved to Gold layer successfully.\")\n\nprocess_silver_task = PythonOperator(\n    task_id='process_silver_to_gold',\n    python_callable=process_silver_layer_data,\n)",
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
     "img": null,
     "gallery": [],
-    "tech": [
-      "Python",
-      "Apache Kafka",
-      "Apache Airflow",
-      "MinIO",
-      "Apache Superset",
-      "Kubernetes"
-    ],
-    "desc": "This platform delivers real-time media intelligence by ingesting, processing, and visualizing news articles using an Enterprise Lakehouse architecture. It leverages a distributed infrastructure to provide comprehensive data management and insights for media monitoring.",
-    "features": [
-      "Real-time ingestion and processing of news data streams",
-      "Enterprise Lakehouse architecture with Medallion zones (Raw, Bronze, Silver, Gold)",
-      "Orchestrated data pipelines for ETL/ELT with Apache Airflow",
-      "Distributed and scalable deployment using Docker and Kubernetes",
-      "Integrated monitoring and interactive data visualization capabilities"
-    ],
+    "tech": [],
+    "desc": "",
+    "features": [],
     "github": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform",
     "link": "https://github.com/anasmouquinee/Global-NewsStream-Enterprise-Lakehouse-Real-Time-Media-Intelligence-Platform"
   },
