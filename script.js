@@ -340,6 +340,23 @@ const EMBEDDED_PROJECTS = [
     "features": [],
     "github": "https://github.com/anasmouquinee/omnipulse-ai-studio",
     "link": "https://omnipulse-ai-studio.vercel.app"
+  },
+  {
+    "id": "luna-tracker",
+    "title": "luna-tracker",
+    "category": "Full-Stack & Web",
+    "filter": "web",
+    "featured": false,
+    "hasCodeSnippet": true,
+    "codeLanguage": "javascript",
+    "codeSnippet": "",
+    "img": null,
+    "gallery": [],
+    "tech": [],
+    "desc": "",
+    "features": [],
+    "github": "https://github.com/anasmouquinee/luna-tracker",
+    "link": "https://github.com/anasmouquinee/luna-tracker"
   }
 ];
 
